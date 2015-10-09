@@ -74,7 +74,7 @@ public class CoordinatesTest {
     public void shouldMoveUpTowardsDestination() {
         Coordinates coordinates1 = new Coordinates(10, 10);
         Coordinates coordinates2 = new Coordinates(10, 10);
-        Coordinates destination = new Coordinates (10, 5);
+        Coordinates destination = new Coordinates (10, 15);
 
         coordinates1.moveTowardsDestination(destination);
         coordinates2.moveUp();
@@ -100,7 +100,7 @@ public class CoordinatesTest {
     public void shouldMoveDownTowardsDestination() {
         Coordinates coordinates1 = new Coordinates(10, 10);
         Coordinates coordinates2 = new Coordinates(10, 10);
-        Coordinates destination = new Coordinates (10, 15);
+        Coordinates destination = new Coordinates (10, 5);
 
         coordinates1.moveTowardsDestination(destination);
         coordinates2.moveDown();

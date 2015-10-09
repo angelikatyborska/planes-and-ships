@@ -34,6 +34,24 @@ public class Coordinates {
     }
 
     public void moveTowardsDestination(Coordinates destination) {
+        int dx = destination.getX() - x;
+        int dy = destination.getY() - y;
 
+        if (Math.abs(dx) <= Math.abs(dy)) {
+            if (dy >= 0) {
+                moveUp();
+            }
+            else {
+                moveDown();
+            }
+        }
+        else {
+            if (dx >= 0) {
+                moveRight();
+            }
+            else {
+                moveLeft();
+            }
+        }
     }
 }
