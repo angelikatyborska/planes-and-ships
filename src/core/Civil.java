@@ -1,6 +1,7 @@
 package core;
 
 public interface Civil {
-  void accomodatePassenger(Passenger passenger);
+  int getPassengerCapacity();
+  void accommodatePassenger(Passenger passenger);
   void movePassengerTo(Civil civilDestination);
 }
