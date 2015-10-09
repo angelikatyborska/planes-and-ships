@@ -3,122 +3,71 @@ import org.junit.Test;
 import core.Coordinates;
 
 public class CoordinatesTest {
-    @Test
-    public void shouldSetXAndYCoordinates() {
-        Coordinates coordinates = new Coordinates(1, 2);
-        assertEquals(1, coordinates.getX());
-        assertEquals(2, coordinates.getY());
-    }
+  private static final double epsilon = 0.0001;
 
-    @Test
-    public void shouldMoveUp() {
-        Coordinates coordinates = new Coordinates(1, 1);
-        int oldX = coordinates.getX();
-        int oldY = coordinates.getY();
+  @Test
+  public void shouldSetXAndYCoordinates() {
+    double x = 14.2;
+    double y = 8.23;
+    Coordinates coordinates = new Coordinates(x, y);
 
-        coordinates.moveUp();
+    assertEquals(x, coordinates.getX(), epsilon);
+    assertEquals(y, coordinates.getY(), epsilon);
+  }
 
-        int newX = coordinates.getX();
-        int newY = coordinates.getY();
+  @Test
+  public void shouldMoveNorthTowardsDestination() {
+    double x = 14.2;
+    double y = 8.23;
+    double distance = 5;
+    Coordinates coordinates = new Coordinates(x, y);
+    Coordinates destination = new Coordinates (x, y + 3 * distance);
 
-        assertEquals(oldX, newX);
-        assertEquals(oldY - 1, newY);
-    }
+    coordinates.moveTowardsDestination(destination, distance);
 
-    @Test
-    public void shouldMoveRight() {
-        Coordinates coordinates = new Coordinates(1, 1);
-        int oldX = coordinates.getX();
-        int oldY = coordinates.getY();
+    assertEquals(x, coordinates.getX(), epsilon);
+    assertEquals(y + distance, coordinates.getY(), epsilon);
+  }
 
-        coordinates.moveRight();
+  @Test
+  public void shouldMoveEastTowardsDestination() {
+    double x = 14.2;
+    double y = 8.23;
+    double distance = 5;
+    Coordinates coordinates = new Coordinates(x, y);
+    Coordinates destination = new Coordinates (x + 3 * distance, y);
 
-        int newX = coordinates.getX();
-        int newY = coordinates.getY();
+    coordinates.moveTowardsDestination(destination, distance);
 
-        assertEquals(oldX + 1, newX);
-        assertEquals(oldY, newY);
-    }
+    assertEquals(x + distance, coordinates.getX(), epsilon);
+    assertEquals(y, coordinates.getY(), epsilon);
+  }
 
-    @Test
-    public void shouldMoveDown() {
-        Coordinates coordinates = new Coordinates(1, 1);
-        int oldX = coordinates.getX();
-        int oldY = coordinates.getY();
+  @Test
+  public void shouldMoveSouthTowardsDestination() {
+    double x = 14.2;
+    double y = 8.23;
+    double distance = 5;
+    Coordinates coordinates = new Coordinates(x, y);
+    Coordinates destination = new Coordinates (x, y - 3 * distance);
 
-        coordinates.moveDown();
+    coordinates.moveTowardsDestination(destination, distance);
 
-        int newX = coordinates.getX();
-        int newY = coordinates.getY();
+    assertEquals(x, coordinates.getX(), epsilon);
+    assertEquals(y - distance, coordinates.getY(), epsilon);
+  }
 
-        assertEquals(oldX, newX);
-        assertEquals(oldY + 1, newY);
-    }
+  @Test
+  public void shouldMoveWestTowardsDestination() {
+    double x = 14.2;
+    double y = 8.23;
+    double distance = 5;
+    Coordinates coordinates = new Coordinates(x, y);
+    Coordinates destination = new Coordinates (x - 3 * distance, y);
 
-    @Test
-    public void shouldMoveLeft() {
-        Coordinates coordinates = new Coordinates(1, 1);
-        int oldX = coordinates.getX();
-        int oldY = coordinates.getY();
+    coordinates.moveTowardsDestination(destination, distance);
 
-        coordinates.moveLeft();
-
-        int newX = coordinates.getX();
-        int newY = coordinates.getY();
-
-        assertEquals(oldX - 1, newX);
-        assertEquals(oldY, newY);
-    }
-
-    @Test
-    public void shouldMoveUpTowardsDestination() {
-        Coordinates coordinates1 = new Coordinates(10, 10);
-        Coordinates coordinates2 = new Coordinates(10, 10);
-        Coordinates destination = new Coordinates (10, 15);
-
-        coordinates1.moveTowardsDestination(destination);
-        coordinates2.moveUp();
-
-        assertEquals(coordinates1.getX(), coordinates2.getX());
-        assertEquals(coordinates1.getY(), coordinates2.getY());
-    }
-
-    @Test
-    public void shouldMoveRightTowardsDestination() {
-        Coordinates coordinates1 = new Coordinates(10, 10);
-        Coordinates coordinates2 = new Coordinates(10, 10);
-        Coordinates destination = new Coordinates (15, 10);
-
-        coordinates1.moveTowardsDestination(destination);
-        coordinates2.moveRight();
-
-        assertEquals(coordinates1.getX(), coordinates2.getX());
-        assertEquals(coordinates1.getY(), coordinates2.getY());
-    }
-
-    @Test
-    public void shouldMoveDownTowardsDestination() {
-        Coordinates coordinates1 = new Coordinates(10, 10);
-        Coordinates coordinates2 = new Coordinates(10, 10);
-        Coordinates destination = new Coordinates (10, 5);
-
-        coordinates1.moveTowardsDestination(destination);
-        coordinates2.moveDown();
-
-        assertEquals(coordinates1.getX(), coordinates2.getX());
-        assertEquals(coordinates1.getY(), coordinates2.getY());
-    }
-
-    @Test
-    public void shouldMoveLeftTowardsDestination() {
-        Coordinates coordinates1 = new Coordinates(10, 10);
-        Coordinates coordinates2 = new Coordinates(10, 10);
-        Coordinates destination = new Coordinates (5, 10);
-
-        coordinates1.moveTowardsDestination(destination);
-        coordinates2.moveLeft();
-
-        assertEquals(coordinates1.getX(), coordinates2.getX());
-        assertEquals(coordinates1.getY(), coordinates2.getY());
-    }
+    assertEquals(x - distance, coordinates.getX(), epsilon);
+    assertEquals(y, coordinates.getY(), epsilon);
+  }
 }
