@@ -24,12 +24,18 @@ public class Coordinates {
     return Math.sqrt(Math.pow(destinationXOffset, 2) + Math.pow(destinationYOffset, 2));
   }
 
-  public void moveTowardsDestination(Coordinates destination, double distance) {
+  public void moveTowards(Coordinates destination, double distance) {
     double destinationXOffset = destination.getX() - x;
     double destinationYOffset = destination.getY() - y;
     double distanceToDestination = distanceTo(destination);
 
-    x = x + distance * destinationXOffset / distanceToDestination;
-    y = y + distance * destinationYOffset / distanceToDestination;
+    if (distanceToDestination > distance) {
+      x = x + distance * destinationXOffset / distanceToDestination;
+      y = y + distance * destinationYOffset / distanceToDestination;
+    }
+    else {
+      x = destination.getX();
+      y = destination.getY();
+    }
   }
 }

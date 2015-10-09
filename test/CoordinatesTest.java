@@ -23,7 +23,7 @@ public class CoordinatesTest {
     Coordinates coordinates = new Coordinates(x, y);
     Coordinates destination = new Coordinates (x, y + 3 * distance);
 
-    coordinates.moveTowardsDestination(destination, distance);
+    coordinates.moveTowards(destination, distance);
 
     assertEquals(x, coordinates.getX(), epsilon);
     assertEquals(y + distance, coordinates.getY(), epsilon);
@@ -37,7 +37,7 @@ public class CoordinatesTest {
     Coordinates coordinates = new Coordinates(x, y);
     Coordinates destination = new Coordinates (x + 3 * distance, y);
 
-    coordinates.moveTowardsDestination(destination, distance);
+    coordinates.moveTowards(destination, distance);
 
     assertEquals(x + distance, coordinates.getX(), epsilon);
     assertEquals(y, coordinates.getY(), epsilon);
@@ -51,7 +51,7 @@ public class CoordinatesTest {
     Coordinates coordinates = new Coordinates(x, y);
     Coordinates destination = new Coordinates (x, y - 3 * distance);
 
-    coordinates.moveTowardsDestination(destination, distance);
+    coordinates.moveTowards(destination, distance);
 
     assertEquals(x, coordinates.getX(), epsilon);
     assertEquals(y - distance, coordinates.getY(), epsilon);
@@ -65,9 +65,36 @@ public class CoordinatesTest {
     Coordinates coordinates = new Coordinates(x, y);
     Coordinates destination = new Coordinates (x - 3 * distance, y);
 
-    coordinates.moveTowardsDestination(destination, distance);
+    coordinates.moveTowards(destination, distance);
 
     assertEquals(x - distance, coordinates.getX(), epsilon);
     assertEquals(y, coordinates.getY(), epsilon);
+  }
+
+  @Test
+  public void shouldMoveCloserTowardsDestination() {
+    double x = 14.2;
+    double y = 8.23;
+    double distance = 5;
+    Coordinates coordinates = new Coordinates(x, y);
+    Coordinates destination = new Coordinates (x + 2 * distance, y + 3 * distance);
+    double oldDistance = coordinates.distanceTo(destination);
+
+    coordinates.moveTowards(destination, distance);
+
+    assertEquals(oldDistance - distance, coordinates.distanceTo(destination), epsilon);
+  }
+
+  @Test
+  public void shouldMoveToDestination() {
+    double x = 14.2;
+    double y = 8.23;
+    double distance = 5;
+    Coordinates coordinates = new Coordinates(x, y);
+    Coordinates destination = new Coordinates (x - 0.2 * distance, y - 0.3 * distance);
+
+    coordinates.moveTowards(destination, distance);
+
+    assertEquals(0, coordinates.distanceTo(destination), epsilon);
   }
 }
