@@ -5,8 +5,8 @@ import core.Coordinates;
 import core.Passenger;
 
 public class CivilAirplane extends Airplane implements Civil {
-  public CivilAirplane(Coordinates coordinates) {
-    super(coordinates);
+  public CivilAirplane(Coordinates coordinates, int fuelCapacity) {
+    super(coordinates, fuelCapacity);
   }
 
   @Override

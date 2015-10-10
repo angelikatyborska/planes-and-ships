@@ -9,14 +9,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Destination {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
-  private ReentrantLock accommodatingVehicleLock = new ReentrantLock();
+  private ReentrantLock processingVehicleLock = new ReentrantLock();
 
-  private ArrayList<Vehicle> vehiclesStaying;
+  private ArrayList<Vehicle> accommodatedVehicles;
 
   public Destination(Coordinates coordinates, int vehicleCapacity) {
     this.coordinates = coordinates;
     this.vehicleCapacity = vehicleCapacity;
-    this.vehiclesStaying = new ArrayList<>();
+    this.accommodatedVehicles = new ArrayList<>();
   }
 
   public Coordinates getCoordinates() {
@@ -27,23 +27,39 @@ public class Destination {
     return vehicleCapacity;
   }
 
-  public ArrayList<Vehicle> getVehiclesStaying() {
-    return vehiclesStaying;
+  public ArrayList<Vehicle> getAccommodatedVehicles() {
+    return accommodatedVehicles;
   }
 
   public boolean accommodateVehicle(Vehicle vehicle) {
     boolean accommodatingSuccessful;
-    accommodatingVehicleLock.lock();
+    processingVehicleLock.lock();
 
-    if (vehiclesStaying.size() < vehicleCapacity) {
-      vehiclesStaying.add(vehicle);
+    if (accommodatedVehicles.size() < vehicleCapacity) {
+      accommodatedVehicles.add(vehicle);
       accommodatingSuccessful = true;
     }
     else {
       accommodatingSuccessful = false;
     }
 
-    accommodatingVehicleLock.unlock();
+    processingVehicleLock.unlock();
     return accommodatingSuccessful;
+  }
+
+  public boolean releaseVehicle(Vehicle vehicle) {
+    boolean realisingSuccessful;
+    processingVehicleLock.lock();
+
+    if (accommodatedVehicles.contains(vehicle)) {
+      accommodatedVehicles.remove(vehicle);
+      realisingSuccessful = true;
+    }
+    else {
+      realisingSuccessful = false;
+    }
+
+    processingVehicleLock.unlock();
+    return realisingSuccessful;
   }
 }

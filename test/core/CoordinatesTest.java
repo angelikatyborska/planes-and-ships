@@ -1,6 +1,7 @@
+package core;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
-import core.Coordinates;
 
 public class CoordinatesTest {
   private static final double epsilon = 0.0001;

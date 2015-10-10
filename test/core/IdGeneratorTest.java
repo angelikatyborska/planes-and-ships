@@ -1,6 +1,7 @@
+package core;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
-import core.IdGenerator;
 
 public class IdGeneratorTest {
     @Test
