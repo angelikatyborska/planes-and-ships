@@ -1,15 +1,15 @@
 package core;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import destinations.Destination;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class PassengerZoneTest {
   @Test
   public void shouldAccommodateWhenNotFull() {
     PassengerZone passengerZone = new PassengerZone(4);
-    Passenger passenger = Mockito.mock(Passenger.class);
+    Passenger passenger = mock(Passenger.class);
 
     assertTrue(passengerZone.accommodate(passenger));
   }
@@ -17,7 +17,7 @@ public class PassengerZoneTest {
   @Test
   public void shouldNotAccommodateWhenFull() {
     PassengerZone passengerZone = new PassengerZone(0);
-    Passenger passenger = Mockito.mock(Passenger.class);
+    Passenger passenger = mock(Passenger.class);
 
     assertFalse(passengerZone.accommodate(passenger));
   }
@@ -27,9 +27,9 @@ public class PassengerZoneTest {
     PassengerZone passengerZone1 = new PassengerZone(4);
     PassengerZone passengerZone2 = new PassengerZone(4);
 
-    Passenger passenger1 = Mockito.mock(Passenger.class);
-    Passenger passenger2 = Mockito.mock(Passenger.class);
-    Passenger passenger3 = Mockito.mock(Passenger.class);
+    Passenger passenger1 = mock(Passenger.class);
+    Passenger passenger2 = mock(Passenger.class);
+    Passenger passenger3 = mock(Passenger.class);
 
     passengerZone1.accommodate(passenger1);
     passengerZone1.accommodate(passenger2);
@@ -51,10 +51,10 @@ public class PassengerZoneTest {
     Destination paris = new Destination(new Coordinates(1,1) , 3);
     Destination london = new Destination(new Coordinates(1,1) , 3);
 
-    Passenger passengerGoingToLondon = Mockito.mock(Passenger.class);
-    Mockito.when(passengerGoingToLondon.getNextDestination()).thenReturn(london);
-    Passenger passengerGoingToParis = Mockito.mock(Passenger.class);
-    Mockito.when(passengerGoingToParis.getNextDestination()).thenReturn(paris);
+    Passenger passengerGoingToLondon = mock(Passenger.class);
+    when(passengerGoingToLondon.getNextDestination()).thenReturn(london);
+    Passenger passengerGoingToParis = mock(Passenger.class);
+    when(passengerGoingToParis.getNextDestination()).thenReturn(paris);
 
     passengerZone1.accommodate(passengerGoingToLondon);
     passengerZone1.accommodate(passengerGoingToParis);

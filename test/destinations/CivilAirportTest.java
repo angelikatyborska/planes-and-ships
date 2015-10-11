@@ -1,9 +1,9 @@
 package destinations;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import core.Coordinates;
 import org.junit.Test;
-import org.mockito.Mockito;
 import vehicles.CivilAirplane;
 import vehicles.Airplane;
 
@@ -18,7 +18,7 @@ public class CivilAirportTest {
 
   @Test(expected=InvalidVehicleAtDestinationException.class)
   public void shouldNotAccommodateAirplane() throws InvalidVehicleAtDestinationException {
-    Airplane airplane = Mockito.mock(Airplane.class, Mockito.CALLS_REAL_METHODS);
+    Airplane airplane = mock(Airplane.class, CALLS_REAL_METHODS);
     CivilAirport civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 
     civilAirport.accommodateVehicle(airplane);
