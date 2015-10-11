@@ -35,7 +35,7 @@ public class Passenger {
 
   }
 
-  public Destination getNextCivilDestination() {
+  public Destination getNextDestination() {
     return null;
   }
 }

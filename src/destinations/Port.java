@@ -1,39 +1,25 @@
 package destinations;
 
-import core.Civil;
 import core.Coordinates;
-import core.Passenger;
+import core.PassengerZone;
+import vehicles.CivilShip;
+import vehicles.Vehicle;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Port extends Destination {
+  public final PassengerZone passengerZone;
 
-public class Port extends Destination implements Civil {
   public Port(Coordinates coordinates, int vehicleCapacity) {
     super(coordinates, vehicleCapacity);
+    passengerZone = new PassengerZone(Integer.MAX_VALUE);
   }
 
   @Override
-  public List<Passenger> getPassengers() {
-    return null;
-  }
-
-  @Override
-  public boolean accommodatePassenger(Passenger passenger) {
-    return false;
-  }
-
-  @Override
-  public void accommodateAllPassengers(List<Passenger> passengers) {
-
-  }
-
-  @Override
-  public boolean movePassengerTo(Civil civilDestination) {
-    return false;
-  }
-
-  @Override
-  public void moveAllPassengersTo(Civil civilDestination) {
-
+  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtDestinationException {
+    if (vehicle instanceof CivilShip) {
+      return super.accommodateVehicle(vehicle);
+    }
+    else {
+      throw new InvalidVehicleAtDestinationException(vehicle, this);
+    }
   }
 }

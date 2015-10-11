@@ -1,39 +1,13 @@
 package vehicles;
 
-import core.Civil;
 import core.Coordinates;
-import core.Passenger;
+import core.PassengerZone;
 
-import java.util.ArrayList;
-import java.util.List;
+public class CivilShip extends Ship {
+  public final PassengerZone passengerZone;
 
-public class CivilShip extends Ship implements Civil {
-  public CivilShip(Coordinates coordinates) {
+  public CivilShip(Coordinates coordinates, int passengerCapacity) {
     super(coordinates);
-  }
-
-  @Override
-  public List<Passenger> getPassengers() {
-    return null;
-  }
-
-  @Override
-  public boolean accommodatePassenger(Passenger passenger) {
-    return false;
-  }
-
-  @Override
-  public void accommodateAllPassengers(List<Passenger> passengers) {
-
-  }
-
-  @Override
-  public boolean movePassengerTo(Civil civilDestination) {
-    return false;
-  }
-
-  @Override
-  public void moveAllPassengersTo(Civil civilDestination) {
-
+    passengerZone = new PassengerZone(passengerCapacity);
   }
 }
