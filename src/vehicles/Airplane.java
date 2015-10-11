@@ -1,8 +1,9 @@
 package vehicles;
 
 import core.Coordinates;
+import destinations.Destination;
 
-public class Airplane extends Vehicle {
+public abstract class Airplane extends Vehicle {
   private final double fuelCapacity;
   private final double fuelBurningRate = 1;
   private double fuel;
@@ -12,6 +13,7 @@ public class Airplane extends Vehicle {
     super(coordinates);
     this.personnel = (int) Math.floor(Math.random() * 10 + 3);
     this.fuelCapacity = fuelCapacity;
+    this.fuel = fuelCapacity;
   }
 
   public double getFuel() {
@@ -30,5 +32,15 @@ public class Airplane extends Vehicle {
     if (fuel > distance * fuelBurningRate) {
       fuel -= distance * fuelBurningRate;
     }
+  }
+
+  @Override
+  public void gotAccommodatedAt(Destination destination) {
+    refillFuel();
+  }
+
+  @Override
+  public void gotReleasedFrom(Destination destination) {
+
   }
 }

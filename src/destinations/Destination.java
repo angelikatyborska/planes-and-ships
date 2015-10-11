@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Destination {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
-  private ReentrantLock processingVehicleLock = new ReentrantLock();
+  private final ReentrantLock processingVehicleLock;
 
   private ArrayList<Vehicle> accommodatedVehicles;
 
@@ -17,6 +17,7 @@ public class Destination {
     this.coordinates = coordinates;
     this.vehicleCapacity = vehicleCapacity;
     this.accommodatedVehicles = new ArrayList<>();
+    this.processingVehicleLock = new ReentrantLock();
   }
 
   public Coordinates getCoordinates() {
@@ -31,12 +32,13 @@ public class Destination {
     return accommodatedVehicles;
   }
 
-  public boolean accommodateVehicle(Vehicle vehicle) {
+  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtDestinationException {
     boolean accommodatingSuccessful;
     processingVehicleLock.lock();
 
     if (accommodatedVehicles.size() < vehicleCapacity) {
       accommodatedVehicles.add(vehicle);
+      vehicle.gotAccommodatedAt(this);
       accommodatingSuccessful = true;
     }
     else {
@@ -53,6 +55,7 @@ public class Destination {
 
     if (accommodatedVehicles.contains(vehicle)) {
       accommodatedVehicles.remove(vehicle);
+      vehicle.gotReleasedFrom(this);
       realisingSuccessful = true;
     }
     else {

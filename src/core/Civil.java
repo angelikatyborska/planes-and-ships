@@ -1,12 +1,12 @@
 package core;
 
-import java.util.ArrayList;
+import java.util.List;
+
 
 public interface Civil {
-  int getPassengerCapacity();
-  ArrayList<Passenger> getPassengers();
-  void accommodatePassenger(Passenger passenger);
-  void accommodateAllPassengers(ArrayList<Passenger> passengers);
-  void movePassengerTo(Civil civilDestination);
+  List<Passenger> getPassengers();
+  boolean accommodatePassenger(Passenger passenger);
+  void accommodateAllPassengers(List<Passenger> passengers);
+  boolean movePassengerTo(Civil civilDestination);
   void moveAllPassengersTo(Civil civilDestination);
 }

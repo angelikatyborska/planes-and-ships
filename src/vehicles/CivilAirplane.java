@@ -5,35 +5,33 @@ import core.Coordinates;
 import core.Passenger;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CivilAirplane extends Airplane implements Civil {
+  private ArrayList<Passenger> passengers;
+
   public CivilAirplane(Coordinates coordinates, int fuelCapacity) {
     super(coordinates, fuelCapacity);
   }
 
   @Override
-  public int getPassengerCapacity() {
-    return 0;
+  public List<Passenger> getPassengers() {
+    return passengers;
   }
 
   @Override
-  public ArrayList<Passenger> getPassengers() {
-    return null;
+  public boolean accommodatePassenger(Passenger passenger) {
+    return false;
   }
 
   @Override
-  public void accommodatePassenger(Passenger passenger) {
-
-  }
-
-  @Override
-  public void accommodateAllPassengers(ArrayList<Passenger> passengers) {
+  public void accommodateAllPassengers(List<Passenger> passengers) {
 
   }
 
   @Override
-  public void movePassengerTo(Civil civilDestination) {
-
+  public boolean movePassengerTo(Civil civilDestination) {
+    return false;
   }
 
   @Override

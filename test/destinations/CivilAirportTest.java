@@ -1,20 +1,26 @@
 package destinations;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import core.Coordinates;
 import org.junit.Test;
+import org.mockito.Mockito;
 import vehicles.CivilAirplane;
+import vehicles.Airplane;
 
 public class CivilAirportTest {
   @Test
-  public void shouldLeaveAndTakePassengers() {
-    CivilAirplane mockedCivilAirplane = mock(CivilAirplane.class);
-    CivilAirport civilAirport = new CivilAirport(new Coordinates(1,1), 5);
+  public void shouldAccommodateCivilAirplane() throws InvalidVehicleAtDestinationException {
+    CivilAirplane civilAirplane = new CivilAirplane(new Coordinates(1,1), 5);
+    CivilAirport civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 
-    civilAirport.accommodateVehicle(mockedCivilAirplane);
+    assertTrue(civilAirport.accommodateVehicle(civilAirplane));
+  }
 
-    verify(mockedCivilAirplane).moveAllPassengersTo(civilAirport);
-    verify(mockedCivilAirplane).accommodateAllPassengers(civilAirport.getPassengers());
+  @Test(expected=InvalidVehicleAtDestinationException.class)
+  public void shouldNotAccommodateAirplane() throws InvalidVehicleAtDestinationException {
+    Airplane airplane = Mockito.mock(Airplane.class, Mockito.CALLS_REAL_METHODS);
+    CivilAirport civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
+
+    civilAirport.accommodateVehicle(airplane);
   }
 }

@@ -34,4 +34,8 @@ public class Passenger {
   public void arriveAt(Destination destination) {
 
   }
+
+  public Destination getNextCivilDestination() {
+    return null;
+  }
 }
