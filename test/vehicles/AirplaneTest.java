@@ -5,7 +5,6 @@ import core.Coordinates;
 import destinations.Airport;
 import destinations.InvalidVehicleAtDestinationException;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class AirplaneTest {
   private class StubAirplane extends Airplane {

@@ -3,14 +3,14 @@ package destinations;
 import core.Civil;
 import core.Coordinates;
 import core.Passenger;
-import vehicles.Airplane;
 import vehicles.CivilAirplane;
+import vehicles.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CivilAirport extends Airport implements Civil {
-  private ArrayList<Passenger> passengers;
+  private List<Passenger> passengers;
 
   public CivilAirport(Coordinates coordinates, int vehicleCapacity) {
     super(coordinates, vehicleCapacity);
@@ -54,11 +54,13 @@ public class CivilAirport extends Airport implements Civil {
 
   }
 
-  public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtDestinationException {
-    throw new InvalidVehicleAtDestinationException(airplane, this);
-  }
-
-  public boolean accommodateVehicle(CivilAirplane airplane) throws InvalidVehicleAtDestinationException {
-    return super.accommodateVehicle(airplane);
+  @Override
+  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtDestinationException {
+    if (vehicle instanceof CivilAirplane) {
+      return super.accommodateVehicle(vehicle);
+    }
+    else {
+      throw new InvalidVehicleAtDestinationException(vehicle, this);
+    }
   }
 }
