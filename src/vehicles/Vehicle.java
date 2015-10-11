@@ -2,7 +2,7 @@ package vehicles;
 
 import core.Coordinates;
 import core.IdGenerator;
-import destinations.Destination;
+import destinations.Stopover;
 
 public abstract class Vehicle {
   private Coordinates coordinates;
@@ -13,7 +13,11 @@ public abstract class Vehicle {
     this.id = IdGenerator.getId();
   }
 
-  public abstract void gotAccommodatedAt(Destination destination);
+  public Stopover getNextDestination() {
+    return null;
+  }
 
-  public abstract void gotReleasedFrom(Destination destination);
+  public abstract void gotAccommodatedAt(Stopover stopover);
+
+  public abstract void gotReleasedFrom(Stopover stopover);
 }

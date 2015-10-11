@@ -1,28 +1,28 @@
 package world;
 
-import destinations.Destination;
+import destinations.Stopover;
 
 import java.util.ArrayList;
 
 public class DestinationNetworkNode {
-  private final Destination destination;
+  private final Stopover stopover;
 
-  private final ArrayList<Destination> neighbours;
+  private final ArrayList<Stopover> neighbours;
 
-  public DestinationNetworkNode(Destination destination) {
-    this.destination = destination;
+  public DestinationNetworkNode(Stopover stopover) {
+    this.stopover = stopover;
     this.neighbours = new ArrayList<>();
   }
 
-  public void addNeighbour(Destination neighbour) {
+  public void addNeighbour(Stopover neighbour) {
     neighbours.add(neighbour);
   }
 
-  public Destination getDestination() {
-    return destination;
+  public Stopover getStopover() {
+    return stopover;
   }
 
-  public ArrayList<Destination> getNeighbours() {
+  public ArrayList<Stopover> getNeighbours() {
     return neighbours;
   }
 }

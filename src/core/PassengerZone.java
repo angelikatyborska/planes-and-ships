@@ -1,6 +1,6 @@
 package core;
 
-import destinations.Destination;
+import destinations.Stopover;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,13 +59,13 @@ public class PassengerZone {
     processingPassengers.unlock();
   }
 
-  public void moveAllWithMatchingDestinationTo(PassengerZone target, Destination destination) {
+  public void moveAllWithMatchingDestinationTo(PassengerZone target, Stopover stopover) {
     processingPassengers.lock();
     List<Passenger> movedPassengers = new ArrayList<>();
 
     passengers.forEach((passenger) -> {
-      Destination nxt = passenger.getNextDestination();
-      if (passenger.getNextDestination() == destination) {
+      Stopover nxt = passenger.getNextDestination();
+      if (passenger.getNextDestination() == stopover) {
         if (target.accommodate(passenger)) {
           movedPassengers.add(passenger);
         }

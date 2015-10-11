@@ -6,14 +6,14 @@ import vehicles.Vehicle;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Destination {
+public class Stopover {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
   private final ReentrantLock processingVehicleLock;
 
   private ArrayList<Vehicle> accommodatedVehicles;
 
-  public Destination(Coordinates coordinates, int vehicleCapacity) {
+  public Stopover(Coordinates coordinates, int vehicleCapacity) {
     this.coordinates = coordinates;
     this.vehicleCapacity = vehicleCapacity;
     this.accommodatedVehicles = new ArrayList<>();

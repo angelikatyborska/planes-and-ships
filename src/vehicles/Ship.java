@@ -1,7 +1,7 @@
 package vehicles;
 
 import core.Coordinates;
-import destinations.Destination;
+import destinations.Stopover;
 
 public class Ship extends Vehicle {
   public Ship(Coordinates coordinates) {
@@ -9,12 +9,12 @@ public class Ship extends Vehicle {
   }
 
   @Override
-  public void gotAccommodatedAt(Destination destination) {
+  public void gotAccommodatedAt(Stopover stopover) {
 
   }
 
   @Override
-  public void gotReleasedFrom(Destination destination) {
+  public void gotReleasedFrom(Stopover stopover) {
 
   }
 }

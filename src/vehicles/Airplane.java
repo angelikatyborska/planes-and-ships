@@ -1,7 +1,8 @@
 package vehicles;
 
 import core.Coordinates;
-import destinations.Destination;
+import destinations.Airport;
+import destinations.Stopover;
 
 public abstract class Airplane extends Vehicle {
   private final double fuelCapacity;
@@ -35,12 +36,14 @@ public abstract class Airplane extends Vehicle {
   }
 
   @Override
-  public void gotAccommodatedAt(Destination destination) {
-    refillFuel();
+  public void gotAccommodatedAt(Stopover stopover) {
+    if (stopover instanceof Airport) {
+      refillFuel();
+    }
   }
 
   @Override
-  public void gotReleasedFrom(Destination destination) {
+  public void gotReleasedFrom(Stopover stopover) {
 
   }
 }

@@ -6,15 +6,15 @@ import vehicles.Vehicle;
 public class InvalidVehicleAtDestinationException extends Exception {
   private Vehicle vehicle;
 
-  private Destination destination;
+  private Stopover stopover;
 
-  public InvalidVehicleAtDestinationException(Vehicle vehicle, Destination destination) {
+  public InvalidVehicleAtDestinationException(Vehicle vehicle, Stopover stopover) {
     this.vehicle = vehicle;
-    this.destination = destination;
+    this.stopover = stopover;
   }
 
-  public Destination getDestination() {
-    return destination;
+  public Stopover getStopover() {
+    return stopover;
   }
 
   public Vehicle getVehicle() {

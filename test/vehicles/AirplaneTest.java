@@ -3,6 +3,7 @@ package vehicles;
 import static org.junit.Assert.*;
 import core.Coordinates;
 import destinations.Airport;
+import destinations.Stopover;
 import destinations.InvalidVehicleAtDestinationException;
 import org.junit.Test;
 
@@ -48,5 +49,16 @@ public class AirplaneTest {
     airport.accommodateVehicle(airplane);
 
     assertEquals(100, airplane.getFuel(), 0.00001);
+  }
+
+  @Test
+  public void shouldNotRefillFuelAtDestination() throws InvalidVehicleAtDestinationException {
+    Stopover stopover = new Stopover(new Coordinates(1, 1), 5);
+    Airplane airplane = new StubAirplane(new Coordinates(1,1), 100);
+
+    airplane.burnFuel(50);
+    stopover.accommodateVehicle(airplane);
+
+    assertTrue(airplane.getFuel() < 100);
   }
 }

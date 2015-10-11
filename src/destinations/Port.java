@@ -5,7 +5,7 @@ import core.PassengerZone;
 import vehicles.CivilShip;
 import vehicles.Vehicle;
 
-public class Port extends Destination {
+public class Port extends Stopover {
   public final PassengerZone passengerZone;
 
   public Port(Coordinates coordinates, int vehicleCapacity) {

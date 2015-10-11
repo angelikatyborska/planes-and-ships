@@ -4,7 +4,7 @@ import core.Coordinates;
 import vehicles.Airplane;
 import vehicles.Vehicle;
 
-public abstract class Airport extends Destination {
+public abstract class Airport extends Stopover {
   public Airport(Coordinates coordinates, int vehicleCapacity) {
     super(coordinates, vehicleCapacity);
   }

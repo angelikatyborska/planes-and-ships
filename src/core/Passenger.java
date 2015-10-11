@@ -1,6 +1,6 @@
 package core;
 
-import destinations.Destination;
+import destinations.Stopover;
 
 public class Passenger {
   private final String firstName;
@@ -31,11 +31,11 @@ public class Passenger {
     return coordinaes;
   }
 
-  public void arriveAt(Destination destination) {
+  public void arriveAt(Stopover stopover) {
 
   }
 
-  public Destination getNextDestination() {
+  public Stopover getNextDestination() {
     return null;
   }
 }
