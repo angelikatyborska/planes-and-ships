@@ -3,18 +3,19 @@ package world;
 import stopovers.Stopover;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StopoverNetworkNode {
   private final Stopover stopover;
 
-  private final ArrayList<Stopover> neighbours;
+  private final ArrayList<StopoverNetworkNode> neighbours;
 
   public StopoverNetworkNode(Stopover stopover) {
     this.stopover = stopover;
     this.neighbours = new ArrayList<>();
   }
 
-  public void addNeighbour(Stopover neighbour) {
+  public void addNeighbour(StopoverNetworkNode neighbour) {
     neighbours.add(neighbour);
   }
 
@@ -22,7 +23,7 @@ public class StopoverNetworkNode {
     return stopover;
   }
 
-  public ArrayList<Stopover> getNeighbours() {
+  public List<StopoverNetworkNode> getNeighbours() {
     return neighbours;
   }
 }

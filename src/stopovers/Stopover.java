@@ -32,7 +32,7 @@ public class Stopover {
     return accommodatedVehicles;
   }
 
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtDestinationException {
+  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
     boolean accommodatingSuccessful;
     processingVehicleLock.lock();
 

@@ -8,15 +8,15 @@ import vehicles.Ship;
 
 public class PortTest {
   @Test
-     public void shouldAccommodateCivilShip() throws InvalidVehicleAtDestinationException {
+     public void shouldAccommodateCivilShip() throws InvalidVehicleAtStopoverException {
     CivilShip civilShip = new CivilShip(new Coordinates(1, 1), 100);
     Port port = new Port(new Coordinates(1, 1), 5);
 
     port.accommodateVehicle(civilShip);
   }
 
-  @Test(expected=InvalidVehicleAtDestinationException.class)
-  public void shouldNotAccommodateShip() throws InvalidVehicleAtDestinationException {
+  @Test(expected= InvalidVehicleAtStopoverException.class)
+  public void shouldNotAccommodateShip() throws InvalidVehicleAtStopoverException {
     Ship ship = mock(Ship.class);
     Port port = new Port(new Coordinates(1, 1), 5);
 

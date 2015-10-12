@@ -9,7 +9,7 @@ import vehicles.Vehicle;
 
 public class StopoverTest {
   @Test
-  public void shouldAccommodateVehicleWhenNotFull() throws InvalidVehicleAtDestinationException {
+  public void shouldAccommodateVehicleWhenNotFull() throws InvalidVehicleAtStopoverException {
     Coordinates coordinates = new Coordinates(1,1);
     Stopover stopover = new Stopover(coordinates, 1);
     Vehicle mockedVehicle = mock(Vehicle.class);
@@ -20,7 +20,7 @@ public class StopoverTest {
   }
 
   @Test
-  public void shouldNotAccommodateVehicleWhenFull() throws InvalidVehicleAtDestinationException {
+  public void shouldNotAccommodateVehicleWhenFull() throws InvalidVehicleAtStopoverException {
     Coordinates coordinates = new Coordinates(1,1);
     Stopover stopover = new Stopover(coordinates, 0);
     Vehicle mockedVehicle = mock(Vehicle.class);
@@ -31,7 +31,7 @@ public class StopoverTest {
   }
 
   @Test
-  public void shouldReleaseAccommodatedVehicle() throws InvalidVehicleAtDestinationException {
+  public void shouldReleaseAccommodatedVehicle() throws InvalidVehicleAtStopoverException {
     Coordinates coordinates = new Coordinates(1,1);
     Stopover stopover = new Stopover(coordinates, 5);
     Vehicle mockedVehicle = mock(Vehicle.class);

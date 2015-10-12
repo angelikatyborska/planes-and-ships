@@ -9,15 +9,15 @@ import vehicles.Airplane;
 
 public class CivilAirportTest {
   @Test
-  public void shouldAccommodateCivilAirplane() throws InvalidVehicleAtDestinationException {
+  public void shouldAccommodateCivilAirplane() throws InvalidVehicleAtStopoverException {
     CivilAirplane civilAirplane = new CivilAirplane(new Coordinates(1,1), 5, 100);
     CivilAirport civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 
     assertTrue(civilAirport.accommodateVehicle(civilAirplane));
   }
 
-  @Test(expected=InvalidVehicleAtDestinationException.class)
-  public void shouldNotAccommodateAirplane() throws InvalidVehicleAtDestinationException {
+  @Test(expected= InvalidVehicleAtStopoverException.class)
+  public void shouldNotAccommodateAirplane() throws InvalidVehicleAtStopoverException {
     Airplane airplane = mock(Airplane.class, CALLS_REAL_METHODS);
     CivilAirport civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 

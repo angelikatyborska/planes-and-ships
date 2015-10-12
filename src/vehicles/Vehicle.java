@@ -20,4 +20,9 @@ public abstract class Vehicle implements Runnable {
   public abstract void gotAccommodatedAt(Stopover stopover);
 
   public abstract void gotReleasedFrom(Stopover stopover);
+
+  @Override
+  public void run() {
+
+  }
 }

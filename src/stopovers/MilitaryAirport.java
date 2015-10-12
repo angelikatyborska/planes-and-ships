@@ -10,12 +10,12 @@ public class MilitaryAirport extends Airport {
   }
 
   @Override
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtDestinationException {
+  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
     if (vehicle instanceof MilitaryAirplane) {
       return super.accommodateVehicle(vehicle);
     }
     else {
-      throw new InvalidVehicleAtDestinationException(vehicle, this);
+      throw new InvalidVehicleAtStopoverException(vehicle, this);
     }
   }
 }

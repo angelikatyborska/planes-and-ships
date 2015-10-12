@@ -3,12 +3,12 @@ package stopovers;
 
 import vehicles.Vehicle;
 
-public class InvalidVehicleAtDestinationException extends Exception {
+public class InvalidVehicleAtStopoverException extends Exception {
   private Vehicle vehicle;
 
   private Stopover stopover;
 
-  public InvalidVehicleAtDestinationException(Vehicle vehicle, Stopover stopover) {
+  public InvalidVehicleAtStopoverException(Vehicle vehicle, Stopover stopover) {
     this.vehicle = vehicle;
     this.stopover = stopover;
   }

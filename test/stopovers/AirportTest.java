@@ -17,15 +17,15 @@ public class AirportTest {
   }
 
   @Test
-  public void shouldAccommodateAirplanes() throws InvalidVehicleAtDestinationException {
+  public void shouldAccommodateAirplanes() throws InvalidVehicleAtStopoverException {
     Airplane airplane = mock(Airplane.class, CALLS_REAL_METHODS);
     Airport airport = new StubAirport(new Coordinates(1,1), 5);
 
     assertTrue(airport.accommodateVehicle(airplane));
   }
 
-  @Test(expected=InvalidVehicleAtDestinationException.class)
-  public void shouldNotAccommodateVehicles() throws InvalidVehicleAtDestinationException {
+  @Test(expected= InvalidVehicleAtStopoverException.class)
+  public void shouldNotAccommodateVehicles() throws InvalidVehicleAtStopoverException {
     Vehicle vehicle = mock(Vehicle.class, CALLS_REAL_METHODS);
     Airport airport = new StubAirport(new Coordinates(1,1), 5);
 

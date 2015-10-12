@@ -14,12 +14,12 @@ public class Port extends Destination {
   }
 
   @Override
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtDestinationException {
+  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
     if (vehicle instanceof CivilShip) {
       return super.accommodateVehicle(vehicle);
     }
     else {
-      throw new InvalidVehicleAtDestinationException(vehicle, this);
+      throw new InvalidVehicleAtStopoverException(vehicle, this);
     }
   }
 }

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import core.Coordinates;
 import stopovers.Airport;
 import stopovers.Stopover;
-import stopovers.InvalidVehicleAtDestinationException;
+import stopovers.InvalidVehicleAtStopoverException;
 import org.junit.Test;
 
 public class AirplaneTest {
@@ -41,7 +41,7 @@ public class AirplaneTest {
   }
 
   @Test
-  public void shouldRefillFuelAtAirport() throws InvalidVehicleAtDestinationException {
+  public void shouldRefillFuelAtAirport() throws InvalidVehicleAtStopoverException {
     Airport airport = new StubAirport(new Coordinates(1,1), 5);
     Airplane airplane = new StubAirplane(new Coordinates(1,1), 100);
 
@@ -52,7 +52,7 @@ public class AirplaneTest {
   }
 
   @Test
-  public void shouldNotRefillFuelAtDestination() throws InvalidVehicleAtDestinationException {
+  public void shouldNotRefillFuelAtDestination() throws InvalidVehicleAtStopoverException {
     Stopover stopover = new Stopover(new Coordinates(1, 1), 5);
     Airplane airplane = new StubAirplane(new Coordinates(1,1), 100);
 
