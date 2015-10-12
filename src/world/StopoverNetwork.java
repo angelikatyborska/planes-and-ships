@@ -1,16 +1,19 @@
 package world;
 
+import stopovers.Destination;
+import stopovers.Junction;
 import stopovers.Stopover;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class StopoverNetwork {
   private List<StopoverNetworkNode> nodes;
 
   public StopoverNetwork() {
-    nodes = new ArrayList<StopoverNetworkNode>();
+    nodes = new ArrayList<>();
   }
 
   public StopoverNetworkNode getNode(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
@@ -33,5 +36,39 @@ public class StopoverNetwork {
 
     node1.addNeighbour(node2);
     node2.addNeighbour(node1);
+  }
+
+  public Stopover findClosestDestinatioOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
+    StopoverNetworkNode startingNode = getNode(from);
+    List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(startingNode.getNeighbours());
+    List<StopoverNetworkNode> processedNodes = new ArrayList<>();
+
+    while (true) {
+      List<StopoverNetworkNode> nextNodesToSearch = new ArrayList<>();
+
+      Optional<StopoverNetworkNode> filteredNodes = nodesToSearch.stream()
+        .filter(node -> node.getStopover().getClass() == destinationType)
+        .findFirst();
+
+      if (filteredNodes.isPresent()) {
+        return filteredNodes.get().getStopover();
+      }
+
+      nodesToSearch.forEach((node) -> {
+        node.getNeighbours().forEach((nodeNeighbour) -> {
+          if (!nextNodesToSearch.contains(nodeNeighbour) && !processedNodes.contains(nodeNeighbour)) {
+            nextNodesToSearch.add(nodeNeighbour);
+          }
+        });
+      });
+
+      processedNodes.addAll(nodesToSearch);
+
+      nodesToSearch = new ArrayList<>(nextNodesToSearch);
+
+      if (nodesToSearch.isEmpty()) {
+        return null;
+      }
+    }
   }
 }
