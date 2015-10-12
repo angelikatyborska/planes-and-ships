@@ -1,5 +1,4 @@
-package destinations;
-import static org.junit.Assert.*;
+package stopovers;
 import static org.mockito.Mockito.*;
 
 import core.Coordinates;

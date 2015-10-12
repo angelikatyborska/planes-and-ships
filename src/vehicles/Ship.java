@@ -1,7 +1,7 @@
 package vehicles;
 
 import core.Coordinates;
-import destinations.Stopover;
+import stopovers.Stopover;
 
 public class Ship extends Vehicle {
   public Ship(Coordinates coordinates) {

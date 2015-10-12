@@ -1,6 +1,6 @@
 package core;
 
-import destinations.Stopover;
+import stopovers.Stopover;
 
 import java.util.ArrayList;
 import java.util.List;

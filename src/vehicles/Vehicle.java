@@ -2,9 +2,9 @@ package vehicles;
 
 import core.Coordinates;
 import core.IdGenerator;
-import destinations.Stopover;
+import stopovers.Stopover;
 
-public abstract class Vehicle {
+public abstract class Vehicle implements Runnable {
   private Coordinates coordinates;
   private final int id;
 

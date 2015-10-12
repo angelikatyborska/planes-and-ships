@@ -5,11 +5,11 @@ import vehicles.Vehicle;
 import java.util.ArrayList;
 
 public class Map {
-  private final DestinationNetwork destinationNetwork;
+  private final StopoverNetwork stopoverNetwork;
   private final ArrayList<Vehicle> vehicles;
 
-  public Map(DestinationNetwork destinationNetwork, ArrayList<Vehicle> vehicles) {
-    this.destinationNetwork = destinationNetwork;
+  public Map(StopoverNetwork stopoverNetwork, ArrayList<Vehicle> vehicles) {
+    this.stopoverNetwork = stopoverNetwork;
     this.vehicles = vehicles;
   }
 }

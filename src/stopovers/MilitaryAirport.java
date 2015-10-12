@@ -1,21 +1,17 @@
-package destinations;
+package stopovers;
 
 import core.Coordinates;
-import core.PassengerZone;
-import vehicles.CivilAirplane;
+import vehicles.MilitaryAirplane;
 import vehicles.Vehicle;
 
-public class CivilAirport extends Airport {
-  public final PassengerZone passengerZone;
-
-  public CivilAirport(Coordinates coordinates, int vehicleCapacity) {
+public class MilitaryAirport extends Airport {
+  public MilitaryAirport(Coordinates coordinates, int vehicleCapacity) {
     super(coordinates, vehicleCapacity);
-    passengerZone = new PassengerZone(Integer.MAX_VALUE);
   }
 
   @Override
   public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtDestinationException {
-    if (vehicle instanceof CivilAirplane) {
+    if (vehicle instanceof MilitaryAirplane) {
       return super.accommodateVehicle(vehicle);
     }
     else {

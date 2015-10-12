@@ -1,9 +1,10 @@
-package destinations;
+package stopovers;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import core.Coordinates;
+import core.Weapon;
 import org.junit.Test;
 import vehicles.Airplane;
 import vehicles.MilitaryAirplane;
@@ -11,7 +12,7 @@ import vehicles.MilitaryAirplane;
 public class MilitaryAirportTest {
   @Test
   public void shouldAccommodateMilitaryAirplane() throws InvalidVehicleAtDestinationException {
-    MilitaryAirplane militaryAirplane = new MilitaryAirplane(new Coordinates(1, 1), 5);
+    MilitaryAirplane militaryAirplane = new MilitaryAirplane(new Coordinates(1, 1), 5, Weapon.WeaponType.BOMB);
     MilitaryAirport militaryAirport = new MilitaryAirport(new Coordinates(1, 1), 5);
 
     assertTrue(militaryAirport.accommodateVehicle(militaryAirplane));

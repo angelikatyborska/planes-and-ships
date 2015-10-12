@@ -2,8 +2,8 @@ package vehicles;
 
 import core.Coordinates;
 import core.PassengerZone;
-import destinations.CivilAirport;
-import destinations.Stopover;
+import stopovers.CivilAirport;
+import stopovers.Stopover;
 
 public class CivilAirplane extends Airplane {
   public final PassengerZone passengerZone;

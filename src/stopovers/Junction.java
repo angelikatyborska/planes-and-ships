@@ -1,4 +1,4 @@
-package destinations;
+package stopovers;
 
 import core.Coordinates;
 

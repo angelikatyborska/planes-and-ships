@@ -1,8 +1,8 @@
 package vehicles;
 
 import core.Coordinates;
-import destinations.Airport;
-import destinations.Stopover;
+import stopovers.Airport;
+import stopovers.Stopover;
 
 public abstract class Airplane extends Vehicle {
   private final double fuelCapacity;

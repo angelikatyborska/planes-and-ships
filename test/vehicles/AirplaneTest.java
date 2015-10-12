@@ -2,9 +2,9 @@ package vehicles;
 
 import static org.junit.Assert.*;
 import core.Coordinates;
-import destinations.Airport;
-import destinations.Stopover;
-import destinations.InvalidVehicleAtDestinationException;
+import stopovers.Airport;
+import stopovers.Stopover;
+import stopovers.InvalidVehicleAtDestinationException;
 import org.junit.Test;
 
 public class AirplaneTest {

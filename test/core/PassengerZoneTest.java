@@ -2,7 +2,7 @@ package core;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import destinations.Stopover;
+import stopovers.Stopover;
 import org.junit.Test;
 
 public class PassengerZoneTest {

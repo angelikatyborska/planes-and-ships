@@ -1,8 +1,8 @@
 package core;
 
-import destinations.Stopover;
+import stopovers.Stopover;
 
-public class Passenger {
+public class Passenger implements Runnable {
   private final String firstName;
 
   private final String lastName;
@@ -37,5 +37,10 @@ public class Passenger {
 
   public Stopover getNextDestination() {
     return null;
+  }
+
+  @Override
+  public void run() {
+
   }
 }
