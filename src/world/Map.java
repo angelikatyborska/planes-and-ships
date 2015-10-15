@@ -12,4 +12,9 @@ public class Map {
     this.stopoverNetwork = stopoverNetwork;
     this.vehicles = vehicles;
   }
+
+  public void registerVehicle(Vehicle vehicle) {
+    vehicle.setMap(this);
+    vehicles.add(vehicle);
+  }
 }
