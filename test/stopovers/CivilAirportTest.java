@@ -10,7 +10,7 @@ import vehicles.Airplane;
 public class CivilAirportTest {
   @Test
   public void shouldAccommodateCivilAirplane() throws InvalidVehicleAtStopoverException {
-    CivilAirplane civilAirplane = new CivilAirplane(new Coordinates(1,1), 5, 100);
+    CivilAirplane civilAirplane = new CivilAirplane(5, 100);
     CivilAirport civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 
     assertTrue(civilAirport.accommodateVehicle(civilAirplane));

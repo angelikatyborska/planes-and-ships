@@ -4,20 +4,22 @@ import core.Coordinates;
 import core.IdGenerator;
 import stopovers.Destination;
 import stopovers.Stopover;
-import world.Map;
+import world.WorldMap;
 
 public abstract class Vehicle implements Runnable {
-  private Coordinates coordinates;
   private final int id;
-  private Map map;
+  private WorldMap worldMap;
 
-  public Vehicle(Coordinates coordinates) {
-    this.coordinates = coordinates;
+  public Vehicle() {
     this.id = IdGenerator.getId();
   }
 
-  public void setMap(Map map) {
-    this.map = map;
+  public void setWorldMap(WorldMap worldMap) {
+    this.worldMap = worldMap;
+  }
+
+  public Coordinates getCoordinates() {
+    return null;
   }
 
   public Stopover getNextStopover() {

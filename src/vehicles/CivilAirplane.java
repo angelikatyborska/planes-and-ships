@@ -8,8 +8,8 @@ import stopovers.Stopover;
 public class CivilAirplane extends Airplane {
   public final PassengerZone passengerZone;
 
-  public CivilAirplane(Coordinates coordinates, int fuelCapacity, int passengerCapacity) {
-    super(coordinates, fuelCapacity);
+  public CivilAirplane(int fuelCapacity, int passengerCapacity) {
+    super(fuelCapacity);
     passengerZone = new PassengerZone(passengerCapacity);
   }
 

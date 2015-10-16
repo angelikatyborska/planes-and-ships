@@ -6,8 +6,8 @@ import core.PassengerZone;
 public class CivilShip extends Ship {
   public final PassengerZone passengerZone;
 
-  public CivilShip(Coordinates coordinates, int passengerCapacity) {
-    super(coordinates);
+  public CivilShip(int passengerCapacity) {
+    super();
     passengerZone = new PassengerZone(passengerCapacity);
   }
 }

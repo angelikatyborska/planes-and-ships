@@ -12,7 +12,7 @@ import vehicles.MilitaryAirplane;
 public class MilitaryAirportTest {
   @Test
   public void shouldAccommodateMilitaryAirplane() throws InvalidVehicleAtStopoverException {
-    MilitaryAirplane militaryAirplane = new MilitaryAirplane(new Coordinates(1, 1), 5, Weapon.WeaponType.BOMB);
+    MilitaryAirplane militaryAirplane = new MilitaryAirplane(5, Weapon.WeaponType.BOMB);
     MilitaryAirport militaryAirport = new MilitaryAirport(new Coordinates(1, 1), 5);
 
     assertTrue(militaryAirport.accommodateVehicle(militaryAirplane));

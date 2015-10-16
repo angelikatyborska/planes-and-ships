@@ -10,7 +10,7 @@ import org.junit.Test;
 public class AirplaneTest {
   private class StubAirplane extends Airplane {
     public StubAirplane(Coordinates coordinates, double fuelCapacity) {
-      super(coordinates, fuelCapacity);
+      super(fuelCapacity);
     }
   }
 

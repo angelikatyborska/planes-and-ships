@@ -9,7 +9,7 @@ import vehicles.Ship;
 public class PortTest {
   @Test
      public void shouldAccommodateCivilShip() throws InvalidVehicleAtStopoverException {
-    CivilShip civilShip = new CivilShip(new Coordinates(1, 1), 100);
+    CivilShip civilShip = new CivilShip(100);
     Port port = new Port(new Coordinates(1, 1), 5);
 
     port.accommodateVehicle(civilShip);

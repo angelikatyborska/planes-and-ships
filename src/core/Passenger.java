@@ -41,6 +41,13 @@ public class Passenger implements Runnable {
 
   @Override
   public void run() {
-
+    // while true
+    // generate new random route
+    // teleport to first location
+    // wait till signal
+    // if signal from route destination, leave destination and sleep for trip's time duration
+    // if not, wait again
+    // go back to destination
+    // wait till signal
   }
 }
