@@ -39,7 +39,7 @@ public class WorldMap {
     return stopoverNetwork.findClosestDestinationOfMatchingType(from, destinationType);
   }
 
-    public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
+  public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
     vehicle.setWorldMap(this);
     vehicles.put(vehicle, coordinates);
   }

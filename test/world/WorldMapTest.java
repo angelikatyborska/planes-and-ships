@@ -11,21 +11,15 @@ import vehicles.Vehicle;
 public class WorldMapTest {
   private class StubVehicle extends Vehicle {
 
-    public StubVehicle(double velocity) {
-      super(velocity);
-    }
+    public StubVehicle(double velocity) { super(velocity); }
 
     @Override
-    public void gotAccommodatedAt(Stopover stopover) {
-
-    }
+    public void gotAccommodatedAt(Stopover stopover) {}
 
     @Override
-    public void gotReleasedFrom(Stopover stopover) {
-
-    }
+    public void gotReleasedFrom(Stopover stopover) {}
   }
-  // TODO: can't use vehicle stub here, need the constructor to be called, need the setMap method
+
   @Test
   public void shouldRegisterAndGetVehicleCoordinates() {
     WorldMap worldMap = new WorldMap(null);

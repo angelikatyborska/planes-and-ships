@@ -17,6 +17,10 @@ public class PassengerZone {
     this.processingPassengers = new ReentrantLock();
   }
 
+  public int getCapacity() {
+    return capacity;
+  }
+
   private void removePassengers(List<Passenger> passengersToRemove) {
     passengersToRemove.forEach((passengerToRemove) -> {
       passengers.remove(passengerToRemove);

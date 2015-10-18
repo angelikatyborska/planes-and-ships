@@ -10,7 +10,9 @@ import world.WorldMap;
 public abstract class Vehicle extends WorldClockListener {
   private final int id;
   private final double velocity;
-  private WorldMap worldMap;
+  protected WorldMap worldMap;
+  protected Stopover nextStopover;
+  protected Destination nextDestination;
 
   public Vehicle(double velocity) {
     this.id = IdGenerator.getId();
