@@ -4,18 +4,15 @@ import core.Coordinates;
 import vehicles.MilitaryAirplane;
 import vehicles.Vehicle;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MilitaryAirport extends Airport {
   public MilitaryAirport(Coordinates coordinates, int vehicleCapacity) {
     super(coordinates, vehicleCapacity);
   }
 
-  @Override
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
-    if (vehicle instanceof MilitaryAirplane) {
-      return super.accommodateVehicle(vehicle);
-    }
-    else {
-      throw new InvalidVehicleAtStopoverException(vehicle, this);
-    }
+  protected List<Class<? extends Vehicle>> allowedVehicles(){
+    return Arrays.asList(MilitaryAirplane.class);
   }
 }

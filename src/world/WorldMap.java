@@ -1,10 +1,13 @@
 package world;
 
 import core.Coordinates;
+import stopovers.Destination;
 import stopovers.Stopover;
 import vehicles.Vehicle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,7 +24,22 @@ public class WorldMap {
     safetyRadius = 3;
   }
 
-  public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
+  public Destination getRandomDestinationOfType(List<Class<? extends Stopover>> destinationTypes) {
+    List<Destination> destinations = stopoverNetwork.getAllDestinationsOfType(destinationTypes);
+    return destinations.get((int)Math.floor(Math.random() * destinations.size()));
+  }
+
+  public Destination getRandomDestinationOfType(Stopover destinationType) {
+    List list = new ArrayList<Class<? extends Stopover>>();
+    list.add(destinationType);
+    return getRandomDestinationOfType(list);
+  }
+
+  public Stopover findClosestDestinationOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
+    return stopoverNetwork.findClosestDestinationOfMatchingType(from, destinationType);
+  }
+
+    public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
     vehicle.setWorldMap(this);
     vehicles.put(vehicle, coordinates);
   }

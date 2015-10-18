@@ -1,6 +1,5 @@
 package vehicles;
 
-import core.Coordinates;
 import core.PassengerZone;
 
 public class CivilShip extends Ship {

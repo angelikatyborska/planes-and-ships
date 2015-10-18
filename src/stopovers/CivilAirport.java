@@ -5,6 +5,9 @@ import core.PassengerZone;
 import vehicles.CivilAirplane;
 import vehicles.Vehicle;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class CivilAirport extends Airport {
   public final PassengerZone passengerZone;
 
@@ -13,13 +16,7 @@ public class CivilAirport extends Airport {
     passengerZone = new PassengerZone(Integer.MAX_VALUE);
   }
 
-  @Override
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
-    if (vehicle instanceof CivilAirplane) {
-      return super.accommodateVehicle(vehicle);
-    }
-    else {
-      throw new InvalidVehicleAtStopoverException(vehicle, this);
-    }
+  protected List<Class<? extends Vehicle>> allowedVehicles(){
+    return Arrays.asList(CivilAirplane.class);
   }
 }

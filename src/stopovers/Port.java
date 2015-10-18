@@ -5,6 +5,9 @@ import core.PassengerZone;
 import vehicles.CivilShip;
 import vehicles.Vehicle;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Port extends Destination {
   public final PassengerZone passengerZone;
 
@@ -13,13 +16,7 @@ public class Port extends Destination {
     passengerZone = new PassengerZone(Integer.MAX_VALUE);
   }
 
-  @Override
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
-    if (vehicle instanceof CivilShip) {
-      return super.accommodateVehicle(vehicle);
-    }
-    else {
-      throw new InvalidVehicleAtStopoverException(vehicle, this);
-    }
+  protected List<Class<? extends Vehicle>> allowedVehicles(){
+    return Arrays.asList(CivilShip.class);
   }
 }

@@ -4,6 +4,8 @@ import core.Coordinates;
 import vehicles.Vehicle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Stopover {
@@ -32,17 +34,23 @@ public class Stopover {
     return accommodatedVehicles;
   }
 
+  // TODO: refactor to use proper OOP instead of checking if is instance
   public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
     boolean accommodatingSuccessful;
     processingVehicleLock.lock();
 
-    if (accommodatedVehicles.size() < vehicleCapacity) {
-      accommodatedVehicles.add(vehicle);
-      vehicle.gotAccommodatedAt(this);
-      accommodatingSuccessful = true;
+    if (allowedVehicles().stream().anyMatch(allowedVehicleType -> allowedVehicleType.isInstance(vehicle))) {
+      if (accommodatedVehicles.size() < vehicleCapacity) {
+        accommodatedVehicles.add(vehicle);
+        vehicle.gotAccommodatedAt(this);
+        accommodatingSuccessful = true;
+      }
+      else {
+        accommodatingSuccessful = false;
+      }
     }
     else {
-      accommodatingSuccessful = false;
+      throw new InvalidVehicleAtStopoverException(vehicle, this);
     }
 
     processingVehicleLock.unlock();
@@ -64,5 +72,9 @@ public class Stopover {
 
     processingVehicleLock.unlock();
     return realisingSuccessful;
+  }
+
+  protected List<Class<? extends Vehicle>> allowedVehicles(){
+    return Arrays.asList(Vehicle.class);
   }
 }

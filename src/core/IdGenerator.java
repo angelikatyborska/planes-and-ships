@@ -1,9 +1,9 @@
 package core;
 
 public class IdGenerator {
-    private static int nextId = 1;
+  private static int nextId = 1;
 
-    public static int getId() {
-        return nextId++;
-    }
+  public static int getId() {
+    return nextId++;
+  }
 }

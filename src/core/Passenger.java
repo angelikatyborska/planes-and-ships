@@ -1,19 +1,23 @@
 package core;
 
+import stopovers.Destination;
 import stopovers.Stopover;
 import world.WorldClockListener;
+import world.WorldMap;
 
 public class Passenger extends WorldClockListener {
   private final String firstName;
-
   private final String lastName;
   private final String PESEL;
-  private Coordinates coordinaes;
-  public Passenger(String firstName, String lastName, String PESEL, Coordinates coordinates){
+  private final Destination hometown;
+  private Trip trip;
+
+  public Passenger(WorldMap map, String firstName, String lastName, String PESEL, Destination hometown){
     this.firstName = firstName;
     this.lastName = lastName;
     this.PESEL = PESEL;
-    this.coordinaes = coordinates;
+    this.hometown = hometown;
+    this.trip = new HolidayTrip(hometown, map);
   }
 
   public String getFirstName() {
@@ -26,14 +30,6 @@ public class Passenger extends WorldClockListener {
 
   public String getPESEL() {
     return PESEL;
-  }
-
-  public Coordinates getCoordinaes() {
-    return coordinaes;
-  }
-
-  public void arriveAt(Stopover stopover) {
-
   }
 
   public Stopover getNextDestination() {

@@ -7,5 +7,6 @@ public class BusinessTrip extends Trip {
 
   public BusinessTrip(Destination from, WorldMap map) {
     super(from, map);
+    waitingTime = 50;
   }
 }

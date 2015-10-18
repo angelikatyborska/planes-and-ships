@@ -14,6 +14,11 @@ public class StopoverNetwork {
     nodes = new ArrayList<>();
   }
 
+  public List<Destination> getAllDestinationsOfType(List<Class<? extends Stopover>> destinationTypes) {
+    // TODO: implement, write tests
+    return null;
+  }
+
   public StopoverNetworkNode getNode(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
     Optional<StopoverNetworkNode> foundNode = nodes.stream().filter(node -> node.getStopover() == stopover).findFirst();
     if (foundNode.isPresent()) {
