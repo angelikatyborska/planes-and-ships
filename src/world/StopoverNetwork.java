@@ -36,7 +36,7 @@ public class StopoverNetwork {
     node2.addNeighbour(node1);
   }
 
-  public Stopover findClosestDestinatioOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
+  public Stopover findClosestDestinationOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
     StopoverNetworkNode startingNode = getNode(from);
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(startingNode.getNeighbours());
     List<StopoverNetworkNode> processedNodes = new ArrayList<>();

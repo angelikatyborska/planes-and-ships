@@ -1,8 +1,9 @@
 package core;
 
 import stopovers.Stopover;
+import world.WorldClockListener;
 
-public class Passenger implements Runnable {
+public class Passenger extends WorldClockListener {
   private final String firstName;
 
   private final String lastName;
@@ -40,7 +41,7 @@ public class Passenger implements Runnable {
   }
 
   @Override
-  public void run() {
+  public void tick() {
     // while true
     // generate new random route
     // teleport to first location

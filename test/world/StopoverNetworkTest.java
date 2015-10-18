@@ -1,7 +1,6 @@
 package world;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import core.Coordinates;
 import org.junit.Test;
@@ -75,9 +74,9 @@ public class StopoverNetworkTest {
     network.add(militaryAirportFurther);
     network.connect(junction2, militaryAirportFurther);
 
-    assertEquals(null, network.findClosestDestinatioOfMatchingType(startingPoint, Port.class));
-    assertEquals(civilAirport, network.findClosestDestinatioOfMatchingType(startingPoint, CivilAirport.class));
-    assertEquals(militaryAirportCloser, network.findClosestDestinatioOfMatchingType(startingPoint, MilitaryAirport.class));
+    assertEquals(null, network.findClosestDestinationOfMatchingType(startingPoint, Port.class));
+    assertEquals(civilAirport, network.findClosestDestinationOfMatchingType(startingPoint, CivilAirport.class));
+    assertEquals(militaryAirportCloser, network.findClosestDestinationOfMatchingType(startingPoint, MilitaryAirport.class));
   }
 
   // TODO: Write test for looped world when not finding anything
@@ -97,7 +96,7 @@ public class StopoverNetworkTest {
     network.connect(junction1, junction2);
     network.connect(junction2, startingPoint);
 
-    assertEquals(null, network.findClosestDestinatioOfMatchingType(startingPoint, Port.class));
+    assertEquals(null, network.findClosestDestinationOfMatchingType(startingPoint, Port.class));
 
   }
 }

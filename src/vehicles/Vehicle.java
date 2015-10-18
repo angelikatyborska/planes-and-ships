@@ -4,9 +4,10 @@ import core.Coordinates;
 import core.IdGenerator;
 import stopovers.Destination;
 import stopovers.Stopover;
+import world.WorldClockListener;
 import world.WorldMap;
 
-public abstract class Vehicle implements Runnable {
+public abstract class Vehicle extends WorldClockListener {
   private final int id;
   private final double velocity;
   private WorldMap worldMap;
@@ -45,7 +46,7 @@ public abstract class Vehicle implements Runnable {
   public abstract void gotReleasedFrom(Stopover stopover);
 
   @Override
-  public void run() {
-
+  public void tick() {
+    notify();
   }
 }
