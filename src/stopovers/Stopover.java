@@ -34,23 +34,17 @@ public class Stopover {
     return accommodatedVehicles;
   }
 
-  // TODO: refactor to use proper OOP instead of checking if is instance
   public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
     boolean accommodatingSuccessful;
     processingVehicleLock.lock();
 
-    if (allowedVehicles().stream().anyMatch(allowedVehicleType -> allowedVehicleType.isInstance(vehicle))) {
-      if (accommodatedVehicles.size() < vehicleCapacity) {
-        accommodatedVehicles.add(vehicle);
-        vehicle.gotAccommodatedAt(this);
-        accommodatingSuccessful = true;
-      }
-      else {
-        accommodatingSuccessful = false;
-      }
+    if (accommodatedVehicles.size() < vehicleCapacity) {
+      accommodatedVehicles.add(vehicle);
+      vehicle.gotAccommodatedAt(this);
+      accommodatingSuccessful = true;
     }
     else {
-      throw new InvalidVehicleAtStopoverException(vehicle, this);
+      accommodatingSuccessful = false;
     }
 
     processingVehicleLock.unlock();

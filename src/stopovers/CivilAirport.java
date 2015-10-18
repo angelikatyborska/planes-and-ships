@@ -2,11 +2,8 @@ package stopovers;
 
 import core.Coordinates;
 import core.PassengerZone;
+import vehicles.Airplane;
 import vehicles.CivilAirplane;
-import vehicles.Vehicle;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class CivilAirport extends Airport {
   public final PassengerZone passengerZone;
@@ -16,7 +13,11 @@ public class CivilAirport extends Airport {
     passengerZone = new PassengerZone(Integer.MAX_VALUE);
   }
 
-  protected List<Class<? extends Vehicle>> allowedVehicles(){
-    return Arrays.asList(CivilAirplane.class);
+  public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtStopoverException {
+    throw new InvalidVehicleAtStopoverException(airplane, this);
+  }
+
+  public boolean accommodateVehicle(CivilAirplane civilAirplane) throws InvalidVehicleAtStopoverException {
+    return super.accommodateVehicle(civilAirplane);
   }
 }
