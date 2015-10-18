@@ -1,13 +1,11 @@
 package world;
 
 import stopovers.Destination;
-import stopovers.Junction;
 import stopovers.Stopover;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class StopoverNetwork {
   private List<StopoverNetworkNode> nodes;

@@ -8,10 +8,16 @@ import world.WorldMap;
 
 public abstract class Vehicle implements Runnable {
   private final int id;
+  private final double velocity;
   private WorldMap worldMap;
 
-  public Vehicle() {
+  public Vehicle(double velocity) {
     this.id = IdGenerator.getId();
+    this.velocity = velocity;
+  }
+
+  public double getVelocity() {
+    return velocity;
   }
 
   public void setWorldMap(WorldMap worldMap) {
@@ -19,10 +25,14 @@ public abstract class Vehicle implements Runnable {
   }
 
   public Coordinates getCoordinates() {
-    return null;
+    return worldMap.getVehicleCoordinates(this);
   }
 
   public Stopover getNextStopover() {
+    return null;
+  }
+
+  public Stopover getPreviousStopover() {
     return null;
   }
 

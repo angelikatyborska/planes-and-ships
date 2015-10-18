@@ -9,8 +9,8 @@ import org.junit.Test;
 
 public class AirplaneTest {
   private class StubAirplane extends Airplane {
-    public StubAirplane(Coordinates coordinates, double fuelCapacity) {
-      super(fuelCapacity);
+    public StubAirplane(double velocity, double fuelCapacity) {
+      super(velocity, fuelCapacity);
     }
   }
 
@@ -22,7 +22,7 @@ public class AirplaneTest {
 
   @Test
   public void shouldBurnAndRefillFuel() {
-    Airplane airplane = new StubAirplane(new Coordinates(1,1), 100);
+    Airplane airplane = new StubAirplane(1, 100);
     airplane.burnFuel(50);
 
     assertTrue(airplane.getFuel() < 100);
@@ -34,7 +34,7 @@ public class AirplaneTest {
 
   @Test
   public void shouldNotBurnFuelWhenEmpty() {
-    Airplane airplane = new StubAirplane(new Coordinates(1,1), 0);
+    Airplane airplane = new StubAirplane(1, 0);
     airplane.burnFuel(50);
 
     assertEquals(0, airplane.getFuel(), 0.000001);
@@ -43,7 +43,7 @@ public class AirplaneTest {
   @Test
   public void shouldRefillFuelAtAirport() throws InvalidVehicleAtStopoverException {
     Airport airport = new StubAirport(new Coordinates(1,1), 5);
-    Airplane airplane = new StubAirplane(new Coordinates(1,1), 100);
+    Airplane airplane = new StubAirplane(1, 100);
 
     airplane.burnFuel(50);
     airport.accommodateVehicle(airplane);
@@ -54,7 +54,7 @@ public class AirplaneTest {
   @Test
   public void shouldNotRefillFuelAtDestination() throws InvalidVehicleAtStopoverException {
     Stopover stopover = new Stopover(new Coordinates(1, 1), 5);
-    Airplane airplane = new StubAirplane(new Coordinates(1,1), 100);
+    Airplane airplane = new StubAirplane(1, 100);
 
     airplane.burnFuel(50);
     stopover.accommodateVehicle(airplane);

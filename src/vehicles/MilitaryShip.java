@@ -5,8 +5,8 @@ import core.Weapon;
 public class MilitaryShip extends Ship {
   private Weapon weapon;
 
-  public MilitaryShip(Weapon.WeaponType weaponType) {
-    super();
+  public MilitaryShip(double velocity, Weapon.WeaponType weaponType) {
+    super(velocity);
     weapon = new Weapon(weaponType);
   }
 

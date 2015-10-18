@@ -1,6 +1,5 @@
 package vehicles;
 
-import core.Coordinates;
 import core.PassengerZone;
 import stopovers.CivilAirport;
 import stopovers.Stopover;
@@ -8,8 +7,8 @@ import stopovers.Stopover;
 public class CivilAirplane extends Airplane {
   public final PassengerZone passengerZone;
 
-  public CivilAirplane(int fuelCapacity, int passengerCapacity) {
-    super(fuelCapacity);
+  public CivilAirplane(double velocity, int fuelCapacity, int passengerCapacity) {
+    super(velocity, fuelCapacity);
     passengerZone = new PassengerZone(passengerCapacity);
   }
 
