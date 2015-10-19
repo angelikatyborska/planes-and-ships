@@ -68,7 +68,6 @@ public class PassengerZone {
     List<Passenger> movedPassengers = new ArrayList<>();
 
     passengers.forEach((passenger) -> {
-      Stopover nxt = passenger.getNextDestination();
       if (passenger.getNextDestination() == stopover) {
         if (target.accommodate(passenger)) {
           movedPassengers.add(passenger);

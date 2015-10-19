@@ -26,4 +26,8 @@ public class StopoverNetworkNode {
   public List<StopoverNetworkNode> getNeighbours() {
     return neighbours;
   }
+
+  public boolean hasStopoverOfType(Class<? extends Stopover> type) {
+    return type.isInstance(this.stopover);
+  }
 }

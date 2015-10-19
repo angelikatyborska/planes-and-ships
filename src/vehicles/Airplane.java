@@ -37,6 +37,7 @@ public abstract class Airplane extends Vehicle {
   @Override
   public void gotAccommodatedAt(Stopover stopover) {
     if (stopover instanceof Airport) {
+      // TODO: remove checking instanceof
       refillFuel();
     }
   }

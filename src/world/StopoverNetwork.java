@@ -1,9 +1,11 @@
 package world;
 
 import stopovers.Destination;
+import stopovers.Junction;
 import stopovers.Stopover;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,7 +19,7 @@ public class StopoverNetwork {
 
   public List<Stopover> getAllStopoversOfType(Class<? extends Stopover> type) {
     List<Stopover> foundStopovers = new ArrayList<>();
-    List<StopoverNetworkNode> foundNodes = nodes.stream().filter(node -> type.isInstance(node.getStopover())).collect(Collectors.toList());
+    List<StopoverNetworkNode> foundNodes = nodes.stream().filter(node -> node.hasStopoverOfType(type)).collect(Collectors.toList());
 
     foundNodes.forEach(node -> foundStopovers.add(node.getStopover()));
 
@@ -49,22 +51,25 @@ public class StopoverNetwork {
   // TODO: refactor
   public Stopover findClosestMetricallyStopoverOfMatchingType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
     StopoverNetworkNode fromNode = getNode(from);
+
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(nodes);
     nodesToSearch.remove(fromNode);
-    Optional<StopoverNetworkNode> matchingNodes = nodesToSearch.stream().filter(node -> type.isInstance(node.getStopover())).findFirst();
 
-    if (matchingNodes.isPresent()) {
-      StopoverNetworkNode firstMatchingNode = matchingNodes.get();
-      double minDistance = from.getCoordinates().distanceTo(firstMatchingNode.getStopover().getCoordinates());
+    Optional<StopoverNetworkNode> matchingNode
+      = nodesToSearch.stream().filter(node -> node.hasStopoverOfType(type)).findFirst();
+
+    if (matchingNode.isPresent()) {
+      StopoverNetworkNode firstMatchingNode = matchingNode.get();
+      double minDistance = distanceBetweenNodes(fromNode, firstMatchingNode);
       Stopover closestStopover = firstMatchingNode.getStopover();
 
-      for (StopoverNetworkNode node : nodesToSearch) {
-        if (type.isInstance(node.getStopover())) {
-          double distance = from.getCoordinates().distanceTo(node.getStopover().getCoordinates());
+      for (StopoverNetworkNode nodeToSearch : nodesToSearch) {
+        if (nodeToSearch.hasStopoverOfType(type)) {
+          double distance = distanceBetweenNodes(fromNode, nodeToSearch);
 
           if (distance < minDistance) {
             minDistance = distance;
-            closestStopover = node.getStopover();
+            closestStopover = nodeToSearch.getStopover();
           }
         }
       }
@@ -82,16 +87,13 @@ public class StopoverNetwork {
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(startingNode.getNeighbours());
     List<StopoverNetworkNode> processedNodes = new ArrayList<>();
 
-    while (true) {
+    while (!nodesToSearch.isEmpty()) {
       List<StopoverNetworkNode> nextNodesToSearch = new ArrayList<>();
 
-      Optional<StopoverNetworkNode> filteredNodes = nodesToSearch.stream()
-        .filter(node -> node.getStopover().getClass() == type)
+      Optional<StopoverNetworkNode> filteredNodes
+        = nodesToSearch.stream()
+        .filter(node -> node.hasStopoverOfType(type))
         .findFirst();
-
-      if (filteredNodes.isPresent()) {
-        return filteredNodes.get().getStopover();
-      }
 
       nodesToSearch.forEach((node) -> {
         node.getNeighbours().forEach((nodeNeighbour) -> {
@@ -105,9 +107,54 @@ public class StopoverNetwork {
 
       nodesToSearch = new ArrayList<>(nextNodesToSearch);
 
-      if (nodesToSearch.isEmpty()) {
-        return null;
+      if (filteredNodes.isPresent()) {
+        return filteredNodes.get().getStopover();
       }
     }
+
+    return null;
+  }
+
+  public List<Junction> findJunctionsFromStopoverTo(Stopover from, Stopover to) throws StopoverNotFoundInStopoverNetworkException {
+    List<Junction> junctions = new ArrayList<>();
+    List<StopoverNetworkNode> nodesToSearch = new ArrayList<>();
+    List<StopoverNetworkNode> processedNodes = new ArrayList<>();
+
+    nodesToSearch.add(getNode(from));
+
+    HashMap<StopoverNetworkNode, StopoverNetworkNode> childToParent = new HashMap<>();
+    StopoverNetworkNode currentNode;
+
+    while (!nodesToSearch.isEmpty()) {
+      currentNode = nodesToSearch.get(0);
+      nodesToSearch.remove(0);
+      processedNodes.add(currentNode);
+
+      List<StopoverNetworkNode> neighboursToAdd = currentNode.getNeighbours().
+        stream().filter(node -> {
+        return (node.hasStopoverOfType(Junction.class) || node.getStopover() == to) && !processedNodes.contains(node);
+      })
+        .collect(Collectors.toList());
+
+      nodesToSearch.addAll(neighboursToAdd);
+
+      for (StopoverNetworkNode neighbour : neighboursToAdd) {
+        childToParent.put(neighbour, currentNode);
+      }
+
+      if (currentNode.getStopover() == to) {
+        while (childToParent.get(currentNode).getStopover() != from) {
+          junctions.add((Junction) childToParent.get(currentNode).getStopover());
+          currentNode = childToParent.get(currentNode);
+        }
+
+        return junctions;
+      }
+    }
+    return null;
+  }
+
+  private double distanceBetweenNodes(StopoverNetworkNode node1, StopoverNetworkNode node2) {
+    return node1.getStopover().getCoordinates().distanceTo(node2.getStopover().getCoordinates());
   }
 }

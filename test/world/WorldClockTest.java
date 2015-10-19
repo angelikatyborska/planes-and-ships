@@ -37,7 +37,7 @@ public class WorldClockTest {
     clock.addListener(listener);
 
     listenerThread.start();
-    clock.run();
+    new Thread(clock).run();
 
     listenerThread.interrupt();
 
@@ -59,7 +59,7 @@ public class WorldClockTest {
     listenerThread1.start();
     listenerThread2.start();
 
-    clock.run();
+    new Thread(clock).run();
 
     listenerThread1.interrupt();
     listenerThread2.interrupt();

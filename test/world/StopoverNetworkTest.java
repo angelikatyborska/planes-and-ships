@@ -166,4 +166,51 @@ public class StopoverNetworkTest {
 
     assertEquals(null, network.findClosestMetricallyStopoverOfMatchingType(from, CivilAirport.class));
   }
+
+  @Test
+  public void shouldNotLoopWhenStopoversNotConnected() throws StopoverNotFoundInStopoverNetworkException {
+    Coordinates dummyCoord = new Coordinates(1,1);
+    CivilAirport from = new CivilAirport(dummyCoord, 1);
+    CivilAirport to = new CivilAirport(dummyCoord, 1);
+    Junction junction1 = new Junction(dummyCoord);
+    Junction junction2 = new Junction(dummyCoord);
+    StopoverNetwork network = new StopoverNetwork();
+
+    network.add(from);
+    network.add(to);
+    network.add(junction1);
+    network.add(junction2);
+
+    network.connect(from, junction1);
+    network.connect(junction1, junction2);
+
+    assertEquals(null, network.findJunctionsFromStopoverTo(from, to));
+  }
+
+  @Test
+  public void shouldFindJunctionsFromStopoverToStopover() throws StopoverNotFoundInStopoverNetworkException {
+    Coordinates dummyCoord = new Coordinates(1,1);
+    Stopover from = new Stopover(dummyCoord, 1);
+    CivilAirport to = new CivilAirport(dummyCoord, 1);
+    Junction junction1 = new Junction(dummyCoord);
+    Junction junction2 = new Junction(dummyCoord);
+    Junction junction3 = new Junction(dummyCoord);
+    StopoverNetwork network = new StopoverNetwork();
+
+    network.add(from);
+    network.add(junction3);
+    network.add(junction1);
+    network.add(junction2);
+    network.add(to);
+
+    network.connect(from, junction1);
+    network.connect(from, junction3);
+    network.connect(junction1, junction2);
+    network.connect(junction2, to);
+
+    List<Junction> junctions = network.findJunctionsFromStopoverTo(from, to);
+    assertTrue(junctions.contains(junction1));
+    assertTrue(junctions.contains(junction2));
+    assertFalse(junctions.contains(junction3));
+  }
 }

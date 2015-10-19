@@ -3,6 +3,7 @@ package core;
 import stopovers.CivilAirport;
 import stopovers.Destination;
 import stopovers.Port;
+import stopovers.Stopover;
 import world.WorldMap;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import java.util.List;
 public class Trip {
   private Destination to;
   private Destination from;
-  private List<Destination> throughTo;
-  private List<Destination> throughBack;
+  private List<Stopover> throughTo;
+  private List<Stopover> throughBack;
   double waitingTime;
   private WorldMap map;
 
@@ -40,15 +41,16 @@ public class Trip {
     return to;
   }
 
-  public List<Destination> getThroughTo() {
+  public List<Stopover> getThroughTo() {
     return throughTo;
   }
 
-  public List<Destination> getThroughBack() {
+  public List<Stopover> getThroughBack() {
     return throughBack;
   }
 
   public double getWaitingTime() {
+    // TODO: refactor to remove sublclasses and remember trip type in this class
     return waitingTime;
   }
 }

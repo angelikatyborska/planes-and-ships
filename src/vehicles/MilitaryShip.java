@@ -1,6 +1,7 @@
 package vehicles;
 
 import core.Weapon;
+import stopovers.Stopover;
 
 public class MilitaryShip extends Ship {
   private Weapon weapon;
@@ -11,6 +12,16 @@ public class MilitaryShip extends Ship {
   }
 
   private void spawnMilitaryAirplane() {
+
+  }
+
+  @Override
+  public void gotAccommodatedAt(Stopover stopover) {
+
+  }
+
+  @Override
+  public void gotReleasedFrom(Stopover stopover) {
 
   }
 }

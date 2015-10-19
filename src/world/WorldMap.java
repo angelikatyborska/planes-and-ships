@@ -35,7 +35,7 @@ public class WorldMap {
     return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
   }
 
-  public Stopover findClosestDestinationOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
+  public Stopover findClosestStopoverOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
     return stopoverNetwork.findClosestConnectedStopoverOfMatchingType(from, destinationType);
   }
 
@@ -62,17 +62,17 @@ public class WorldMap {
 
   private boolean canVehicleMove(Vehicle vehicleToMove) {
     return !vehicles.keySet().stream().anyMatch(otherVehicle -> {
-      return vehiclesGoingFromAndToSameStopovers(vehicleToMove, otherVehicle)
-        && vehicleBehindOtherVehicle(vehicleToMove, otherVehicle)
-        && vehiclesTooClose(vehicleToMove, otherVehicle);
+      return areVehiclesGoingFromAndToSameStopovers(vehicleToMove, otherVehicle)
+        && isVehicleBehindOtherVehicle(vehicleToMove, otherVehicle)
+        && areVehiclesTooClose(vehicleToMove, otherVehicle);
     });
   }
 
-  private boolean vehiclesTooClose(Vehicle vehicleMoving, Vehicle otherVehicle) {
+  private boolean areVehiclesTooClose(Vehicle vehicleMoving, Vehicle otherVehicle) {
     return vehicleMoving.getCoordinates().distanceTo(otherVehicle.getCoordinates()) > vehicleMoving.getVelocity() + safetyRadius;
   }
 
-  private boolean vehicleBehindOtherVehicle(Vehicle vehicleMoving, Vehicle otherVehicle) {
+  private boolean isVehicleBehindOtherVehicle(Vehicle vehicleMoving, Vehicle otherVehicle) {
     Coordinates a = vehicleMoving.getCoordinates();
     Stopover c = vehicleMoving.getNextStopover();
     Coordinates d = c.getCoordinates();
@@ -81,7 +81,7 @@ public class WorldMap {
       > otherVehicle.getCoordinates().distanceTo(otherVehicle.getNextStopover().getCoordinates());
   }
 
-  private boolean vehiclesGoingFromAndToSameStopovers(Vehicle vehicleMoving, Vehicle otherVehicle) {
+  private boolean areVehiclesGoingFromAndToSameStopovers(Vehicle vehicleMoving, Vehicle otherVehicle) {
     return vehicleMoving.getNextStopover() == otherVehicle.getNextStopover()
       && vehicleMoving.getPreviousStopover() == otherVehicle.getPreviousStopover();
   }
