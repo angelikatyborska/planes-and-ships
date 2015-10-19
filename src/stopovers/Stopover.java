@@ -40,7 +40,6 @@ public class Stopover {
 
     if (accommodatedVehicles.size() < vehicleCapacity) {
       accommodatedVehicles.add(vehicle);
-      vehicle.gotAccommodatedAt(this);
       accommodatingSuccessful = true;
     }
     else {

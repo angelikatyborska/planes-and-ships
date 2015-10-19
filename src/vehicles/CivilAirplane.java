@@ -20,7 +20,7 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
 
   public void gotReleasedFrom(Stopover stopover) {
     if (stopover instanceof CivilAirport) {
-      ((CivilAirport) stopover).passengerZone().moveAllWithMatchingDestinationTo(passengerZone, getNextDestination());
+      ((CivilAirport) stopover).passengerZone().moveAllWithMatchingDestinationTo(passengerZone, getNextCivilDestination());
     }
   }
 

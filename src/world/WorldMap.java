@@ -1,8 +1,10 @@
 package world;
 
 import core.Coordinates;
-import stopovers.Destination;
-import stopovers.Stopover;
+import stopovers.*;
+import vehicles.CivilAirplane;
+import vehicles.CivilShip;
+import vehicles.MilitaryAirplane;
 import vehicles.Vehicle;
 
 import java.util.ArrayList;
@@ -39,9 +41,32 @@ public class WorldMap {
     return stopoverNetwork.findClosestConnectedOfType(from, destinationType);
   }
 
+  public List<Junction> findJunctionsBetween(Stopover stopover1, Stopover stopover2) throws StopoverNotFoundInStopoverNetworkException {
+    return stopoverNetwork.findJunctionsBetween(stopover1, stopover2);
+  }
+
   public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
     vehicle.setWorldMap(this);
     vehicles.put(vehicle, coordinates);
+  }
+
+  public void registerVehicle(Vehicle vehicle, Stopover stopover) {
+    registerVehicle(vehicle, stopover.getCoordinates());
+  }
+
+  public void registerVehicle(CivilAirplane civilAirplane, CivilAirport civilAirport) throws StopoverNotFoundInStopoverNetworkException {
+    registerVehicle((Vehicle) civilAirplane, (Stopover) civilAirport);
+    civilAirplane.setRoute(RouteGenerator.newCivilAirRoute(this, civilAirport));
+  }
+
+  public void registerVehicle(MilitaryAirplane militaryAirplane, MilitaryAirport militaryAirport) throws StopoverNotFoundInStopoverNetworkException {
+    registerVehicle((Vehicle) militaryAirplane, (Stopover) militaryAirport);
+    militaryAirplane.setRoute(RouteGenerator.newMilitaryAirRoute(this, militaryAirport));
+  }
+
+  public void registerVehicle(CivilShip civilShip, Port port) throws StopoverNotFoundInStopoverNetworkException {
+    registerVehicle((Vehicle) civilShip, (Stopover) port);
+    civilShip.setRoute(RouteGenerator.newCivilSeaRoute(this, port));
   }
 
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {

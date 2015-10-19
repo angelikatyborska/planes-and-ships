@@ -16,7 +16,7 @@ public class World {
   }
 
   public void registerVehicle(Vehicle vehicle, Destination destination) {
-    map.registerVehicle(vehicle, destination.getCoordinates());
+    map.registerVehicle(vehicle, destination);
   }
 
   public void registerVehicle(CivilVehicle civilVehicle, Destination destination) {

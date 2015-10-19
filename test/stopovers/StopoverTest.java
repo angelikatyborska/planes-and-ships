@@ -16,7 +16,6 @@ public class StopoverTest {
 
     assertTrue(stopover.accommodateVehicle(mockedVehicle));
     assertEquals(1, stopover.getAccommodatedVehicles().size());
-    verify(mockedVehicle).gotAccommodatedAt(stopover);
   }
 
   @Test
@@ -27,7 +26,6 @@ public class StopoverTest {
 
     assertFalse(stopover.accommodateVehicle(mockedVehicle));
     assertEquals(0, stopover.getAccommodatedVehicles().size());
-    verify(mockedVehicle, never()).gotAccommodatedAt(stopover);
   }
 
   @Test
@@ -40,7 +38,6 @@ public class StopoverTest {
 
     assertTrue(stopover.releaseVehicle(mockedVehicle));
     assertEquals(0, stopover.getAccommodatedVehicles().size());
-    verify(mockedVehicle).gotReleasedFrom(stopover);
   }
 
   @Test
@@ -51,6 +48,5 @@ public class StopoverTest {
 
     assertFalse(stopover.releaseVehicle(mockedVehicle));
     assertEquals(0, stopover.getAccommodatedVehicles().size());
-    verify(mockedVehicle, never()).gotReleasedFrom(stopover);
   }
 }

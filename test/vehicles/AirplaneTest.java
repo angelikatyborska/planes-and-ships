@@ -46,7 +46,7 @@ public class AirplaneTest {
     Airplane airplane = new StubAirplane(1, 100);
 
     airplane.burnFuel(50);
-    airport.accommodateVehicle(airplane);
+    airplane.gotAccommodatedAt(airport);
 
     assertEquals(100, airplane.getFuel(), 0.00001);
   }
@@ -57,8 +57,20 @@ public class AirplaneTest {
     Airplane airplane = new StubAirplane(1, 100);
 
     airplane.burnFuel(50);
-    stopover.accommodateVehicle(airplane);
+    airplane.gotAccommodatedAt(stopover);
 
     assertTrue(airplane.getFuel() < 100);
   }
+
+  @Test
+  public void shouldNotGetAccommodatedWhenAirportFull() throws InvalidVehicleAtStopoverException {
+    Airport airport = new StubAirport(new Coordinates(1,1), 0);
+    Airplane airplane = new StubAirplane(1, 100);
+
+    airplane.burnFuel(50);
+
+    assertFalse(airport.accommodateVehicle(airplane));
+    assertEquals(50, airplane.getFuel(), 0.00001);
+  }
+
 }

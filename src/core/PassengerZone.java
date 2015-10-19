@@ -1,5 +1,6 @@
 package core;
 
+import stopovers.CivilDestination;
 import stopovers.Stopover;
 
 import java.util.ArrayList;
@@ -63,12 +64,12 @@ public class PassengerZone {
     processingPassengers.unlock();
   }
 
-  public void moveAllWithMatchingDestinationTo(PassengerZone target, Stopover stopover) {
+  public void moveAllWithMatchingDestinationTo(PassengerZone target, CivilDestination destination) {
     processingPassengers.lock();
     List<Passenger> movedPassengers = new ArrayList<>();
 
     passengers.forEach((passenger) -> {
-      if (passenger.getNextDestination() == stopover) {
+      if (passenger.getNextDestination() == destination) {
         if (target.accommodate(passenger)) {
           movedPassengers.add(passenger);
         }
