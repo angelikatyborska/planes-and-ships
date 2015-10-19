@@ -6,7 +6,6 @@ import core.Coordinates;
 import org.junit.Test;
 import stopovers.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class StopoverNetworkTest {
@@ -77,9 +76,9 @@ public class StopoverNetworkTest {
     network.add(militaryAirportFurther);
     network.connect(junction2, militaryAirportFurther);
 
-    assertEquals(null, network.findClosestDestinationOfMatchingType(startingPoint, Port.class));
-    assertEquals(civilAirport, network.findClosestDestinationOfMatchingType(startingPoint, CivilAirport.class));
-    assertEquals(militaryAirportCloser, network.findClosestDestinationOfMatchingType(startingPoint, MilitaryAirport.class));
+    assertEquals(null, network.findClosestConnectedStopoverOfMatchingType(startingPoint, Port.class));
+    assertEquals(civilAirport, network.findClosestConnectedStopoverOfMatchingType(startingPoint, CivilAirport.class));
+    assertEquals(militaryAirportCloser, network.findClosestConnectedStopoverOfMatchingType(startingPoint, MilitaryAirport.class));
   }
 
   @Test
@@ -98,7 +97,7 @@ public class StopoverNetworkTest {
     network.connect(junction1, junction2);
     network.connect(junction2, startingPoint);
 
-    assertEquals(null, network.findClosestDestinationOfMatchingType(startingPoint, Port.class));
+    assertEquals(null, network.findClosestConnectedStopoverOfMatchingType(startingPoint, Port.class));
   }
 
   @Test
@@ -132,5 +131,31 @@ public class StopoverNetworkTest {
     assertFalse(ports.contains(junction1));
     assertFalse(ports.contains(junction2));
     assertFalse(ports.contains(civilAirport));
+  }
+
+  @Test
+  public void shouldFindClosestMetricallyStopoverOfMatchingType() throws StopoverNotFoundInStopoverNetworkException {
+    Coordinates startingCoord = new Coordinates(10, 10);
+    Coordinates closestCoord = new Coordinates (11, 10);
+    Coordinates closerCoord = new Coordinates (11, 11);
+    Coordinates furtherCoord = new Coordinates (13, 11);
+
+    Stopover from = new CivilAirport(startingCoord, 1);
+    CivilAirport civilAirport = new CivilAirport(closestCoord, 1);
+    Junction furtherJunction = new Junction(furtherCoord);
+    Junction closerJunction = new Junction(closerCoord);
+    StopoverNetwork network = new StopoverNetwork();
+
+    network.add(from);
+    network.add(civilAirport);
+    network.add(closerJunction);
+    network.add(furtherJunction);
+
+    assertEquals(closerJunction, network.findClosestMetricallyStopoverOfMatchingType(from, Junction.class));
+  }
+
+  @Test
+  public void shouldNotFindClosestMetricallyStopoverOfMatchingTypeWhenNonePresent() {
+    // TODO: write this test
   }
 }

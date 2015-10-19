@@ -29,8 +29,14 @@ public class WorldMap {
     return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
   }
 
+  public Stopover getRandomStopoverOfType(List<Class<? extends Stopover>> types) {
+    List<Stopover> stopovers = new ArrayList<>();
+    types.forEach(type -> stopovers.addAll(stopoverNetwork.getAllStopoversOfType(type)));
+    return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
+  }
+
   public Stopover findClosestDestinationOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
-    return stopoverNetwork.findClosestDestinationOfMatchingType(from, destinationType);
+    return stopoverNetwork.findClosestConnectedStopoverOfMatchingType(from, destinationType);
   }
 
   public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {

@@ -10,7 +10,6 @@ import vehicles.Vehicle;
 
 public class WorldMapTest {
   private class StubVehicle extends Vehicle {
-
     public StubVehicle(double velocity) { super(velocity); }
 
     @Override
