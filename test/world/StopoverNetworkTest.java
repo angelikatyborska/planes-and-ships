@@ -6,6 +6,9 @@ import core.Coordinates;
 import org.junit.Test;
 import stopovers.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class StopoverNetworkTest {
   @Test
   public void shouldConnectNodes() throws StopoverNotFoundInStopoverNetworkException {
@@ -79,7 +82,6 @@ public class StopoverNetworkTest {
     assertEquals(militaryAirportCloser, network.findClosestDestinationOfMatchingType(startingPoint, MilitaryAirport.class));
   }
 
-  // TODO: Write test for looped world when not finding anything
   @Test
   public void shouldNotGetStuckInALoop() throws StopoverNotFoundInStopoverNetworkException {
     Coordinates dummyCoord = new Coordinates(1,1);
@@ -97,6 +99,38 @@ public class StopoverNetworkTest {
     network.connect(junction2, startingPoint);
 
     assertEquals(null, network.findClosestDestinationOfMatchingType(startingPoint, Port.class));
+  }
 
+  @Test
+  public void shouldGetAllDestinationsOfType() throws StopoverNotFoundInStopoverNetworkException {
+    Coordinates dummyCoord = new Coordinates(1,1);
+    CivilAirport civilAirport = new CivilAirport(dummyCoord, 1);
+    Junction junction1 = new Junction(dummyCoord);
+    Junction junction2 = new Junction(dummyCoord);
+    StopoverNetwork network = new StopoverNetwork();
+
+    network.add(civilAirport);
+    network.add(junction1);
+    network.add(junction2);
+
+    network.connect(civilAirport, junction1);
+    network.connect(junction1, junction2);
+    network.connect(junction2, civilAirport);
+
+    List<Stopover> junctions = network.getAllStopoversOfType(Junction.class);
+    List<Stopover> civilAirports = network.getAllStopoversOfType(CivilAirport.class);
+    List<Stopover> ports = network.getAllStopoversOfType(Port.class);
+
+    assertTrue(junctions.contains(junction1));
+    assertTrue(junctions.contains(junction2));
+    assertFalse(junctions.contains(civilAirport));
+
+    assertTrue(civilAirports.contains(civilAirport));
+    assertFalse(civilAirports.contains(junction1));
+    assertFalse(civilAirports.contains(junction2));
+
+    assertFalse(ports.contains(junction1));
+    assertFalse(ports.contains(junction2));
+    assertFalse(ports.contains(civilAirport));
   }
 }

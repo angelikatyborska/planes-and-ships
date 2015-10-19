@@ -6,6 +6,7 @@ import stopovers.Stopover;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class StopoverNetwork {
   private List<StopoverNetworkNode> nodes;
@@ -14,9 +15,13 @@ public class StopoverNetwork {
     nodes = new ArrayList<>();
   }
 
-  public List<Destination> getAllDestinationsOfType(List<Class<? extends Stopover>> destinationTypes) {
-    // TODO: implement, write tests
-    return null;
+  public List<Stopover> getAllStopoversOfType(Class<? extends Stopover> type) {
+    List<Stopover> foundStopovers = new ArrayList<>();
+    List<StopoverNetworkNode> foundNodes = nodes.stream().filter(node -> type.isInstance(node.getStopover())).collect(Collectors.toList());
+
+    foundNodes.forEach(node -> foundStopovers.add(node.getStopover()));
+
+    return foundStopovers;
   }
 
   public StopoverNetworkNode getNode(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {

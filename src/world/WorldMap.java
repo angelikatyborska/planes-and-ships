@@ -24,15 +24,9 @@ public class WorldMap {
     safetyRadius = 3;
   }
 
-  public Destination getRandomDestinationOfType(List<Class<? extends Stopover>> destinationTypes) {
-    List<Destination> destinations = stopoverNetwork.getAllDestinationsOfType(destinationTypes);
-    return destinations.get((int)Math.floor(Math.random() * destinations.size()));
-  }
-
-  public Destination getRandomDestinationOfType(Stopover destinationType) {
-    List list = new ArrayList<Class<? extends Stopover>>();
-    list.add(destinationType);
-    return getRandomDestinationOfType(list);
+  public Stopover getRandomStopoverOfType(Class<? extends Stopover> type) {
+    List<Stopover> stopovers = stopoverNetwork.getAllStopoversOfType(type);
+    return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
   }
 
   public Stopover findClosestDestinationOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {

@@ -25,11 +25,11 @@ public class Trip {
   }
 
   public void randomize() {
-    throughTo = new ArrayList<>();
-    throughBack = new ArrayList<>();
-    do {
-      to = map.getRandomDestinationOfType(Arrays.asList(CivilAirport.class, Port.class));
-    } while (to == from);
+//    throughTo = new ArrayList<>();
+//    throughBack = new ArrayList<>();
+//    do {
+//      to = map.getRandomStopoverOfType(Arrays.asList(CivilAirport.class, Port.class));
+//    } while (to == from);
   }
 
   public Destination getFrom() {
