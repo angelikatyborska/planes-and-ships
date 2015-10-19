@@ -5,8 +5,8 @@ import core.PassengerZone;
 import vehicles.CivilShip;
 import vehicles.Vehicle;
 
-public class Port extends Destination {
-  public final PassengerZone passengerZone;
+public class Port extends Destination implements CivilDestination {
+  private final PassengerZone passengerZone;
 
   public Port(Coordinates coordinates, int vehicleCapacity) {
     super(coordinates, vehicleCapacity);
@@ -19,5 +19,10 @@ public class Port extends Destination {
 
   public boolean accommodateVehicle(CivilShip civilShip) throws InvalidVehicleAtStopoverException {
     return super.accommodateVehicle(civilShip);
+  }
+
+  @Override
+  public PassengerZone passengerZone() {
+    return passengerZone;
   }
 }

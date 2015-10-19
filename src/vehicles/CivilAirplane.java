@@ -4,8 +4,8 @@ import core.PassengerZone;
 import stopovers.CivilAirport;
 import stopovers.Stopover;
 
-public class CivilAirplane extends Airplane {
-  public final PassengerZone passengerZone;
+public class CivilAirplane extends Airplane implements CivilVehicle {
+  private final PassengerZone passengerZone;
 
   public CivilAirplane(double velocity, int fuelCapacity, int passengerCapacity) {
     super(velocity, fuelCapacity);
@@ -14,13 +14,18 @@ public class CivilAirplane extends Airplane {
 
   public void gotAccommodatedAt(Stopover stopover) {
     if (stopover instanceof CivilAirport) {
-      passengerZone.moveAllTo(((CivilAirport) stopover).passengerZone);
+      passengerZone.moveAllTo(((CivilAirport) stopover).passengerZone());
     }
   }
 
   public void gotReleasedFrom(Stopover stopover) {
     if (stopover instanceof CivilAirport) {
-      ((CivilAirport) stopover).passengerZone.moveAllWithMatchingDestinationTo(passengerZone, getNextDestination());
+      ((CivilAirport) stopover).passengerZone().moveAllWithMatchingDestinationTo(passengerZone, getNextDestination());
     }
+  }
+
+  @Override
+  public PassengerZone passengerZone() {
+    return passengerZone;
   }
 }

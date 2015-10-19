@@ -5,8 +5,8 @@ import core.PassengerZone;
 import vehicles.Airplane;
 import vehicles.CivilAirplane;
 
-public class CivilAirport extends Airport {
-  public final PassengerZone passengerZone;
+public class CivilAirport extends Airport implements CivilDestination {
+  private final PassengerZone passengerZone;
 
   public CivilAirport(Coordinates coordinates, int vehicleCapacity) {
     super(coordinates, vehicleCapacity);
@@ -19,5 +19,10 @@ public class CivilAirport extends Airport {
 
   public boolean accommodateVehicle(CivilAirplane civilAirplane) throws InvalidVehicleAtStopoverException {
     return super.accommodateVehicle(civilAirplane);
+  }
+
+  @Override
+  public PassengerZone passengerZone() {
+    return passengerZone;
   }
 }

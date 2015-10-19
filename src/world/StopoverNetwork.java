@@ -1,6 +1,5 @@
 package world;
 
-import stopovers.Destination;
 import stopovers.Junction;
 import stopovers.Stopover;
 

@@ -3,8 +3,8 @@ package vehicles;
 import core.PassengerZone;
 import stopovers.Stopover;
 
-public class CivilShip extends Ship {
-  public final PassengerZone passengerZone;
+public class CivilShip extends Ship implements CivilVehicle {
+  private final PassengerZone passengerZone;
 
   public CivilShip(double velocity, int passengerCapacity) {
     super(velocity);
@@ -19,5 +19,10 @@ public class CivilShip extends Ship {
   @Override
   public void gotReleasedFrom(Stopover stopover) {
 
+  }
+
+  @Override
+  public PassengerZone passengerZone() {
+    return passengerZone;
   }
 }
