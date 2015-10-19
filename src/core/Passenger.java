@@ -17,7 +17,7 @@ public class Passenger extends WorldClockListener {
     this.lastName = lastName;
     this.PESEL = PESEL;
     this.hometown = hometown;
-    this.trip = new HolidayTrip(hometown, map);
+    this.trip = new Trip(hometown, map);
   }
 
   public String getFirstName() {

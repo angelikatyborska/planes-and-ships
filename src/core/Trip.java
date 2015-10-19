@@ -1,27 +1,23 @@
 package core;
 
-import stopovers.CivilAirport;
 import stopovers.Destination;
-import stopovers.Port;
 import stopovers.Stopover;
 import world.WorldMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Trip {
+  public static enum TripType { HOLIDAY, BUSINESS };
+  private TripType type;
   private Destination to;
   private Destination from;
   private List<Stopover> throughTo;
   private List<Stopover> throughBack;
-  double waitingTime;
   private WorldMap map;
 
   public Trip(Destination from, WorldMap map) {
     this.from = from;
     this.map = map;
-    waitingTime = 0;
     randomize();
   }
 
@@ -50,7 +46,13 @@ public class Trip {
   }
 
   public double getWaitingTime() {
-    // TODO: refactor to remove sublclasses and remember trip type in this class
-    return waitingTime;
+    switch (type) {
+      case HOLIDAY:
+        return 100;
+      case BUSINESS:
+        return 50;
+      default:
+        return 75;
+    }
   }
 }
