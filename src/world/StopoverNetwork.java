@@ -46,13 +46,19 @@ public class StopoverNetwork {
     node2.addNeighbour(node1);
   }
 
+  // TODO: refactor
   public Stopover findClosestMetricallyStopoverOfMatchingType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
-    StopoverNetworkNode firstMatchingNode = nodes.stream().filter(node -> type.isInstance(node.getStopover())).collect(Collectors.toList()).get(0);
-    if (firstMatchingNode != null) {
+    StopoverNetworkNode fromNode = getNode(from);
+    List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(nodes);
+    nodesToSearch.remove(fromNode);
+    Optional<StopoverNetworkNode> matchingNodes = nodesToSearch.stream().filter(node -> type.isInstance(node.getStopover())).findFirst();
+
+    if (matchingNodes.isPresent()) {
+      StopoverNetworkNode firstMatchingNode = matchingNodes.get();
       double minDistance = from.getCoordinates().distanceTo(firstMatchingNode.getStopover().getCoordinates());
       Stopover closestStopover = firstMatchingNode.getStopover();
 
-      for (StopoverNetworkNode node : nodes) {
+      for (StopoverNetworkNode node : nodesToSearch) {
         if (type.isInstance(node.getStopover())) {
           double distance = from.getCoordinates().distanceTo(node.getStopover().getCoordinates());
 

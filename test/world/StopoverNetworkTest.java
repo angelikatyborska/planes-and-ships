@@ -140,7 +140,7 @@ public class StopoverNetworkTest {
     Coordinates closerCoord = new Coordinates (11, 11);
     Coordinates furtherCoord = new Coordinates (13, 11);
 
-    Stopover from = new CivilAirport(startingCoord, 1);
+    Stopover from = new Stopover(startingCoord, 1);
     CivilAirport civilAirport = new CivilAirport(closestCoord, 1);
     Junction furtherJunction = new Junction(furtherCoord);
     Junction closerJunction = new Junction(closerCoord);
@@ -152,10 +152,18 @@ public class StopoverNetworkTest {
     network.add(furtherJunction);
 
     assertEquals(closerJunction, network.findClosestMetricallyStopoverOfMatchingType(from, Junction.class));
+    assertEquals(null, network.findClosestMetricallyStopoverOfMatchingType(from, MilitaryAirport.class));
   }
 
   @Test
-  public void shouldNotFindClosestMetricallyStopoverOfMatchingTypeWhenNonePresent() {
-    // TODO: write this test
+  public void findClosestMetricallyStopoverOfMatchingTypeShouldNotFindStartingStopover() throws StopoverNotFoundInStopoverNetworkException {
+    Coordinates startingCoord = new Coordinates(10, 10);
+
+    Stopover from = new CivilAirport(startingCoord, 1);
+    StopoverNetwork network = new StopoverNetwork();
+
+    network.add(from);
+
+    assertEquals(null, network.findClosestMetricallyStopoverOfMatchingType(from, CivilAirport.class));
   }
 }
