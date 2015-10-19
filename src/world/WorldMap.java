@@ -25,18 +25,18 @@ public class WorldMap {
   }
 
   public Stopover getRandomStopoverOfType(Class<? extends Stopover> type) {
-    List<Stopover> stopovers = stopoverNetwork.getAllStopoversOfType(type);
+    List<Stopover> stopovers = stopoverNetwork.getAllOfType(type);
     return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
   }
 
   public Stopover getRandomStopoverOfType(List<Class<? extends Stopover>> types) {
     List<Stopover> stopovers = new ArrayList<>();
-    types.forEach(type -> stopovers.addAll(stopoverNetwork.getAllStopoversOfType(type)));
+    types.forEach(type -> stopovers.addAll(stopoverNetwork.getAllOfType(type)));
     return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
   }
 
   public Stopover findClosestStopoverOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
-    return stopoverNetwork.findClosestConnectedStopoverOfMatchingType(from, destinationType);
+    return stopoverNetwork.findClosestConnectedOfType(from, destinationType);
   }
 
   public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {

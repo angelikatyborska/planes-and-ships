@@ -16,7 +16,7 @@ public class StopoverNetwork {
     nodes = new ArrayList<>();
   }
 
-  public List<Stopover> getAllStopoversOfType(Class<? extends Stopover> type) {
+  public List<Stopover> getAllOfType(Class<? extends Stopover> type) {
     List<Stopover> foundStopovers = new ArrayList<>();
     List<StopoverNetworkNode> foundNodes = nodes.stream().filter(node -> node.hasStopoverOfType(type)).collect(Collectors.toList());
 
@@ -27,12 +27,12 @@ public class StopoverNetwork {
 
   public StopoverNetworkNode getNode(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
     Optional<StopoverNetworkNode> foundNode = nodes.stream().filter(node -> node.getStopover() == stopover).findFirst();
-    if (foundNode.isPresent()) {
-      return foundNode.get();
-    }
-    else {
+
+    if (!foundNode.isPresent()) {
       throw new StopoverNotFoundInStopoverNetworkException(this, stopover);
     }
+
+    return foundNode.get();
   }
 
   public void add(Stopover stopover) {
@@ -47,8 +47,8 @@ public class StopoverNetwork {
     node2.addNeighbour(node1);
   }
 
-  // TODO: refactor
-  public Stopover findClosestMetricallyStopoverOfMatchingType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
+  public Stopover findClosestMetricallyOfType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
+    Stopover result = null;
     StopoverNetworkNode fromNode = getNode(from);
 
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(nodes);
@@ -73,15 +73,13 @@ public class StopoverNetwork {
         }
       }
 
-      return closestStopover;
-    }
-    else {
-      return null;
+      result = closestStopover;
     }
 
+    return result;
   }
 
-  public Stopover findClosestConnectedStopoverOfMatchingType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
+  public Stopover findClosestConnectedOfType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
     StopoverNetworkNode startingNode = getNode(from);
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(startingNode.getNeighbours());
     List<StopoverNetworkNode> processedNodes = new ArrayList<>();
@@ -114,7 +112,7 @@ public class StopoverNetwork {
     return null;
   }
 
-  public List<Junction> findJunctionsFromStopoverTo(Stopover from, Stopover to) throws StopoverNotFoundInStopoverNetworkException {
+  public List<Junction> findJunctionsBetween(Stopover from, Stopover to) throws StopoverNotFoundInStopoverNetworkException {
     List<Junction> junctions = new ArrayList<>();
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>();
     List<StopoverNetworkNode> processedNodes = new ArrayList<>();
@@ -129,10 +127,11 @@ public class StopoverNetwork {
       nodesToSearch.remove(0);
       processedNodes.add(currentNode);
 
-      List<StopoverNetworkNode> neighboursToAdd = currentNode.getNeighbours().
-        stream().filter(node -> {
-        return (node.hasStopoverOfType(Junction.class) || node.getStopover() == to) && !processedNodes.contains(node);
-      })
+      List<StopoverNetworkNode> neighboursToAdd = currentNode.getNeighbours()
+        .stream()
+        .filter(node ->
+          (node.hasStopoverOfType(Junction.class) || node.getStopover() == to)
+            && !processedNodes.contains(node))
         .collect(Collectors.toList());
 
       nodesToSearch.addAll(neighboursToAdd);

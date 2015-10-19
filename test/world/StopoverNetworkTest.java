@@ -76,9 +76,9 @@ public class StopoverNetworkTest {
     network.add(militaryAirportFurther);
     network.connect(junction2, militaryAirportFurther);
 
-    assertEquals(null, network.findClosestConnectedStopoverOfMatchingType(startingPoint, Port.class));
-    assertEquals(civilAirport, network.findClosestConnectedStopoverOfMatchingType(startingPoint, CivilAirport.class));
-    assertEquals(militaryAirportCloser, network.findClosestConnectedStopoverOfMatchingType(startingPoint, MilitaryAirport.class));
+    assertEquals(null, network.findClosestConnectedOfType(startingPoint, Port.class));
+    assertEquals(civilAirport, network.findClosestConnectedOfType(startingPoint, CivilAirport.class));
+    assertEquals(militaryAirportCloser, network.findClosestConnectedOfType(startingPoint, MilitaryAirport.class));
   }
 
   @Test
@@ -97,7 +97,7 @@ public class StopoverNetworkTest {
     network.connect(junction1, junction2);
     network.connect(junction2, startingPoint);
 
-    assertEquals(null, network.findClosestConnectedStopoverOfMatchingType(startingPoint, Port.class));
+    assertEquals(null, network.findClosestConnectedOfType(startingPoint, Port.class));
   }
 
   @Test
@@ -116,9 +116,9 @@ public class StopoverNetworkTest {
     network.connect(junction1, junction2);
     network.connect(junction2, civilAirport);
 
-    List<Stopover> junctions = network.getAllStopoversOfType(Junction.class);
-    List<Stopover> civilAirports = network.getAllStopoversOfType(CivilAirport.class);
-    List<Stopover> ports = network.getAllStopoversOfType(Port.class);
+    List<Stopover> junctions = network.getAllOfType(Junction.class);
+    List<Stopover> civilAirports = network.getAllOfType(CivilAirport.class);
+    List<Stopover> ports = network.getAllOfType(Port.class);
 
     assertTrue(junctions.contains(junction1));
     assertTrue(junctions.contains(junction2));
@@ -151,8 +151,8 @@ public class StopoverNetworkTest {
     network.add(closerJunction);
     network.add(furtherJunction);
 
-    assertEquals(closerJunction, network.findClosestMetricallyStopoverOfMatchingType(from, Junction.class));
-    assertEquals(null, network.findClosestMetricallyStopoverOfMatchingType(from, MilitaryAirport.class));
+    assertEquals(closerJunction, network.findClosestMetricallyOfType(from, Junction.class));
+    assertEquals(null, network.findClosestMetricallyOfType(from, MilitaryAirport.class));
   }
 
   @Test
@@ -164,7 +164,7 @@ public class StopoverNetworkTest {
 
     network.add(from);
 
-    assertEquals(null, network.findClosestMetricallyStopoverOfMatchingType(from, CivilAirport.class));
+    assertEquals(null, network.findClosestMetricallyOfType(from, CivilAirport.class));
   }
 
   @Test
@@ -184,7 +184,7 @@ public class StopoverNetworkTest {
     network.connect(from, junction1);
     network.connect(junction1, junction2);
 
-    assertEquals(null, network.findJunctionsFromStopoverTo(from, to));
+    assertEquals(null, network.findJunctionsBetween(from, to));
   }
 
   @Test
@@ -208,7 +208,7 @@ public class StopoverNetworkTest {
     network.connect(junction1, junction2);
     network.connect(junction2, to);
 
-    List<Junction> junctions = network.findJunctionsFromStopoverTo(from, to);
+    List<Junction> junctions = network.findJunctionsBetween(from, to);
     assertTrue(junctions.contains(junction1));
     assertTrue(junctions.contains(junction2));
     assertFalse(junctions.contains(junction3));
