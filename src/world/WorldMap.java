@@ -18,12 +18,14 @@ public class WorldMap {
   private final Map<Vehicle, Coordinates> vehicles;
   private final ReentrantLock processingVehicle;
   private final double safetyRadius;
+  private RouteGenerator routeGenerator;
 
   public WorldMap(StopoverNetwork stopoverNetwork) {
     this.stopoverNetwork = stopoverNetwork;
     this.vehicles = new HashMap<>();
     processingVehicle = new ReentrantLock();
     safetyRadius = 3;
+    routeGenerator = new RouteGenerator(this);
   }
 
   public Stopover getRandomStopoverOfType(Class<? extends Stopover> type) {
@@ -55,18 +57,20 @@ public class WorldMap {
   }
 
   public void registerVehicle(CivilAirplane civilAirplane, CivilAirport civilAirport) throws StopoverNotFoundInStopoverNetworkException {
+    // TODO: show this line to the teacher
+    // using casting here so that I can call the more general method (and share code in this way)
     registerVehicle((Vehicle) civilAirplane, (Stopover) civilAirport);
-    civilAirplane.setRoute(RouteGenerator.newCivilAirRoute(this, civilAirport));
+    civilAirplane.setRoute(routeGenerator.newCivilAirRoute(civilAirport));
   }
 
   public void registerVehicle(MilitaryAirplane militaryAirplane, MilitaryAirport militaryAirport) throws StopoverNotFoundInStopoverNetworkException {
     registerVehicle((Vehicle) militaryAirplane, (Stopover) militaryAirport);
-    militaryAirplane.setRoute(RouteGenerator.newMilitaryAirRoute(this, militaryAirport));
+    militaryAirplane.setRoute(routeGenerator.newMilitaryAirRoute(militaryAirport));
   }
 
   public void registerVehicle(CivilShip civilShip, Port port) throws StopoverNotFoundInStopoverNetworkException {
     registerVehicle((Vehicle) civilShip, (Stopover) port);
-    civilShip.setRoute(RouteGenerator.newCivilSeaRoute(this, port));
+    civilShip.setRoute(routeGenerator.newCivilSeaRoute(port));
   }
 
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {

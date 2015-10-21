@@ -6,34 +6,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteGenerator {
-  public static List<Stopover> newCivilAirRoute(WorldMap map, CivilAirport from) throws StopoverNotFoundInStopoverNetworkException {
-    return newRoute(map, from, CivilAirport.class);
+  private WorldMap map;
+  public RouteGenerator(WorldMap map) {
+    this.map = map;
   }
 
-  public static List<Stopover> newMilitaryAirRoute(WorldMap map, MilitaryAirport from) throws StopoverNotFoundInStopoverNetworkException {
-    return newRoute(map, from, MilitaryAirport.class);
+  public List<Stopover> newCivilAirRoute(CivilAirport from) throws StopoverNotFoundInStopoverNetworkException {
+    return newRoute(from, CivilAirport.class);
   }
 
-  public static List<Stopover> newCivilSeaRoute(WorldMap map, Port from) throws StopoverNotFoundInStopoverNetworkException {
-    return newRoute(map, from, Port.class);
+  public List<Stopover> newMilitaryAirRoute(MilitaryAirport from) throws StopoverNotFoundInStopoverNetworkException {
+    return newRoute(from, MilitaryAirport.class);
   }
 
-  private static List<Stopover> newRoute(WorldMap map, Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
+  public List<Stopover> newCivilSeaRoute(Port from) throws StopoverNotFoundInStopoverNetworkException {
+    return newRoute(from, Port.class);
+  }
+
+  private List<Stopover> newRoute(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
     ArrayList<Stopover> route = new ArrayList<>();
-    int minLength = 4;
 
-    for (int i = 0; i < minLength; i++) {
-      Stopover to;
-      List<Junction> through;
+    Stopover to;
+    List<Junction> through;
 
-      do {
-        to = map.getRandomStopoverOfType(type);
-        through = map.findJunctionsBetween(from, to);
-      } while (to == from || through == null);
+    do {
+      to = map.getRandomStopoverOfType(type);
+      through = map.findJunctionsBetween(from, to);
+    } while (to == from || through == null);
 
-      route.addAll(through);
-      route.add(to);
-    }
+    route.add(from);
+    route.addAll(through);
+    route.add(to);
 
     return route;
   }

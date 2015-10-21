@@ -3,10 +3,7 @@ package world;
 import stopovers.Junction;
 import stopovers.Stopover;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StopoverNetwork {
@@ -122,11 +119,16 @@ public class StopoverNetwork {
     HashMap<StopoverNetworkNode, StopoverNetworkNode> childToParent = new HashMap<>();
     StopoverNetworkNode currentNode;
 
+    if (from == to) {
+      return null;
+    }
+
     while (!nodesToSearch.isEmpty()) {
       currentNode = nodesToSearch.get(0);
       nodesToSearch.remove(0);
       processedNodes.add(currentNode);
 
+      // queue only junctions and stopovers of matching type
       List<StopoverNetworkNode> neighboursToAdd = currentNode.getNeighbours()
         .stream()
         .filter(node ->
@@ -141,10 +143,13 @@ public class StopoverNetwork {
       }
 
       if (currentNode.getStopover() == to) {
+        // recreate the path from the last to the first junction
         while (childToParent.get(currentNode).getStopover() != from) {
           junctions.add((Junction) childToParent.get(currentNode).getStopover());
           currentNode = childToParent.get(currentNode);
         }
+
+        Collections.reverse(junctions);
 
         return junctions;
       }
