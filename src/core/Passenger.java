@@ -47,7 +47,7 @@ public class Passenger extends WorldClockListener {
     return PESEL;
   }
 
-  public Stopover getNextDestination() {
+  public Stopover getNextCivilDestination() {
     return null;
   }
 

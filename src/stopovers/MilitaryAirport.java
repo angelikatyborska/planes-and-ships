@@ -14,6 +14,6 @@ public class MilitaryAirport extends Airport {
   }
 
   public boolean accommodateVehicle(MilitaryAirplane militaryAirplane) throws InvalidVehicleAtStopoverException {
-    return super.accommodateVehicle(militaryAirplane);
+    return super.accommodateVehicle((Airplane) militaryAirplane);
   }
 }

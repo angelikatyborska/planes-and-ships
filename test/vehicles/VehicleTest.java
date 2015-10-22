@@ -18,6 +18,8 @@ public class VehicleTest {
       this.stopover = stopover;
     }
 
+    public Stopover getPreviousStopover() { return null; }
+
     public Stopover getNextStopover() { return stopover; }
   }
 

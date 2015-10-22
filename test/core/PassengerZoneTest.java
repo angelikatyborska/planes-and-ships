@@ -3,7 +3,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import stopovers.CivilAirport;
-import stopovers.Stopover;
 import org.junit.Test;
 
 public class PassengerZoneTest {
@@ -53,9 +52,9 @@ public class PassengerZoneTest {
     CivilAirport london = new CivilAirport(new Coordinates(1,1) , 3);
 
     Passenger passengerGoingToLondon = mock(Passenger.class);
-    when(passengerGoingToLondon.getNextDestination()).thenReturn(london);
+    when(passengerGoingToLondon.getNextCivilDestination()).thenReturn(london);
     Passenger passengerGoingToParis = mock(Passenger.class);
-    when(passengerGoingToParis.getNextDestination()).thenReturn(paris);
+    when(passengerGoingToParis.getNextCivilDestination()).thenReturn(paris);
 
     passengerZone1.accommodate(passengerGoingToLondon);
     passengerZone1.accommodate(passengerGoingToParis);

@@ -1,7 +1,7 @@
 package vehicles;
 
+import com.google.common.collect.Lists;
 import core.Coordinates;
-import core.IdGenerator;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
@@ -15,8 +15,7 @@ public abstract class Vehicle extends WorldClockListener {
   private final double velocity;
   protected WorldMap worldMap;
   protected List<Stopover> route;
-  protected Stopover previousStopover;
-  protected boolean goingBack;
+  protected int previousStopoverNumber;
 
   public Vehicle(double velocity) {
     this.id = this.hashCode();
@@ -39,13 +38,12 @@ public abstract class Vehicle extends WorldClockListener {
     return id;
   }
 
-  // TODO: implement
   public Stopover getNextStopover() {
-    return null;
+    return route.get(previousStopoverNumber + 1);
   }
 
   public Stopover getPreviousStopover() {
-    return null;
+    return route.get(previousStopoverNumber);
   }
 
   public CivilDestination getNextCivilDestination() {
@@ -53,32 +51,31 @@ public abstract class Vehicle extends WorldClockListener {
   }
 
   public void setRoute(List<Stopover> route) {
+    previousStopoverNumber = 0;
     this.route = route;
   }
 
-  public void gotAccommodatedAt(Stopover stopover) {
-
-  }
-
-  public void gotReleasedFrom(Stopover stopover) {
-
+  public void updateRoute() {
+    previousStopoverNumber++;
+    if (previousStopoverNumber == route.size() - 1) {
+      Lists.reverse(route);
+      previousStopoverNumber = 0;
+    }
   }
 
   @Override
-  public void tick() {
+  public void tick() throws InterruptedException {
     try {
       worldMap.moveVehicleTowardsTargetStopover(this, this.velocity);
 
       if (hasArrivedAtStopover(getNextStopover())) {
         Stopover stopover = getNextStopover();
 
+        // try to get into a Stopover until successful
         while (!stopover.accommodateVehicle(this)) {}
-        gotAccommodatedAt(stopover);
 
-        // TODO: implement route changes
-
+        stopover.vehicleMaintenance(this);
         stopover.releaseVehicle(this);
-        gotReleasedFrom(stopover);
       }
 
     } catch (StopoverNotFoundInStopoverNetworkException e) {

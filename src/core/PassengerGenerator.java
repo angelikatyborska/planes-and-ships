@@ -1,7 +1,6 @@
 package core;
 
 import stopovers.CivilDestination;
-import stopovers.Destination;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 

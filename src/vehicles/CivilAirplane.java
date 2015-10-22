@@ -1,8 +1,7 @@
 package vehicles;
 
 import core.PassengerZone;
-import stopovers.CivilAirport;
-import stopovers.Stopover;
+import stopovers.CivilDestination;
 
 public class CivilAirplane extends Airplane implements CivilVehicle {
   private final PassengerZone passengerZone;
@@ -12,16 +11,14 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
     passengerZone = new PassengerZone(passengerCapacity);
   }
 
-  public void gotAccommodatedAt(Stopover stopover) {
-    if (stopover instanceof CivilAirport) {
-      passengerZone.moveAllTo(((CivilAirport) stopover).passengerZone());
+  // TODO: show to the teacher - using instanceof
+  public CivilDestination getNextCivilDestination() {
+    for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
+      if (route.get(i) instanceof CivilDestination) {
+        return (CivilDestination) route.get(i);
+      }
     }
-  }
-
-  public void gotReleasedFrom(Stopover stopover) {
-    if (stopover instanceof CivilAirport) {
-      ((CivilAirport) stopover).passengerZone().moveAllWithMatchingDestinationTo(passengerZone, getNextCivilDestination());
-    }
+    return null;
   }
 
   @Override

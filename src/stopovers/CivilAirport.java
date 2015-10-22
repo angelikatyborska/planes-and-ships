@@ -18,7 +18,14 @@ public class CivilAirport extends Airport implements CivilDestination {
   }
 
   public boolean accommodateVehicle(CivilAirplane civilAirplane) throws InvalidVehicleAtStopoverException {
-    return super.accommodateVehicle(civilAirplane);
+    return super.accommodateVehicle((Airplane) civilAirplane);
+  }
+
+  public void vehicleMaintenance(CivilAirplane vehicle) throws InterruptedException {
+    super.vehicleMaintenance((Airplane) vehicle);
+    vehicle.passengerZone().moveAllTo(passengerZone);
+    Thread.sleep(1000);
+    passengerZone.moveAllWithMatchingDestinationTo(vehicle.passengerZone(), vehicle.getNextCivilDestination());
   }
 
   @Override

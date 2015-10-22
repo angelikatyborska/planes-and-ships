@@ -1,7 +1,7 @@
 package vehicles;
 
 import core.PassengerZone;
-import stopovers.Stopover;
+import stopovers.CivilDestination;
 
 public class CivilShip extends Ship implements CivilVehicle {
   private final PassengerZone passengerZone;
@@ -11,14 +11,14 @@ public class CivilShip extends Ship implements CivilVehicle {
     passengerZone = new PassengerZone(passengerCapacity);
   }
 
-  @Override
-  public void gotAccommodatedAt(Stopover stopover) {
-
-  }
-
-  @Override
-  public void gotReleasedFrom(Stopover stopover) {
-
+  // TODO: show to the teacher - using instanceof
+  public CivilDestination getNextCivilDestination() {
+    for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
+      if (route.get(i) instanceof CivilDestination) {
+        return (CivilDestination) route.get(i);
+      }
+    }
+    return null;
   }
 
   @Override

@@ -104,7 +104,7 @@ public class WorldMap {
     vehicleCoordinates.remove(vehicle);
   }
 
-  protected Stopover findClosestStopoverOfType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
+  protected Stopover findClosestStopoverOfType(Stopover from, Class<? extends Stopover> destinationType) throws StopoverNotFoundInStopoverNetworkException {
     return stopoverNetwork.findClosestConnectedOfType(from, destinationType);
   }
 

@@ -38,22 +38,20 @@ public class RouteGenerator {
   }
 
   public List<Stopover> newCivilRoute(CivilDestination from, CivilDestination finalDestination) throws StopoverNotFoundInStopoverNetworkException {
-    List<Class<? extends Stopover>> civilDestinations = Arrays.asList(CivilAirport.class, Port.class);
     ArrayList<Stopover> route = new ArrayList<>();
 
     Stopover to;
     Stopover oldTo = new Stopover(new Coordinates(0, 0), 0);
     List<Junction> through;
-    // TODO: show to the teacher, using casting
+    // TODO: show to the teacher, using casting (I want a CivilDestination, but it can't be a subclass of Stopover, because then CivilAirport would have to extend Airport and CivilDestination and that's just not possible
     route.add((Stopover) from);
 
     do {
       do {
-        Class<? extends Stopover> randomType = civilDestinations.get((int) Math.floor(Math.random() * civilDestinations.size()));
         to = (Stopover) map.getRandomCivilDestination();
         // if going from Airport to Airport or from Port to Port, choose new route to go by Vehicle
         if (to.getClass() == oldTo.getClass()) {
-          through = map.findJunctionsBetween(oldTo, to);
+          through = map.findJunctionsBetween(oldTo, to); // TODO: should civilRoute include junctions?
         }
         // Passenger is going to have to go by foot to the closest destination
         else {

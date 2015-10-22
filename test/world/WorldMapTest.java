@@ -11,12 +11,6 @@ import vehicles.Vehicle;
 public class WorldMapTest {
   private class StubVehicle extends Vehicle {
     public StubVehicle(double velocity) { super(velocity); }
-
-    @Override
-    public void gotAccommodatedAt(Stopover stopover) {}
-
-    @Override
-    public void gotReleasedFrom(Stopover stopover) {}
   }
 
   @Test

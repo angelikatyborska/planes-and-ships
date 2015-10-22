@@ -3,9 +3,10 @@ package stopovers;
 import core.Coordinates;
 import core.PassengerZone;
 import vehicles.CivilShip;
+import vehicles.Ship;
 import vehicles.Vehicle;
 
-public class Port extends Destination implements CivilDestination {
+public class Port extends Stopover implements CivilDestination {
   private final PassengerZone passengerZone;
 
   public Port(Coordinates coordinates, int vehicleCapacity) {
@@ -18,7 +19,14 @@ public class Port extends Destination implements CivilDestination {
   }
 
   public boolean accommodateVehicle(CivilShip civilShip) throws InvalidVehicleAtStopoverException {
-    return super.accommodateVehicle(civilShip);
+    return super.accommodateVehicle((Vehicle) civilShip);
+  }
+
+  public void vehicleMaintenance(CivilShip vehicle) throws InterruptedException {
+    super.vehicleMaintenance(vehicle);
+    vehicle.passengerZone().moveAllTo(passengerZone);
+    Thread.sleep(1000);
+    passengerZone.moveAllWithMatchingDestinationTo(vehicle.passengerZone(), vehicle.getNextCivilDestination());
   }
 
   @Override

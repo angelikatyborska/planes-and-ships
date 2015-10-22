@@ -1,7 +1,7 @@
 package world;
 
 public abstract class WorldClockListener implements Runnable {
-  public abstract void tick();
+  public abstract void tick() throws InterruptedException;
 
   public void run() {
     while(!Thread.currentThread().isInterrupted()) {

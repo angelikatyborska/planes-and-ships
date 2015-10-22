@@ -93,7 +93,7 @@ public class PassengerZone {
     List<Passenger> movedPassengers = new ArrayList<>();
 
     passengers.forEach((passenger) -> {
-      if (passenger.getNextDestination() == destination) {
+      if (passenger.getNextCivilDestination() == destination) {
         if (target.accommodate(passenger)) {
           movedPassengers.add(passenger);
         }
