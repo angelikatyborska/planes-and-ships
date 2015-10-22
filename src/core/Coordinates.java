@@ -38,4 +38,18 @@ public class Coordinates {
       y = destination.getY();
     }
   }
+
+  /**
+   *
+   * @param destination
+   * @return an angle in degrees formed by the 0X axis and the segment formed with these coordinates and destiantion coordinates
+   */
+  public double getBearing(Coordinates destination) {
+    double dx = destination.getX() - x;
+    double dy = destination.getY() - y;
+    double radiansFromMinusPiToPi = Math.atan2(dy, dx);
+    double radiansFromZeroToMinusPi = radiansFromMinusPiToPi >= 0 ? radiansFromMinusPiToPi : (2 * Math.PI + radiansFromMinusPiToPi);
+    double degreesFromZeroTo360 = 180 * (radiansFromZeroToMinusPi) / Math.PI;
+    return degreesFromZeroTo360;
+  }
 }

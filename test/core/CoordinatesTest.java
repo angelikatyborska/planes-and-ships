@@ -98,4 +98,18 @@ public class CoordinatesTest {
 
     assertEquals(0, coordinates.distanceTo(destination), epsilon);
   }
+
+  @Test
+  public void shouldGetBearing() {
+    Coordinates startingPoint = new Coordinates(3, 3);
+
+    assertEquals(0, startingPoint.getBearing(new Coordinates(4, 3)), 0.000001);
+    assertEquals(45, startingPoint.getBearing(new Coordinates(4, 4)), 0.000001);
+    assertEquals(90, startingPoint.getBearing(new Coordinates(3, 4)), 0.000001);
+    assertEquals(135, startingPoint.getBearing(new Coordinates(2, 4)), 0.000001);
+    assertEquals(180, startingPoint.getBearing(new Coordinates(2, 3)), 0.000001);
+    assertEquals(225, startingPoint.getBearing(new Coordinates(2, 2)), 0.000001);
+    assertEquals(270, startingPoint.getBearing(new Coordinates(3, 2)), 0.000001);
+    assertEquals(315, startingPoint.getBearing(new Coordinates(4, 2)), 0.000001);
+  }
 }
