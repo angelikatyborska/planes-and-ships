@@ -48,6 +48,8 @@ public class Stopover {
     return accommodatingSuccessful;
   }
 
+  // TODO: in idea - replace using 'instanceof' in this project by a method stopover.willAccommodateAnCivilAirplane that checks if an InvalidVehicleAtStopoverException is thrown
+
   // TODO: show to the teacher - using casting, I have to define those dummy methods, so that when I have a reference to a Stopover that is in fact eg. CivilAirport, I can call CivilAirport's accommodateVehice with the argument type CivilAirplane
   public boolean accommodateVehicle(Airplane vehicle) throws InvalidVehicleAtStopoverException {
     return accommodateVehicle((Vehicle) vehicle);
@@ -96,31 +98,31 @@ public class Stopover {
   // TODO: show to the teacher - using casting, twin methods just for overriding
 
   // TODO: rename this method to something more descriptive
-  public void vehicleMaintenance(Vehicle vehicle) {
+  public void prepareVehicleForTravel(Vehicle vehicle) {
     vehicle.updateRoute();
   }
 
-  public void vehicleMaintenance(Airplane vehicle) throws InterruptedException {
-    vehicleMaintenance((Vehicle) vehicle);
+  public void prepareVehicleForTravel(Airplane vehicle) throws InterruptedException {
+    prepareVehicleForTravel((Vehicle) vehicle);
   }
 
-  public void vehicleMaintenance(Ship vehicle) throws InterruptedException {
-    vehicleMaintenance((Vehicle) vehicle);
+  public void prepareVehicleForTravel(Ship vehicle) throws InterruptedException {
+    prepareVehicleForTravel((Vehicle) vehicle);
   }
 
-  public void vehicleMaintenance(CivilAirplane vehicle) throws InterruptedException {
-    vehicleMaintenance((Vehicle) vehicle);
+  public void prepareVehicleForTravel(CivilAirplane vehicle) throws InterruptedException {
+    prepareVehicleForTravel((Vehicle) vehicle);
   }
 
-  public void vehicleMaintenance(MilitaryAirplane vehicle) throws InterruptedException {
-    vehicleMaintenance((Vehicle) vehicle);
+  public void prepareVehicleForTravel(MilitaryAirplane vehicle) throws InterruptedException {
+    prepareVehicleForTravel((Vehicle) vehicle);
   }
 
-  public void vehicleMaintenance(CivilShip vehicle) throws InterruptedException {
-    vehicleMaintenance((Vehicle) vehicle);
+  public void prepareVehicleForTravel(CivilShip vehicle) throws InterruptedException {
+    prepareVehicleForTravel((Vehicle) vehicle);
   }
 
-  public void vehicleMaintenance(MilitaryShip vehicle) {
-    vehicleMaintenance((Vehicle) vehicle);
+  public void prepareVehicleForTravel(MilitaryShip vehicle) {
+    prepareVehicleForTravel((Vehicle) vehicle);
   }
 }

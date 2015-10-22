@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import core.Coordinates;
 import org.junit.Test;
 import vehicles.Airplane;
-import vehicles.MilitaryAirplane;
 import vehicles.Vehicle;
 
 
@@ -48,7 +47,7 @@ public class AirportTest {
     Airplane airplane = new StubAirplane(1, 100);
 
     airplane.burnFuel(50);
-    airtportAsStopover.vehicleMaintenance(airplane);
+    airtportAsStopover.prepareVehicleForTravel(airplane);
 
     assertEquals(100, airplane.getFuel(), 0.00001);
   }

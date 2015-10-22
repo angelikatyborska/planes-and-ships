@@ -21,8 +21,8 @@ public class CivilAirport extends Airport implements CivilDestination {
     return super.accommodateVehicle((Airplane) civilAirplane);
   }
 
-  public void vehicleMaintenance(CivilAirplane vehicle) throws InterruptedException {
-    super.vehicleMaintenance((Airplane) vehicle);
+  public void prepareVehicleForTravel(CivilAirplane vehicle) throws InterruptedException {
+    super.prepareVehicleForTravel((Airplane) vehicle);
     vehicle.passengerZone().moveAllTo(passengerZone);
     Thread.sleep(1000);
     passengerZone.moveAllWithMatchingDestinationTo(vehicle.passengerZone(), vehicle.getNextCivilDestination());

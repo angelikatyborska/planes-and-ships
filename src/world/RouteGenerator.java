@@ -43,15 +43,16 @@ public class RouteGenerator {
     Stopover to;
     Stopover oldTo = new Stopover(new Coordinates(0, 0), 0);
     List<Junction> through;
-    // TODO: show to the teacher, using casting (I want a CivilDestination, but it can't be a subclass of Stopover, because then CivilAirport would have to extend Airport and CivilDestination and that's just not possible
+    // TODO: show to the teacher, using casting (I want a CivilDestination, but it can't be a subclass of Stopover, because then CivilAirport would have to extend Airport and CivilDestination and that's just not possible in Java
     route.add((Stopover) from);
 
     do {
       do {
         to = (Stopover) map.getRandomCivilDestination();
+        // TODO: show to the teacher - comparing classes
         // if going from Airport to Airport or from Port to Port, choose new route to go by Vehicle
         if (to.getClass() == oldTo.getClass()) {
-          through = map.findJunctionsBetween(oldTo, to); // TODO: should civilRoute include junctions?
+          through = map.findJunctionsBetween(oldTo, to);
         }
         // Passenger is going to have to go by foot to the closest destination
         else {

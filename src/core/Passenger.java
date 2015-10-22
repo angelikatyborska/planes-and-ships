@@ -6,15 +6,18 @@ import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldClockListener;
 import world.WorldMap;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Represents a signle being that can be kept by CivilVehicle and CivilDestination via PassengerZone
  */
-public class Passenger extends WorldClockListener {
+public class Passenger implements Runnable {
   private final String firstName;
   private final String lastName;
   private final String PESEL;
   private final CivilDestination hometown;
   private Trip trip;
+  private Stopover arrivedAt;
 
   /**
    *
@@ -33,6 +36,7 @@ public class Passenger extends WorldClockListener {
     this.PESEL = PESEL;
     this.hometown = hometown;
     this.trip = new Trip(hometown, map);
+    this.arrivedAt = null;
   }
 
   public String getFirstName() {
@@ -47,19 +51,40 @@ public class Passenger extends WorldClockListener {
     return PESEL;
   }
 
-  public Stopover getNextCivilDestination() {
-    return null;
+  public void setArrivedAt(Stopover stopover) {
+    arrivedAt = stopover;
   }
 
-  @Override
-  public void tick() {
-    // while true
-    // generate new random route
-    // teleport to first location
-    // wait till signal
-    // if signal from route destination, leave destination and sleep for trip's time duration
-    // if not, wait again
-    // go back to destination
-    // wait till signal
+  public Stopover getArrivedAt() {
+    return arrivedAt;
+  }
+
+  public CivilDestination getNextCivilDestination() {
+    return trip.getNextCivilDestination();
+  }
+
+  public void run() {
+    while(!Thread.currentThread().isInterrupted()) {
+      synchronized (arrivedAt) {
+        try {
+          wait();
+          trip.checkpoint();
+          if (arrivedAt == trip.getTo()) {
+            sleep(trip.getWaitingTime());
+          }
+          else if (arrivedAt == trip.getFrom()) {
+            try {
+              trip.randomize();
+            } catch (StopoverNotFoundInStopoverNetworkException e) {
+              System.err.println("Passenger " + this + " tried to generate a new trip for himself");
+              e.printStackTrace();
+            }
+          }
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      }
+    }
   }
 }
+

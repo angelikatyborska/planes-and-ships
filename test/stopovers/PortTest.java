@@ -33,7 +33,7 @@ public class PortTest {
 //
 //    assertTrue(civilAirplane.passengerZone().accommodate(passenger));
 //
-//    civilAirport.vehicleMaintenance(civilAirplane);
+//    civilAirport.prepareVehicleForTravel(civilAirplane);
 //    assertTrue(civilAirplane.passengerZone().getPassengers().isEmpty());
 //  }
 }

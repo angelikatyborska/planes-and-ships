@@ -3,6 +3,7 @@ package core;
 import stopovers.CivilDestination;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -45,6 +46,11 @@ public class PassengerZone {
 
     if (capacity > passengers.size()) {
       passengers.add(passenger);
+
+      synchronized (passenger.getArrivedAt()) {
+        passenger.getArrivedAt().notify();
+      }
+
       successful =  true;
     }
 
@@ -90,6 +96,7 @@ public class PassengerZone {
    */
   public void moveAllWithMatchingDestinationTo(PassengerZone target, CivilDestination destination) {
     processingPassengers.lock();
+    List<Passenger> passengerToMove = new ArrayList<>();
     List<Passenger> movedPassengers = new ArrayList<>();
 
     passengers.forEach((passenger) -> {

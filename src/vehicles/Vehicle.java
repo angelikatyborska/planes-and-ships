@@ -74,7 +74,7 @@ public abstract class Vehicle extends WorldClockListener {
         // try to get into a Stopover until successful
         while (!stopover.accommodateVehicle(this)) {}
 
-        stopover.vehicleMaintenance(this);
+        stopover.prepareVehicleForTravel(this);
         stopover.releaseVehicle(this);
       }
 

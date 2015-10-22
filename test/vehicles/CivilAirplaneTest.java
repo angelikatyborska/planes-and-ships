@@ -1,10 +1,8 @@
 package vehicles;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import core.Coordinates;
-import core.Passenger;
 import org.junit.Test;
 import stopovers.CivilAirport;
 import stopovers.InvalidVehicleAtStopoverException;
@@ -22,7 +20,7 @@ public class CivilAirplaneTest {
     airplane.setRoute(new ArrayList<Stopover>());
 
     airplane.burnFuel(50);
-    airportAsStopover.vehicleMaintenance(airplane);
+    airportAsStopover.prepareVehicleForTravel(airplane);
 
     assertEquals(100, airplane.getFuel(), 0.00001);
   }

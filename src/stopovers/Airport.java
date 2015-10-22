@@ -33,17 +33,17 @@ public abstract class Airport extends Stopover {
     return accommodateVehicle((Vehicle) vehicle);
   }
 
-  public void vehicleMaintenance(Airplane vehicle) throws InterruptedException {
-    super.vehicleMaintenance(vehicle);
+  public void prepareVehicleForTravel(Airplane vehicle) throws InterruptedException {
+    super.prepareVehicleForTravel(vehicle);
     Thread.sleep(1000);
     vehicle.refillFuel();
   }
 
-  public void vehicleMaintenance(CivilAirplane vehicle) throws InterruptedException {
-    vehicleMaintenance((Airplane) vehicle);
+  public void prepareVehicleForTravel(CivilAirplane vehicle) throws InterruptedException {
+    prepareVehicleForTravel((Airplane) vehicle);
   }
 
-  public void vehicleMaintenance(MilitaryAirplane vehicle) throws InterruptedException {
-    vehicleMaintenance((Airplane) vehicle);
+  public void prepareVehicleForTravel(MilitaryAirplane vehicle) throws InterruptedException {
+    prepareVehicleForTravel((Airplane) vehicle);
   }
 }

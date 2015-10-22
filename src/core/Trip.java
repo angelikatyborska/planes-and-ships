@@ -14,6 +14,8 @@ public class Trip {
   private CivilDestination from;
   private List<Stopover> throughTo;
   private List<Stopover> throughBack;
+  private boolean goingBack;
+  private int previousStopover;
   private WorldMap map;
 
   public Trip(CivilDestination from, WorldMap map) throws StopoverNotFoundInStopoverNetworkException {
@@ -25,7 +27,17 @@ public class Trip {
   public void randomize() throws StopoverNotFoundInStopoverNetworkException {
     to = map.getRandomCivilDestination();
     throughTo = map.getRouteGenerator().newCivilRoute(from, to);
-    throughBack = new ArrayList<>();
+    throughBack = map.getRouteGenerator().newCivilRoute(to, from);
+    goingBack = false;
+    previousStopover = 0;
+
+    int randomNumber = (int) Math.floor(Math.random() * 2);
+    if (randomNumber == 0) {
+      type = TripType.BUSINESS;
+    }
+    else {
+      type = TripType.HOLIDAY;
+    }
   }
 
   public CivilDestination getFrom() {
@@ -44,14 +56,53 @@ public class Trip {
     return throughBack;
   }
 
-  public double getWaitingTime() {
+  public void checkpoint() {
+    previousStopover++;
+
+    if (goingBack) {
+      if (previousStopover == throughBack.size() - 1) {
+        goingBack = !goingBack;
+        previousStopover = 0;
+      }
+    }
+    else {
+      if (previousStopover == throughTo.size() - 1) {
+        goingBack = !goingBack;
+        previousStopover = 0;
+      }
+    }
+  }
+
+  // TODO: show to the teacher - using instanceof
+
+  public CivilDestination getNextCivilDestination() {
+    CivilDestination nextCivilDestination = null;
+    if (goingBack) {
+      for (int i = previousStopover + 1; i < throughBack.size(); i++) {
+        if (throughBack.get(i) instanceof CivilDestination) {
+          nextCivilDestination = (CivilDestination) throughBack.get(i);
+        }
+      }
+    }
+    else {
+      for (int i = previousStopover + 1; i < throughBack.size(); i++) {
+        if (throughTo.get(i) instanceof CivilDestination) {
+          nextCivilDestination = (CivilDestination) throughTo.get(i);
+        }
+      }
+    }
+
+    return nextCivilDestination;
+  }
+
+  public int getWaitingTime() {
     switch (type) {
       case HOLIDAY:
-        return 100;
+        return 10000;
       case BUSINESS:
-        return 50;
+        return 5000;
       default:
-        return 75;
+        return 7500;
     }
   }
 }
