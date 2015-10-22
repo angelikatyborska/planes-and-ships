@@ -3,7 +3,6 @@ package stopovers;
 import core.Coordinates;
 import core.PassengerZone;
 import vehicles.CivilShip;
-import vehicles.Ship;
 import vehicles.Vehicle;
 
 public class Port extends Stopover implements CivilDestination {
