@@ -1,17 +1,25 @@
 package core;
 
 import stopovers.CivilDestination;
-import stopovers.Stopover;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Represents a place that can keep Passengers, like a waiting room on the airport or passenger seating area on the airplane
+ * @see stopovers.CivilDestination
+ * @see vehicles.CivilVehicle
+ */
 public class PassengerZone {
   private final ArrayList<Passenger> passengers;
   private final int capacity;
   private final ReentrantLock processingPassengers;
 
+  /**
+   *
+   * @param capacity How many passengers can be accommodated at this PassengerZone
+   */
   public PassengerZone(int capacity) {
     passengers = new ArrayList<>();
     this.capacity = capacity;
@@ -23,11 +31,14 @@ public class PassengerZone {
   }
 
   private void removePassengers(List<Passenger> passengersToRemove) {
-    passengersToRemove.forEach((passengerToRemove) -> {
-      passengers.remove(passengerToRemove);
-    });
+    passengersToRemove.forEach(passengers::remove);
   }
 
+  /**
+   * Tries to accommodate a passenger
+   * @param passenger
+   * @return true if successful, false if PassengerZone is already full and can't accommodate
+   */
   public boolean accommodate(Passenger passenger) {
     boolean successful = false;
     processingPassengers.lock();
@@ -41,6 +52,10 @@ public class PassengerZone {
     return successful;
   }
 
+  /**
+   *
+   * @return a list of all currently accommodates passengers
+   */
   public List<Passenger> getPassengers() {
     processingPassengers.lock();
 
@@ -50,6 +65,10 @@ public class PassengerZone {
     return passengersCopy;
   }
 
+  /**
+   * Tries to accommodate all passengers at target PassengerZone
+   * @param target a PassengerZone to which passengers will be moved
+   */
   public void moveAllTo(PassengerZone target) {
     processingPassengers.lock();
     List<Passenger> movedPassengers = new ArrayList<>();
@@ -64,6 +83,11 @@ public class PassengerZone {
     processingPassengers.unlock();
   }
 
+  /**
+   * Tries to accommodate all passengers that are travelling to certain destination at target PassengerZone
+   * @param target a PassengerZone to which passengers will be moved
+   * @param destination a CiviDestination which will have to match passenger's next destination if he is to be moved to target PassengerZone
+   */
   public void moveAllWithMatchingDestinationTo(PassengerZone target, CivilDestination destination) {
     processingPassengers.lock();
     List<Passenger> movedPassengers = new ArrayList<>();

@@ -19,7 +19,7 @@ public abstract class Vehicle extends WorldClockListener {
   protected boolean goingBack;
 
   public Vehicle(double velocity) {
-    this.id = IdGenerator.getId();
+    this.id = this.hashCode();
     this.velocity = velocity;
   }
 
@@ -35,6 +35,11 @@ public abstract class Vehicle extends WorldClockListener {
     return worldMap.getVehicleCoordinates(this);
   }
 
+  public int getId() {
+    return id;
+  }
+
+  // TODO: implement
   public Stopover getNextStopover() {
     return null;
   }
@@ -70,7 +75,7 @@ public abstract class Vehicle extends WorldClockListener {
         while (!stopover.accommodateVehicle(this)) {}
         gotAccommodatedAt(stopover);
 
-        // implement route changes
+        // TODO: implement route changes
 
         stopover.releaseVehicle(this);
         gotReleasedFrom(stopover);
