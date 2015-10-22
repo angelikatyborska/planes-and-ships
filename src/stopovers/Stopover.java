@@ -54,7 +54,7 @@ public class Stopover {
     boolean realisingSuccessful;
     processingVehicleLock.lock();
 
-    if (accommodatedVehicles.contains(vehicle)) {
+    if (isAccommodatingVehicle(vehicle)) {
       accommodatedVehicles.remove(vehicle);
       vehicle.gotReleasedFrom(this);
       realisingSuccessful = true;
@@ -67,7 +67,7 @@ public class Stopover {
     return realisingSuccessful;
   }
 
-  protected List<Class<? extends Vehicle>> allowedVehicles(){
-    return Arrays.asList(Vehicle.class);
+  public boolean isAccommodatingVehicle(Vehicle vehicle) {
+    return accommodatedVehicles.contains(vehicle);
   }
 }

@@ -1,39 +1,38 @@
 package core;
 
-import stopovers.Destination;
-import stopovers.Stopover;
+import stopovers.*;
+import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Trip {
-  public static enum TripType { HOLIDAY, BUSINESS };
+  public enum TripType { HOLIDAY, BUSINESS };
   private TripType type;
-  private Destination to;
-  private Destination from;
+  private CivilDestination to;
+  private CivilDestination from;
   private List<Stopover> throughTo;
   private List<Stopover> throughBack;
   private WorldMap map;
 
-  public Trip(Destination from, WorldMap map) {
+  public Trip(CivilDestination from, WorldMap map) throws StopoverNotFoundInStopoverNetworkException {
     this.from = from;
     this.map = map;
     randomize();
   }
 
-  public void randomize() {
-//    throughTo = new ArrayList<>();
-//    throughBack = new ArrayList<>();
-//    do {
-//      to = map.getRandomStopoverOfType(Arrays.asList(CivilAirport.class, Port.class));
-//    } while (to == from);
+  public void randomize() throws StopoverNotFoundInStopoverNetworkException {
+    to = map.getRandomCivilDestination();
+    throughTo = map.getRouteGenerator().newCivilRoute(from, to);
+    throughBack = new ArrayList<>();
   }
 
-  public Destination getFrom() {
+  public CivilDestination getFrom() {
     return from;
   }
 
-  public Destination getTo() {
+  public CivilDestination getTo() {
     return to;
   }
 

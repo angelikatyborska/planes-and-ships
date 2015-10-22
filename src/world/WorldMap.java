@@ -2,45 +2,72 @@ package world;
 
 import core.Coordinates;
 import stopovers.*;
-import vehicles.CivilAirplane;
-import vehicles.CivilShip;
-import vehicles.MilitaryAirplane;
 import vehicles.Vehicle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class WorldMap {
   private final StopoverNetwork stopoverNetwork;
-  private final Map<Vehicle, Coordinates> vehicles;
+  private final Map<Vehicle, Coordinates> vehicleCoordinates;
   private final ReentrantLock processingVehicle;
   private final double safetyRadius;
+
   private RouteGenerator routeGenerator;
 
   public WorldMap(StopoverNetwork stopoverNetwork) {
     this.stopoverNetwork = stopoverNetwork;
-    this.vehicles = new HashMap<>();
+    this.vehicleCoordinates = new HashMap<>();
     processingVehicle = new ReentrantLock();
     safetyRadius = 3;
     routeGenerator = new RouteGenerator(this);
   }
 
-  public Stopover getRandomStopoverOfType(Class<? extends Stopover> type) {
-    List<Stopover> stopovers = stopoverNetwork.getAllOfType(type);
-    return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
+  public RouteGenerator getRouteGenerator() {
+    return routeGenerator;
   }
 
-  public Stopover getRandomStopoverOfType(List<Class<? extends Stopover>> types) {
+  public CivilDestination getRandomCivilDestination() {
     List<Stopover> stopovers = new ArrayList<>();
+    List<Class<? extends Stopover>> types = Arrays.asList(CivilAirport.class, Port.class);
     types.forEach(type -> stopovers.addAll(stopoverNetwork.getAllOfType(type)));
-    return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
+    return (CivilDestination) stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
   }
 
-  public Stopover findClosestStopoverOfMatchingType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
-    return stopoverNetwork.findClosestConnectedOfType(from, destinationType);
+  public CivilAirport getRandomCivilAirport() {
+    return (CivilAirport) getRandomStopoverOfType(CivilAirport.class);
+  }
+
+  public MilitaryAirport getRandomMilitaryAirport() {
+    return (MilitaryAirport) getRandomStopoverOfType(MilitaryAirport.class);
+  }
+
+  public Port getRandomPort() {
+    return (Port) getRandomStopoverOfType(Port.class);
+  }
+
+  public CivilAirport findClosestCivilAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+    return (CivilAirport) findClosestStopoverOfType(from, CivilAirport.class);
+  }
+
+  public MilitaryAirport findClosestMilitaryAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+    return (MilitaryAirport) findClosestStopoverOfType(from, MilitaryAirport.class);
+  }
+
+  public Port findClosestPort(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+    return (Port) findClosestStopoverOfType(from, Port.class);
+  }
+
+  public CivilAirport findClosestMetricallyCivilAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+    return (CivilAirport) findClosestMetricallyOfType(from, CivilAirport.class);
+  }
+
+  public MilitaryAirport findClosestMetricallyMilitaryAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+    return (MilitaryAirport) findClosestMetricallyOfType(from, MilitaryAirport.class);
+  }
+
+  public Port findClosestMetricallyPort(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+    return (Port) findClosestMetricallyOfType(from, Port.class);
   }
 
   public List<Junction> findJunctionsBetween(Stopover stopover1, Stopover stopover2) throws StopoverNotFoundInStopoverNetworkException {
@@ -49,32 +76,11 @@ public class WorldMap {
 
   public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
     vehicle.setWorldMap(this);
-    vehicles.put(vehicle, coordinates);
-  }
-
-  public void registerVehicle(Vehicle vehicle, Stopover stopover) {
-    registerVehicle(vehicle, stopover.getCoordinates());
-  }
-
-  public void registerVehicle(CivilAirplane civilAirplane, CivilAirport civilAirport) throws StopoverNotFoundInStopoverNetworkException {
-    // TODO: show this line to the teacher
-    // using casting here so that I can call the more general method (and share code in this way)
-    registerVehicle((Vehicle) civilAirplane, (Stopover) civilAirport);
-    civilAirplane.setRoute(routeGenerator.newCivilAirRoute(civilAirport));
-  }
-
-  public void registerVehicle(MilitaryAirplane militaryAirplane, MilitaryAirport militaryAirport) throws StopoverNotFoundInStopoverNetworkException {
-    registerVehicle((Vehicle) militaryAirplane, (Stopover) militaryAirport);
-    militaryAirplane.setRoute(routeGenerator.newMilitaryAirRoute(militaryAirport));
-  }
-
-  public void registerVehicle(CivilShip civilShip, Port port) throws StopoverNotFoundInStopoverNetworkException {
-    registerVehicle((Vehicle) civilShip, (Stopover) port);
-    civilShip.setRoute(routeGenerator.newCivilSeaRoute(port));
+    vehicleCoordinates.put(vehicle, coordinates);
   }
 
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {
-    return vehicles.get(vehicle);
+    return vehicleCoordinates.get(vehicle);
   }
 
   public boolean moveVehicleTowardsTargetStopover(Vehicle vehicle, double velocity) throws StopoverNotFoundInStopoverNetworkException {
@@ -89,8 +95,30 @@ public class WorldMap {
     return canMove;
   }
 
+  protected void removeVehicle(Vehicle vehicle) {
+    Stopover stopover = getVehicleCurrentStopover(vehicle);
+    if (stopover != null) {
+      stopover.releaseVehicle(vehicle);
+    }
+
+    vehicleCoordinates.remove(vehicle);
+  }
+
+  protected Stopover findClosestStopoverOfType(Stopover from, Class<? extends Destination> destinationType) throws StopoverNotFoundInStopoverNetworkException {
+    return stopoverNetwork.findClosestConnectedOfType(from, destinationType);
+  }
+
+  protected Stopover findClosestMetricallyOfType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
+    return stopoverNetwork.findClosestMetricallyOfType(from, type);
+  }
+
+  protected Stopover getRandomStopoverOfType(Class<? extends Stopover> type) {
+    List<Stopover> stopovers = stopoverNetwork.getAllOfType(type);
+    return stopovers.get((int)Math.floor(Math.random() * stopovers.size()));
+  }
+
   private boolean canVehicleMove(Vehicle vehicleToMove) {
-    return !vehicles.keySet().stream().anyMatch(otherVehicle -> {
+    return !vehicleCoordinates.keySet().stream().anyMatch(otherVehicle -> {
       return areVehiclesGoingFromAndToSameStopovers(vehicleToMove, otherVehicle)
         && isVehicleBehindOtherVehicle(vehicleToMove, otherVehicle)
         && areVehiclesTooClose(vehicleToMove, otherVehicle);
@@ -113,5 +141,16 @@ public class WorldMap {
   private boolean areVehiclesGoingFromAndToSameStopovers(Vehicle vehicleMoving, Vehicle otherVehicle) {
     return vehicleMoving.getNextStopover() == otherVehicle.getNextStopover()
       && vehicleMoving.getPreviousStopover() == otherVehicle.getPreviousStopover();
+  }
+
+  private Stopover getVehicleCurrentStopover(Vehicle vehicle) {
+    List<Stopover> stopovers = stopoverNetwork.getAllStopovers();
+    for (Stopover stopover : stopovers) {
+      if (stopover.isAccommodatingVehicle(vehicle)) {
+        return stopover;
+      }
+    }
+
+    return null;
   }
 }

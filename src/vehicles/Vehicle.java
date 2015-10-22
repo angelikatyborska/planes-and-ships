@@ -8,10 +8,7 @@ import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldClockListener;
 import world.WorldMap;
-
 import java.util.List;
-
-import static java.lang.Thread.sleep;
 
 public abstract class Vehicle extends WorldClockListener {
   private final int id;
@@ -88,7 +85,7 @@ public abstract class Vehicle extends WorldClockListener {
     }
   }
 
-  private boolean hasArrivedAtStopover(Stopover stopover) {
+  public boolean hasArrivedAtStopover(Stopover stopover) {
     Coordinates vehicleCoord = getCoordinates();
     Coordinates stopoverCoord = stopover.getCoordinates();
     return (vehicleCoord.getX() == stopoverCoord.getX() && vehicleCoord.getY() == stopoverCoord.getY());

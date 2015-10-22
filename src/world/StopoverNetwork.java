@@ -13,6 +13,10 @@ public class StopoverNetwork {
     nodes = new ArrayList<>();
   }
 
+  public List<Stopover> getAllStopovers() {
+    return getAllOfType(Stopover.class);
+  }
+
   public List<Stopover> getAllOfType(Class<? extends Stopover> type) {
     List<Stopover> foundStopovers = new ArrayList<>();
     List<StopoverNetworkNode> foundNodes = nodes.stream().filter(node -> node.hasStopoverOfType(type)).collect(Collectors.toList());

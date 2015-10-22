@@ -11,4 +11,8 @@ public class Weapon {
   public String fire() {
     return "PewPewPew";
   }
+
+  public WeaponType getType() {
+    return type;
+  }
 }
