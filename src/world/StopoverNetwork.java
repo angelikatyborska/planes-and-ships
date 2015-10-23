@@ -1,6 +1,8 @@
 package world;
 
+import stopovers.CivilAirport;
 import stopovers.Junction;
+import stopovers.Port;
 import stopovers.Stopover;
 
 import java.util.*;
@@ -15,6 +17,21 @@ public class StopoverNetwork {
 
   public List<Stopover> getAllStopovers() {
     return getAllOfType(Stopover.class);
+  }
+
+  public List<Stopover> getAllNeighbouringStopovers(Stopover stopover) {
+    List<Stopover> neighbours = new ArrayList<>();
+
+    try {
+      for (StopoverNetworkNode node : getNode(stopover).getNeighbours()) {
+        neighbours.add(node.getStopover());
+      }
+    } catch (StopoverNotFoundInStopoverNetworkException e) {
+      System.err.println("Tried to find all neighbours of " + stopover + " but it's not in " + this);
+      e.printStackTrace();
+    }
+
+    return neighbours;
   }
 
   public List<Stopover> getAllOfType(Class<? extends Stopover> type) {
@@ -151,7 +168,9 @@ public class StopoverNetwork {
       nodesToSearch.addAll(neighboursToAdd);
 
       for (StopoverNetworkNode neighbour : neighboursToAdd) {
-        childToParent.put(neighbour, currentNode);
+        if (!childToParent.containsKey(neighbour)) {
+          childToParent.put(neighbour, currentNode);
+        }
       }
 
       if (currentNode.getStopover() == to) {
@@ -164,6 +183,56 @@ public class StopoverNetwork {
         Collections.reverse(junctions);
 
         return junctions;
+      }
+    }
+    return null;
+  }
+
+  // TODO: this is almost an exact copy of findJunctionsBetween, DRY this maybe?
+  public List<Stopover> findCivilRouteBetween(Stopover from, Stopover to) throws StopoverNotFoundInStopoverNetworkException {
+    List<Stopover> stopovers = new ArrayList<>();
+    List<StopoverNetworkNode> nodesToSearch = new ArrayList<>();
+    List<StopoverNetworkNode> processedNodes = new ArrayList<>();
+
+    nodesToSearch.add(getNode(from));
+
+    HashMap<StopoverNetworkNode, StopoverNetworkNode> childToParent = new HashMap<>();
+    StopoverNetworkNode currentNode;
+
+    if (from == to) {
+      return null;
+    }
+
+    while (!nodesToSearch.isEmpty()) {
+      currentNode = nodesToSearch.get(0);
+      nodesToSearch.remove(0);
+      processedNodes.add(currentNode);
+
+      List<StopoverNetworkNode> neighboursToAdd = currentNode.getNeighbours()
+        .stream()
+        .filter(node ->
+          (node.hasStopoverOfType(Junction.class) || node.hasStopoverOfType(Port.class) || node.hasStopoverOfType(CivilAirport.class))
+            && !processedNodes.contains(node))
+        .collect(Collectors.toList());
+
+      nodesToSearch.addAll(neighboursToAdd);
+
+      for (StopoverNetworkNode neighbour : neighboursToAdd) {
+        if (!childToParent.containsKey(neighbour)) {
+          childToParent.put(neighbour, currentNode);
+        }
+      }
+
+      if (currentNode.getStopover() == to) {
+        // recreate the path from the last to the first junction
+        while (childToParent.get(currentNode).getStopover() != from) {
+          stopovers.add((Stopover) childToParent.get(currentNode).getStopover());
+          currentNode = childToParent.get(currentNode);
+        }
+
+        Collections.reverse(stopovers);
+
+        return stopovers;
       }
     }
     return null;

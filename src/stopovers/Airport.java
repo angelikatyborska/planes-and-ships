@@ -36,7 +36,6 @@ public abstract class Airport extends Stopover {
 
   public void prepareVehicleForTravel(Airplane vehicle) throws InterruptedException {
     super.prepareVehicleForTravel(vehicle);
-    Thread.sleep(1000);
     vehicle.refillFuel();
   }
 

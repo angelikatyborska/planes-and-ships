@@ -4,6 +4,8 @@ import gui.WorldDrawer;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 
+import static java.lang.Thread.sleep;
+
 public abstract class Ship extends Vehicle {
   public Ship(double velocity) {
     super(velocity);

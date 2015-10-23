@@ -29,6 +29,7 @@ public class Trip {
       to = map.getRandomCivilDestination();
     } while (to == from);
 
+
     throughTo = map.getRouteGenerator().newCivilRoute(from, to);
     throughBack = map.getRouteGenerator().newCivilRoute(to, from);
     goingBack = false;

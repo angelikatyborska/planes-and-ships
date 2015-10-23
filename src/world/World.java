@@ -39,7 +39,7 @@ public class World {
     try {
       CivilAirplane vehicle = vehicleGenerator.newCivilAirplane();
       CivilAirport startingPoint = map.getRandomCivilAirport();
-      vehicle.setRoute(map.getRouteGenerator().newCivilAirRoute(startingPoint));
+      vehicle.setRoute(map.getRouteGenerator().newCivilAirRoute(startingPoint, 2));
       fillWithPassengers(vehicle.passengerZone().getCapacity() / 2, startingPoint.passengerZone(), startingPoint);
       prepareVehicle(vehicle, startingPoint.getCoordinates());
 
@@ -127,7 +127,6 @@ public class World {
         Passenger newPassenger = passengerGenerator.randomPassenger(hometown);
         threads.put(newPassenger, new Thread(newPassenger));
         zone.accommodate(passengerGenerator.randomPassenger(hometown));
-
         threads.get(newPassenger).start();
       }
     } catch (StopoverNotFoundInStopoverNetworkException e) {

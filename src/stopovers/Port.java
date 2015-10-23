@@ -25,7 +25,6 @@ public class Port extends Stopover implements CivilDestination {
   public void prepareVehicleForTravel(CivilShip vehicle) throws InterruptedException {
     super.prepareVehicleForTravel(vehicle);
     vehicle.passengerZone().moveAllTo(passengerZone);
-    Thread.sleep(1000);
     passengerZone.moveAllWithMatchingDestinationTo(vehicle.passengerZone(), vehicle.getNextCivilDestination());
   }
 

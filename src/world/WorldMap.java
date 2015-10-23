@@ -19,7 +19,7 @@ public class WorldMap {
     this.stopoverNetwork = stopoverNetwork;
     this.vehicleCoordinates = new HashMap<>();
     processingVehicle = new ReentrantLock();
-    safetyRadius = 3;
+    safetyRadius = 12;
     routeGenerator = new RouteGenerator(this);
   }
 
@@ -33,6 +33,10 @@ public class WorldMap {
 
   public RouteGenerator getRouteGenerator() {
     return routeGenerator;
+  }
+
+  public List<Stopover> getNeighbouringStopovers(Stopover stopover) {
+    return stopoverNetwork.getAllNeighbouringStopovers(stopover);
   }
 
   public CivilDestination getRandomCivilDestination() {
@@ -80,6 +84,10 @@ public class WorldMap {
 
   public List<Junction> findJunctionsBetween(Stopover stopover1, Stopover stopover2) throws StopoverNotFoundInStopoverNetworkException {
     return stopoverNetwork.findJunctionsBetween(stopover1, stopover2);
+  }
+
+  public List<Stopover> findCivilRouteBetween(Stopover stopover1, Stopover stopover2) throws StopoverNotFoundInStopoverNetworkException {
+    return stopoverNetwork.findCivilRouteBetween(stopover1, stopover2);
   }
 
   public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
@@ -136,7 +144,7 @@ public class WorldMap {
   }
 
   private boolean areVehiclesTooClose(Vehicle vehicleMoving, Vehicle otherVehicle) {
-    return vehicleMoving.getCoordinates().distanceTo(otherVehicle.getCoordinates()) > vehicleMoving.getVelocity() + safetyRadius;
+    return vehicleMoving.getCoordinates().distanceTo(otherVehicle.getCoordinates()) < vehicleMoving.getVelocity() + safetyRadius;
   }
 
   private boolean isVehicleBehindOtherVehicle(Vehicle vehicleMoving, Vehicle otherVehicle) {

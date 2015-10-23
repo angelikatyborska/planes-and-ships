@@ -11,6 +11,9 @@ import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldClockListener;
 import world.WorldMap;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static java.lang.Thread.sleep;
 
 public abstract class Vehicle extends WorldClockListener implements Drawable {
   private final int id;
@@ -18,10 +21,12 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   protected WorldMap worldMap;
   protected List<Stopover> route;
   protected int previousStopoverNumber;
+  private ReentrantLock processingRoute;
 
   public Vehicle(double velocity) {
     this.id = this.hashCode();
     this.velocity = velocity;
+    this.processingRoute = new ReentrantLock();
   }
 
   public double getVelocity() {
@@ -36,34 +41,56 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     return worldMap.getVehicleCoordinates(this);
   }
 
+  public double getBearing() {
+    return getCoordinates().getBearing(getNextStopover().getCoordinates());
+  }
+
   public int getId() {
     return id;
   }
 
   public Stopover getNextStopover() {
-    return route.get(previousStopoverNumber + 1);
+    processingRoute.lock();
+    Stopover stopover =  route.get(previousStopoverNumber + 1);
+    processingRoute.unlock();
+
+    return stopover;
   }
 
   public Stopover getPreviousStopover() {
-    return route.get(previousStopoverNumber);
+    processingRoute.lock();
+    Stopover stopover = route.get(previousStopoverNumber);
+    processingRoute.unlock();
+
+    return stopover;
   }
 
   public CivilDestination getNextCivilDestination() {
+    for (int i = previousStopoverNumber; i < route.size(); i++) {
+      if (route.get(i) instanceof CivilDestination) {
+        return (CivilDestination) route.get(i);
+      }
+    }
+
     return null;
   }
 
   public void setRoute(List<Stopover> route) {
+    processingRoute.lock();
     previousStopoverNumber = 0;
     this.route = route;
+    processingRoute.unlock();
   }
 
   public void updateRoute() {
+    processingRoute.lock();
     previousStopoverNumber++;
 
     if (previousStopoverNumber == route.size() - 1) {
       route = Lists.reverse(route);
       previousStopoverNumber = 0;
     }
+    processingRoute.unlock();
   }
 
   public boolean hasArrivedAtStopover(Stopover stopover) {

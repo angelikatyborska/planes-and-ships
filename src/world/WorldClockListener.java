@@ -5,13 +5,13 @@ public abstract class WorldClockListener implements Runnable {
 
   public void run() {
     while(!Thread.currentThread().isInterrupted()) {
-      synchronized (this) {
-        try {
+      try {
+        synchronized (this) {
           wait();
-          tick();
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
         }
+        tick();
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
       }
     }
   }

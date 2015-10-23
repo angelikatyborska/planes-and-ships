@@ -5,6 +5,8 @@ import stopovers.Airport;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 
+import static java.lang.Thread.sleep;
+
 public abstract class Airplane extends Vehicle {
   private final double fuelCapacity;
   private final double fuelBurningRate = 1;

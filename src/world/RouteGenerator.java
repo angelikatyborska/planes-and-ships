@@ -40,33 +40,10 @@ public class RouteGenerator {
   public List<Stopover> newCivilRoute(CivilDestination from, CivilDestination finalDestination) throws StopoverNotFoundInStopoverNetworkException {
     ArrayList<Stopover> route = new ArrayList<>();
 
-    Stopover to;
-    Stopover oldTo = (Stopover) from;
-    List<Junction> through;
-    // TODO: show to the teacher, using casting (I want a CivilDestination, but it can't be a subclass of Stopover, because then CivilAirport would have to extend Airport and CivilDestination and that's just not possible in Java
-    route.add((Stopover) from);
-
-    do {
-      do {
-        to = (Stopover) map.getRandomCivilDestination();
-        // TODO: show to the teacher - comparing classes
-        // if going from Airport to Airport or from Port to Port, choose new route to go by Vehicle
-        if (to.getClass() == oldTo.getClass()) {
-          through = map.findJunctionsBetween(oldTo, to);
-        }
-        // Passenger is going to have to go by foot to the closest destination
-        else {
-          to = map.findClosestMetricallyOfType(oldTo, to.getClass());
-          through = new ArrayList<>();
-        }
-      } while (to == from || through == null);
-
-      route.addAll(through);
-      route.add(to);
-      oldTo = to;
-
-    } while (to != finalDestination);
-
+    Stopover to = (Stopover) finalDestination;
+    List<Stopover> through = map.findCivilRouteBetween((Stopover) from, to);
+    route.addAll(through);
+    route.add((Stopover) finalDestination);
     return route;
   }
 
@@ -75,18 +52,19 @@ public class RouteGenerator {
     ArrayList<Stopover> route = new ArrayList<>();
 
     Stopover to;
+    Stopover oldTo = from;
     List<Junction> through;
     route.add(from);
 
     do {
       do {
         to = map.getRandomStopoverOfType(type);
-        through = map.findJunctionsBetween(from, to);
-      } while (to == from || through == null);
+        through = map.findJunctionsBetween(oldTo, to);
+      } while (to == from || to == oldTo || through == null);
 
       route.addAll(through);
       route.add(to);
-
+      oldTo = to;
       i++;
     } while (i < n);
 

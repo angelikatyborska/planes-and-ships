@@ -8,11 +8,12 @@ import vehicles.*;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-// TODO: Stopovers should have names
 public class Stopover implements Drawable {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
   private final ReentrantLock processingVehicleLock;
+  // TODO: implement naming stopovers
+  private final String name;
 
   private ArrayList<Vehicle> accommodatedVehicles;
 
@@ -21,10 +22,15 @@ public class Stopover implements Drawable {
     this.vehicleCapacity = vehicleCapacity;
     this.accommodatedVehicles = new ArrayList<>();
     this.processingVehicleLock = new ReentrantLock();
+    name = "";
   }
 
   public Coordinates getCoordinates() {
     return coordinates;
+  }
+
+  public String getName() {
+    return Integer.toString(this.hashCode()).substring(5);
   }
 
   public int getVehicleCapacity() {

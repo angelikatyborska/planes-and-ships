@@ -118,6 +118,6 @@ public class WorldMapTest {
     worldMap.registerVehicle(vehicle1, new Coordinates(34, 22));
     worldMap.registerVehicle(vehicle2, new Coordinates(34.01, 22.01));
 
-    assertTrue(worldMap.moveVehicleTowardsTargetStopover(vehicle1, 1));
+    assertTrue(!worldMap.moveVehicleTowardsTargetStopover(vehicle1, 1));
   }
 }

@@ -5,6 +5,8 @@ import gui.WorldDrawer;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 
+import static java.lang.Thread.sleep;
+
 public class MilitaryShip extends Ship {
   public Weapon getWeapon() {
     return weapon;
