@@ -2,6 +2,8 @@ package vehicles;
 
 import com.google.common.collect.Lists;
 import core.Coordinates;
+import gui.Drawable;
+import gui.WorldDrawer;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
@@ -10,7 +12,7 @@ import world.WorldClockListener;
 import world.WorldMap;
 import java.util.List;
 
-public abstract class Vehicle extends WorldClockListener {
+public abstract class Vehicle extends WorldClockListener implements Drawable {
   private final int id;
   private final double velocity;
   protected WorldMap worldMap;
@@ -91,5 +93,9 @@ public abstract class Vehicle extends WorldClockListener {
     Coordinates vehicleCoord = getCoordinates();
     Coordinates stopoverCoord = stopover.getCoordinates();
     return (vehicleCoord.getX() == stopoverCoord.getX() && vehicleCoord.getY() == stopoverCoord.getY());
+  }
+
+  public void draw(WorldDrawer drawer) {
+    drawer.draw(this);
   }
 }

@@ -1,12 +1,14 @@
 package stopovers;
 
 import core.Coordinates;
+import gui.Drawable;
+import gui.WorldDrawer;
 import vehicles.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Stopover {
+public class Stopover implements Drawable {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
   private final ReentrantLock processingVehicleLock;
@@ -124,5 +126,10 @@ public class Stopover {
 
   public void prepareVehicleForTravel(MilitaryShip vehicle) {
     prepareVehicleForTravel((Vehicle) vehicle);
+  }
+
+  @Override
+  public void draw(WorldDrawer drawer) {
+    drawer.draw(this);
   }
 }

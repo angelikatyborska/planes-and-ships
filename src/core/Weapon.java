@@ -1,7 +1,7 @@
 package core;
 
 public class Weapon {
-  public static enum WeaponType { MISSILE, BOMB };
+  public static enum WeaponType { MISSILE, BOMB, LASER_GUN };
   private WeaponType type;
 
   public Weapon(WeaponType type) {
