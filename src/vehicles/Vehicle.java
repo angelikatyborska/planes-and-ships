@@ -59,10 +59,25 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
   public void updateRoute() {
     previousStopoverNumber++;
+
     if (previousStopoverNumber == route.size() - 1) {
-      Lists.reverse(route);
+      route = Lists.reverse(route);
       previousStopoverNumber = 0;
     }
+  }
+
+  public boolean hasArrivedAtStopover(Stopover stopover) {
+    Coordinates vehicleCoord = getCoordinates();
+    Coordinates stopoverCoord = stopover.getCoordinates();
+    return (vehicleCoord.getX() == stopoverCoord.getX() && vehicleCoord.getY() == stopoverCoord.getY());
+  }
+
+  // TODO: something about that below, it seems like awful design
+  // every Vehicle has to copy this method because "this" needs to be a reference of specific type
+  public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
+    while (!stopover.accommodateVehicle(this)) {}
+    stopover.prepareVehicleForTravel(this);
+    stopover.releaseVehicle(this);
   }
 
   @Override
@@ -72,12 +87,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
       if (hasArrivedAtStopover(getNextStopover())) {
         Stopover stopover = getNextStopover();
-
-        // try to get into a Stopover until successful
-        while (!stopover.accommodateVehicle(this)) {}
-
-        stopover.prepareVehicleForTravel(this);
-        stopover.releaseVehicle(this);
+        arrivedAtStopover(stopover);
       }
 
     } catch (StopoverNotFoundInStopoverNetworkException e) {
@@ -87,12 +97,6 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
       System.err.println("Vehicle " + this + " tried to get accommodate at " + getNextStopover());
       e.printStackTrace();
     }
-  }
-
-  public boolean hasArrivedAtStopover(Stopover stopover) {
-    Coordinates vehicleCoord = getCoordinates();
-    Coordinates stopoverCoord = stopover.getCoordinates();
-    return (vehicleCoord.getX() == stopoverCoord.getX() && vehicleCoord.getY() == stopoverCoord.getY());
   }
 
   public void draw(WorldDrawer drawer) {

@@ -48,33 +48,41 @@ public class StopoverNetwork {
     node2.addNeighbour(node1);
   }
 
-  public Stopover findClosestMetricallyOfType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
+  public Stopover findClosestMetricallyOfType(Stopover from, Class<? extends Stopover> type){
     Stopover result = null;
-    StopoverNetworkNode fromNode = getNode(from);
+    try {
+      StopoverNetworkNode fromNode = getNode(from);
 
-    List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(nodes);
-    nodesToSearch.remove(fromNode);
+      List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(nodes);
+      nodesToSearch.remove(fromNode);
 
-    Optional<StopoverNetworkNode> matchingNode
-      = nodesToSearch.stream().filter(node -> node.hasStopoverOfType(type)).findFirst();
+      Optional<StopoverNetworkNode> matchingNode
+        = nodesToSearch.stream().filter(node -> node.hasStopoverOfType(type)).findFirst();
 
-    if (matchingNode.isPresent()) {
-      StopoverNetworkNode firstMatchingNode = matchingNode.get();
-      double minDistance = distanceBetweenNodes(fromNode, firstMatchingNode);
-      Stopover closestStopover = firstMatchingNode.getStopover();
+      if (matchingNode.isPresent()) {
+        StopoverNetworkNode firstMatchingNode = matchingNode.get();
+        double minDistance = distanceBetweenNodes(fromNode, firstMatchingNode);
+        Stopover closestStopover = firstMatchingNode.getStopover();
 
-      for (StopoverNetworkNode nodeToSearch : nodesToSearch) {
-        if (nodeToSearch.hasStopoverOfType(type)) {
-          double distance = distanceBetweenNodes(fromNode, nodeToSearch);
+        for (StopoverNetworkNode nodeToSearch : nodesToSearch) {
+          if (nodeToSearch.hasStopoverOfType(type)) {
+            double distance = distanceBetweenNodes(fromNode, nodeToSearch);
 
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestStopover = nodeToSearch.getStopover();
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestStopover = nodeToSearch.getStopover();
+            }
           }
         }
-      }
 
-      result = closestStopover;
+        result = closestStopover;
+      }
+    }
+    catch (StopoverNotFoundInStopoverNetworkException e) {
+      System.err.println("Tried to find closest metrically of " + type + " from " + from + ", but this Stopover doesn't exist in StopoverNetwork " + this);
+      System.err.println("All Stopovers from this network are: ");
+      getAllStopovers().forEach(System.err::println);
+      e.printStackTrace();
     }
 
     return result;

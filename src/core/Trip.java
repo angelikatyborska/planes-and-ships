@@ -25,7 +25,10 @@ public class Trip {
   }
 
   public void randomize() throws StopoverNotFoundInStopoverNetworkException {
-    to = map.getRandomCivilDestination();
+    do {
+      to = map.getRandomCivilDestination();
+    } while (to == from);
+
     throughTo = map.getRouteGenerator().newCivilRoute(from, to);
     throughBack = map.getRouteGenerator().newCivilRoute(to, from);
     goingBack = false;
@@ -85,7 +88,7 @@ public class Trip {
       }
     }
     else {
-      for (int i = previousStopover + 1; i < throughBack.size(); i++) {
+      for (int i = previousStopover + 1; i < throughTo.size(); i++) {
         if (throughTo.get(i) instanceof CivilDestination) {
           nextCivilDestination = (CivilDestination) throughTo.get(i);
         }

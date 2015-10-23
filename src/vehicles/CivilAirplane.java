@@ -1,7 +1,10 @@
 package vehicles;
 
 import core.PassengerZone;
+import gui.WorldDrawer;
 import stopovers.CivilDestination;
+import stopovers.InvalidVehicleAtStopoverException;
+import stopovers.Stopover;
 
 public class CivilAirplane extends Airplane implements CivilVehicle {
   private final PassengerZone passengerZone;
@@ -24,5 +27,17 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
   @Override
   public PassengerZone passengerZone() {
     return passengerZone;
+  }
+
+  @Override
+  public void draw(WorldDrawer drawer) {
+    drawer.draw(this);
+  }
+
+  @Override
+  public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
+    while (!stopover.accommodateVehicle(this)) {}
+    stopover.prepareVehicleForTravel(this);
+    stopover.releaseVehicle(this);
   }
 }

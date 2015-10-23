@@ -41,7 +41,7 @@ public class RouteGenerator {
     ArrayList<Stopover> route = new ArrayList<>();
 
     Stopover to;
-    Stopover oldTo = new Stopover(new Coordinates(0, 0), 0);
+    Stopover oldTo = (Stopover) from;
     List<Junction> through;
     // TODO: show to the teacher, using casting (I want a CivilDestination, but it can't be a subclass of Stopover, because then CivilAirport would have to extend Airport and CivilDestination and that's just not possible in Java
     route.add((Stopover) from);

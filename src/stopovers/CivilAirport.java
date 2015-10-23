@@ -2,6 +2,7 @@ package stopovers;
 
 import core.Coordinates;
 import core.PassengerZone;
+import gui.WorldDrawer;
 import vehicles.Airplane;
 import vehicles.CivilAirplane;
 
@@ -31,5 +32,10 @@ public class CivilAirport extends Airport implements CivilDestination {
   @Override
   public PassengerZone passengerZone() {
     return passengerZone;
+  }
+
+  @Override
+  public void draw(WorldDrawer drawer) {
+    drawer.draw(this);
   }
 }

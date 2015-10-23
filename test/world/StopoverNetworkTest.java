@@ -213,4 +213,21 @@ public class StopoverNetworkTest {
     assertTrue(junctions.contains(junction2));
     assertFalse(junctions.contains(junction3));
   }
+
+  @Test
+  public void shouldFindEmptyListOfJunctionsBetweenConnectedStopovers() throws StopoverNotFoundInStopoverNetworkException {
+    Coordinates dummyCoord = new Coordinates(1,1);
+    Stopover from = new Stopover(dummyCoord, 1);
+    CivilAirport to = new CivilAirport(dummyCoord, 1);
+    StopoverNetwork network = new StopoverNetwork();
+
+    network.add(from);
+    network.add(to);
+
+    network.connect(from, to);
+
+    List<Junction> junctions = network.findJunctionsBetween(from, to);
+    assertTrue(junctions != null);
+    assertTrue(junctions.isEmpty());
+  }
 }

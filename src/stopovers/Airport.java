@@ -1,6 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
+import gui.WorldDrawer;
 import vehicles.*;
 
 public abstract class Airport extends Stopover {
@@ -45,5 +46,10 @@ public abstract class Airport extends Stopover {
 
   public void prepareVehicleForTravel(MilitaryAirplane vehicle) throws InterruptedException {
     prepareVehicleForTravel((Airplane) vehicle);
+  }
+
+  @Override
+  public void draw(WorldDrawer drawer) {
+    drawer.draw(this);
   }
 }

@@ -23,6 +23,14 @@ public class WorldMap {
     routeGenerator = new RouteGenerator(this);
   }
 
+  public List<Vehicle> getAllVehicles() {
+    return new ArrayList<>(vehicleCoordinates.keySet());
+  }
+
+  public List<Stopover> getAllStopovers() {
+    return stopoverNetwork.getAllStopovers();
+  }
+
   public RouteGenerator getRouteGenerator() {
     return routeGenerator;
   }
@@ -76,7 +84,9 @@ public class WorldMap {
 
   public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
     vehicle.setWorldMap(this);
-    vehicleCoordinates.put(vehicle, coordinates);
+
+    // it is very important to clone the coordinates, otherwise vehicle and stopover will share the object and the stopover will move along with the vehicle
+    vehicleCoordinates.put(vehicle, new Coordinates(coordinates));
   }
 
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {

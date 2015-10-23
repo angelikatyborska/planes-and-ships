@@ -1,6 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
+import gui.WorldDrawer;
 import vehicles.Airplane;
 import vehicles.MilitaryAirplane;
 
@@ -15,5 +16,10 @@ public class MilitaryAirport extends Airport {
 
   public boolean accommodateVehicle(MilitaryAirplane militaryAirplane) throws InvalidVehicleAtStopoverException {
     return super.accommodateVehicle((Airplane) militaryAirplane);
+  }
+
+  @Override
+  public void draw(WorldDrawer drawer) {
+    drawer.draw(this);
   }
 }

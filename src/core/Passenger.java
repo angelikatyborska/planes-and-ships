@@ -36,7 +36,7 @@ public class Passenger implements Runnable {
     this.PESEL = PESEL;
     this.hometown = hometown;
     this.trip = new Trip(hometown, map);
-    this.arrivedAt = null;
+    this.arrivedAt = (Stopover) hometown;
   }
 
   public String getFirstName() {
@@ -67,7 +67,7 @@ public class Passenger implements Runnable {
     while(!Thread.currentThread().isInterrupted()) {
       synchronized (arrivedAt) {
         try {
-          wait();
+          arrivedAt.wait();
           trip.checkpoint();
           if (arrivedAt == trip.getTo()) {
             sleep(trip.getWaitingTime());

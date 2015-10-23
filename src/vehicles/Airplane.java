@@ -1,6 +1,8 @@
 package vehicles;
 
+import gui.WorldDrawer;
 import stopovers.Airport;
+import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 
 public abstract class Airplane extends Vehicle {
@@ -36,5 +38,17 @@ public abstract class Airplane extends Vehicle {
 
   public void crashLanding() {
     // should reroute to next nearest airport and disappear (it's damaged!) (what about passengers?)
+  }
+
+  @Override
+  public void draw(WorldDrawer drawer) {
+    drawer.draw(this);
+  }
+
+  @Override
+  public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
+    while (!stopover.accommodateVehicle(this)) {}
+    stopover.prepareVehicleForTravel(this);
+    stopover.releaseVehicle(this);
   }
 }

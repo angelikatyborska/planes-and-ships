@@ -8,6 +8,7 @@ import vehicles.*;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
+// TODO: Stopovers should have names
 public class Stopover implements Drawable {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
@@ -99,7 +100,6 @@ public class Stopover implements Drawable {
 
   // TODO: show to the teacher - using casting, twin methods just for overriding
 
-  // TODO: rename this method to something more descriptive
   public void prepareVehicleForTravel(Vehicle vehicle) {
     vehicle.updateRoute();
   }

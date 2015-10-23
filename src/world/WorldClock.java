@@ -34,6 +34,8 @@ public class WorldClock implements Runnable {
     this.listeners.addAll(listeners);
   }
 
+  // TODO: implement pause
+
   public void run() {
     if (bounded) {
       for (int i = 0; i < repetitions; i++) {
@@ -49,11 +51,11 @@ public class WorldClock implements Runnable {
   private void tick() {
     try {
       sleep(timeInterval);
-      listeners.forEach(listener -> {
+      for (WorldClockListener listener : listeners) {
         synchronized (listener) {
           listener.notify();
         }
-      });
+      }
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }

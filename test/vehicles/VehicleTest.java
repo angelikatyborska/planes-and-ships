@@ -2,11 +2,11 @@ package vehicles;
 
 import core.Coordinates;
 import org.junit.Test;
+import stopovers.CivilAirport;
 import stopovers.Stopover;
-import world.StopoverNetwork;
-import world.WorldClock;
-import world.WorldMap;
+import world.*;
 
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
 
 public class VehicleTest {
@@ -41,4 +41,39 @@ public class VehicleTest {
     double newDistance = stopover.getCoordinates().distanceTo(vehicle.getCoordinates());
     assertTrue(newDistance < oldDistance);
   }
+
+  @Test
+  public void StopoversShouldNotMoveWhenVehicleIsMoving() throws StopoverNotFoundInStopoverNetworkException, InterruptedException {
+    StopoverNetwork network = new StopoverNetwork();
+
+    CivilAirport airport1 = new CivilAirport(new Coordinates(20, 60), 4);
+    CivilAirport airport2 = new CivilAirport(new Coordinates(300, 140), 4);
+    CivilAirport airport3 = new CivilAirport(new Coordinates(400, 30), 4);
+
+    network.add(airport1);
+    network.add(airport2);
+    network.add(airport3);
+
+    network.connect(airport1, airport2);
+    network.connect(airport2, airport3);
+    network.connect(airport3, airport1);
+
+    WorldMap map = new WorldMap(network);
+    World world = new World(new WorldClock(100), map);
+
+    world.addCivilAirplane();
+
+    sleep(300);
+
+    world.shutDown();
+
+    assertEquals(20, airport1.getCoordinates().getX(), 0.00001);
+    assertEquals(60, airport1.getCoordinates().getY(), 0.00001);
+    assertEquals(300, airport2.getCoordinates().getX(), 0.00001);
+    assertEquals(140, airport2.getCoordinates().getY(), 0.00001);
+    assertEquals(400, airport3.getCoordinates().getX(), 0.00001);
+    assertEquals(30, airport3.getCoordinates().getY(), 0.00001);
+  }
+
+
 }
