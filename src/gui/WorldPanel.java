@@ -2,10 +2,10 @@ package gui;
 
 import core.Coordinates;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import stopovers.*;
 import vehicles.Vehicle;
@@ -37,11 +37,11 @@ public class WorldPanel extends Group {
     newCivilShipButton = new Button();
     newMilitaryShipButton = new Button();
 
-
     buildWorld();
 
     drawer = new WorldDrawer(map, worldCanvas.getGraphicsContext2D(), worldWidth, worldHeight);
     detailDrawer = new ObjectDetailDrawer(detailCanvas.getGraphicsContext2D(), detailPanelWidth, worldHeight);
+
     addEventHandlers();
 
     worldCanvas.setLayoutX(0);
@@ -121,16 +121,23 @@ public class WorldPanel extends Group {
       }
     });
 
-    newCivilAirplaneButton.setOnAction(e -> {
-      world.addCivilAirplane();
-    });
+    newCivilAirplaneButton.setOnAction(e -> world.addCivilAirplane());
+    newCivilAirplaneButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
+    newCivilAirplaneButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
-    newCivilShipButton.setOnAction(e -> {
-      world.addCivilShip();
-    });
+    newCivilShipButton.setOnAction(e -> world.addCivilShip());
+    newCivilShipButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
+    newCivilShipButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
-    newMilitaryShipButton.setOnAction(e -> {
-      world.addMilitaryShip();
+    newMilitaryShipButton.setOnAction(e -> world.addMilitaryShip());
+    newMilitaryShipButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
+    newMilitaryShipButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
+
+    worldCanvas.setOnMouseEntered(e -> getScene().setCursor(Cursor.CROSSHAIR));
+    worldCanvas.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
+    worldCanvas.setOnMouseMoved(e -> {
+      drawer.setCursorX(e.getX());
+      drawer.setCursorY(e.getY());
     });
   }
 
@@ -139,13 +146,13 @@ public class WorldPanel extends Group {
       StopoverNetwork network = new StopoverNetwork();
 
       // TODO: come up with funny names
-      CivilAirport civilAirport1 = new CivilAirport("Paris", new Coordinates(450, 40), 1);
-      CivilAirport civilAirport2 = new CivilAirport("London", new Coordinates(60, 45), 1);
-      CivilAirport civilAirport3 = new CivilAirport("Warsaw", new Coordinates(170, 200), 1);
-      CivilAirport civilAirport4 = new CivilAirport("Tokyo", new Coordinates(620, 230), 1);
-      CivilAirport civilAirport5 = new CivilAirport("Goteborg", new Coordinates(490, 450), 1);
-      CivilAirport civilAirport6 = new CivilAirport("Helsinki", new Coordinates(700, 590), 1);
-      CivilAirport civilAirport7 = new CivilAirport("Madrid", new Coordinates(230, 600), 1);
+      CivilAirport civilAirport1 = new CivilAirport("Inkville", new Coordinates(450, 40), 1);
+      CivilAirport civilAirport2 = new CivilAirport("Paper Town", new Coordinates(60, 45), 1);
+      CivilAirport civilAirport3 = new CivilAirport("Penborg", new Coordinates(170, 200), 1);
+      CivilAirport civilAirport4 = new CivilAirport("New Folder", new Coordinates(620, 230), 1);
+      CivilAirport civilAirport5 = new CivilAirport("Office City", new Coordinates(490, 450), 1);
+      CivilAirport civilAirport6 = new CivilAirport("Paperville", new Coordinates(730, 570), 1);
+      CivilAirport civilAirport7 = new CivilAirport("Scribbleton", new Coordinates(230, 600), 1);
 
       network.add(civilAirport1);
       network.add(civilAirport2);
@@ -201,10 +208,10 @@ public class WorldPanel extends Group {
       network.connect(airJunction7, civilAirport5);
       network.connect(airJunction7, civilAirport7);
 
-      MilitaryAirport militaryAirport1 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(760, 40), 1);
-      MilitaryAirport militaryAirport2 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(340, 260), 1);
-      MilitaryAirport militaryAirport3 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(770, 380), 1);
-      MilitaryAirport militaryAirport4 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(500, 610), 1);
+      MilitaryAirport militaryAirport1 = new MilitaryAirport("TOP SECRET", new Coordinates(760, 40), 1);
+      MilitaryAirport militaryAirport2 = new MilitaryAirport("TOP SECRET", new Coordinates(340, 260), 1);
+      MilitaryAirport militaryAirport3 = new MilitaryAirport("TOP SECRET", new Coordinates(770, 380), 1);
+      MilitaryAirport militaryAirport4 = new MilitaryAirport("TOP SECRET", new Coordinates(500, 610), 1);
 
       network.add(militaryAirport1);
       network.add(militaryAirport2);
@@ -216,20 +223,22 @@ public class WorldPanel extends Group {
 
       network.connect(militaryAirport2, airJunction1);
       network.connect(militaryAirport2, airJunction3);
+      network.connect(militaryAirport2, airJunction5);
 
       network.connect(militaryAirport3, airJunction4);
+      network.connect(militaryAirport3, airJunction5);
       network.connect(militaryAirport3, airJunction6);
 
       network.connect(militaryAirport4, airJunction6);
       network.connect(militaryAirport4, airJunction7);
 
       // TODO: come up with funny names
-      Port port1 = new Port("Berlin", new Coordinates(50, 230), 1);
-      Port port2 = new Port("Poznan", new Coordinates(230, 280), 1);
-      Port port3 = new Port("York", new Coordinates(430, 350), 1);
-      Port port4 = new Port("Leeds", new Coordinates(390, 490), 1);
-      Port port5 = new Port("Hamburg", new Coordinates(230, 530), 1);
-      Port port6 = new Port("Lwow", new Coordinates(125, 575), 1);
+      Port port1 = new Port("Lettergrad", new Coordinates(50, 230), 1);
+      Port port2 = new Port("New Notebook", new Coordinates(230, 280), 1);
+      Port port3 = new Port("Inkton", new Coordinates(430, 350), 1);
+      Port port4 = new Port("Stylos", new Coordinates(390, 490), 1);
+      Port port5 = new Port("Tryckfärg", new Coordinates(230, 530), 1);
+      Port port6 = new Port("Kartkosławów", new Coordinates(125, 575), 1);
 
       network.add(port1);
       network.add(port2);

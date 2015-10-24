@@ -20,6 +20,8 @@ public class WorldDrawer implements Drawer {
   private final double height;
   private final double width;
   private final double offsetFromRoute = 6;
+  private double cursorX;
+  private double cursorY;
   private final Image terrain = new Image("/images/terrain.png");
   private final Image civilShip = new Image("/images/civilship.png");
   private final Image civilAirplane = new Image("/images/civilairplane.png");
@@ -32,6 +34,8 @@ public class WorldDrawer implements Drawer {
     this.gc = gc;
     this.width = width;
     this.height = height;
+    this.cursorX = 0;
+    this.cursorY = 0;
     gc.setTextAlign(TextAlignment.CENTER);
     gc.setTextBaseline(VPos.CENTER);
   }
@@ -42,6 +46,15 @@ public class WorldDrawer implements Drawer {
     drawTerrain();
     drawVehicles();
     drawStopovers();
+    drawCursorCoords();
+  }
+
+  public void setCursorX(double cursorX) {
+    this.cursorX = cursorX;
+  }
+
+  public void setCursorY(double cursorY) {
+    this.cursorY = cursorY;
   }
 
   @Override
@@ -224,4 +237,11 @@ public class WorldDrawer implements Drawer {
     gc.fillText("" + howManyPassengers, x, y);
   }
 
+  private void drawCursorCoords() {
+    gc.setTextAlign(TextAlignment.RIGHT);
+    gc.setFont(Font.font(fontFamily, 12));
+    gc.setFill(Color.BLACK);
+    gc.fillText((int) cursorX + ", " + (int) cursorY, width - 8, height - 10);
+    gc.setTextAlign(TextAlignment.CENTER);
+  }
 }

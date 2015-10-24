@@ -46,6 +46,7 @@ public class ObjectDetailDrawer implements Drawer {
     }
   }
 
+
   @Override
   public void drawVehicle(Vehicle vehicle) {
     drawTitle("#" + Integer.toString(vehicle.getId()).substring(0, 4));
@@ -141,7 +142,7 @@ public class ObjectDetailDrawer implements Drawer {
   private void listPassengers(PassengerZone passengerZone, PassengerZone hotel) {
     gc.setFont(Font.font(fontFamily, 12));
 
-    gc.fillText("Passengers:", textLeft, textTop + 3 * lineHeight);
+    gc.fillText("Boarding area:", textLeft, textTop + 3 * lineHeight);
 
     double i = 0.5;
     for (Passenger passenger : passengerZone.getPassengers()) {
@@ -155,7 +156,7 @@ public class ObjectDetailDrawer implements Drawer {
     }
 
     if (hotel != null) {
-      gc.fillText("At the Hotel:", textLeft, textTop + (i + 3.5) * lineHeight);
+      gc.fillText("Hotel:", textLeft, textTop + (i + 3.5) * lineHeight);
 
       for (Passenger passenger : hotel.getPassengers()) {
         String s = "- ";
@@ -184,4 +185,4 @@ public class ObjectDetailDrawer implements Drawer {
     gc.fillOval(width - right, top, 2 * radius, 2 * radius);
     gc.drawImage(image, width - right + radius - image.getWidth()/2, top + radius - image.getHeight()/2);
   }
-}
+  }
