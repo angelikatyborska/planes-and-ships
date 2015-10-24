@@ -14,6 +14,11 @@ public class Port extends Stopover implements CivilDestination {
     passengerZone = new PassengerZone(Integer.MAX_VALUE);
   }
 
+  public Port(String name, Coordinates coordinates, int vehicleCapacity) {
+    super(name, coordinates, vehicleCapacity);
+    passengerZone = new PassengerZone(Integer.MAX_VALUE);
+  }
+
   public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
     throw new InvalidVehicleAtStopoverException(vehicle, this);
   }

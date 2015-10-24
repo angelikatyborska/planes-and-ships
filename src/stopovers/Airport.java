@@ -9,6 +9,10 @@ public abstract class Airport extends Stopover {
     super(coordinates, vehicleCapacity);
   }
 
+  public Airport(String name, Coordinates coordinates, int vehicleCapacity) {
+    super(name, coordinates, vehicleCapacity);
+  }
+
   // TODO: show to the teacher - using casting
   public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
     throw new InvalidVehicleAtStopoverException(vehicle, this);

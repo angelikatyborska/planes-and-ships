@@ -92,10 +92,12 @@ public class WorldMap {
   }
 
   public void registerVehicle(Vehicle vehicle, Coordinates coordinates) {
+    processingVehicle.lock();
     vehicle.setWorldMap(this);
 
     // it is very important to clone the coordinates, otherwise vehicle and stopover will share the object and the stopover will move along with the vehicle
     vehicleCoordinates.put(vehicle, new Coordinates(coordinates));
+    processingVehicle.unlock();
   }
 
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {

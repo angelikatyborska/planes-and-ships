@@ -62,6 +62,10 @@ public class Passenger implements Runnable {
     return trip.getPreviousCivilDestination();
   }
 
+  public Stopover getNextCivilStopover() {
+    return (Stopover) getNextCivilDestination();
+  }
+
   public void run() {
     while(!Thread.currentThread().isInterrupted()) {
       try {

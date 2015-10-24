@@ -13,8 +13,6 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     primaryStage.setTitle("Planes and Ships");
-    primaryStage.setWidth(1100);
-    primaryStage.setHeight(740);
 
     WorldPanel root = new WorldPanel();
 
@@ -25,5 +23,6 @@ public class Main extends Application {
     primaryStage.setOnCloseRequest(we -> { root.shutDown(); });
     primaryStage.show();
 
+    // TODO: change reentrant locks to synchronized blocks in the whole project?
   }
 }

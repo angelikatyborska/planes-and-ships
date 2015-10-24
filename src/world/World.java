@@ -41,7 +41,7 @@ public class World {
       CivilAirplane vehicle = vehicleGenerator.newCivilAirplane();
       CivilAirport startingPoint = map.getRandomCivilAirport();
       vehicle.setRoute(map.getRouteGenerator().newCivilAirRoute(startingPoint, 4));
-      addPassengersAccordingly(vehicle.passengerZone().getCapacity() / 4, startingPoint);
+      addPassengersAccordingly(vehicle.passengerZone().getCapacity() / 2, startingPoint);
       prepareVehicle(vehicle, startingPoint.getCoordinates());
 
     }
@@ -69,7 +69,7 @@ public class World {
       CivilShip vehicle = vehicleGenerator.newCivilShip();
       Port startingPoint = map.getRandomPort();
       vehicle.setRoute(map.getRouteGenerator().newCivilSeaRoute(startingPoint, 4));
-      addPassengersAccordingly((vehicle.passengerZone().getCapacity() / 4), startingPoint);
+      addPassengersAccordingly((vehicle.passengerZone().getCapacity() / 2), startingPoint);
       prepareVehicle(vehicle, startingPoint.getCoordinates());
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {

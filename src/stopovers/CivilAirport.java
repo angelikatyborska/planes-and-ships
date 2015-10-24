@@ -1,10 +1,8 @@
 package stopovers;
 
 import core.Coordinates;
-import core.Passenger;
 import core.PassengerZone;
 import gui.Drawer;
-import gui.WorldDrawer;
 import vehicles.Airplane;
 import vehicles.CivilAirplane;
 
@@ -15,6 +13,12 @@ public class CivilAirport extends Airport implements CivilDestination {
     super(coordinates, vehicleCapacity);
     passengerZone = new PassengerZone(Integer.MAX_VALUE);
   }
+
+  public CivilAirport(String name, Coordinates coordinates, int vehicleCapacity) {
+    super(name,coordinates, vehicleCapacity);
+    passengerZone = new PassengerZone(Integer.MAX_VALUE);
+  }
+
 
   public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtStopoverException {
     throw new InvalidVehicleAtStopoverException(airplane, this);

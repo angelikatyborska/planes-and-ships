@@ -10,6 +10,10 @@ public class MilitaryAirport extends Airport {
     super(coordinates, vehicleCapacity);
   }
 
+  public MilitaryAirport(String name, Coordinates coordinates, int vehicleCapacity) {
+    super(name, coordinates, vehicleCapacity);
+  }
+
   public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtStopoverException {
     throw new InvalidVehicleAtStopoverException(airplane, this);
   }

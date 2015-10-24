@@ -17,12 +17,16 @@ public class Stopover implements Drawable {
 
   private ArrayList<Vehicle> accommodatedVehicles;
 
-  public Stopover(Coordinates coordinates, int vehicleCapacity) {
+  public Stopover(String name, Coordinates coordinates, int vehicleCapacity) {
     this.coordinates = coordinates;
     this.vehicleCapacity = vehicleCapacity;
     this.accommodatedVehicles = new ArrayList<>();
     this.processingVehicleLock = new ReentrantLock();
-    name = "";
+    this.name = name;
+  }
+
+  public Stopover(Coordinates coordinates, int vehicleCapacity) {
+    this("", coordinates, vehicleCapacity);
   }
 
   public Coordinates getCoordinates() {
@@ -30,7 +34,7 @@ public class Stopover implements Drawable {
   }
 
   public String getName() {
-    return Integer.toString(this.hashCode()).substring(5);
+    return name;
   }
 
   public int getVehicleCapacity() {

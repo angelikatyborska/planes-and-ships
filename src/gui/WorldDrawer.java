@@ -1,9 +1,12 @@
 package gui;
 
 import core.Passenger;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import stopovers.*;
 import vehicles.*;
 import world.WorldMap;
@@ -12,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //  TODO: implement
-public class WorldDrawer implements Drawer, Runnable {
+public class WorldDrawer implements Drawer {
   private final WorldMap map;
   private final GraphicsContext gc;
   private final Image terrain;
@@ -30,6 +33,9 @@ public class WorldDrawer implements Drawer, Runnable {
     terrain = new Image("file:images/terrain.png");
     civilShip = new Image("file:images/civilship.png");
     civilAirplane = new Image("file:images/civilairplane.png");
+
+    gc.setTextAlign(TextAlignment.CENTER);
+    gc.setTextBaseline(VPos.CENTER);
   }
 
   public void draw() {
@@ -56,18 +62,16 @@ public class WorldDrawer implements Drawer, Runnable {
   public void drawPort(Port stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
-    double a = 30;
+    double a = 24;
 
-    gc.setFill(Color.BLACK);
+    gc.setFill(Color.web("#0e3a5f"));
     gc.fillOval(x - a/2, y - a/2, a, a);
     gc.setFill(Color.BLACK);
     gc.setFill(Color.WHITE);
+        gc.setFont(Font.font(13));
+
     gc.fillText("" + stopover.passengerZone().getPassengers().size(), x, y);
-    String s = "";
-    for (Passenger passenger : stopover.passengerZone().getPassengers()){
-      s += ", (" + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getX() + ", " + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getY() + ")";
-    }
-    gc.fillText(s, x, y+20);
+    drawNamePlate(stopover.getName(), x, y);
   }
 
   @Override
@@ -79,20 +83,16 @@ public class WorldDrawer implements Drawer, Runnable {
   public void drawCivilAirport(CivilAirport stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
-    double a = 30;
+    double a = 24;
 
-    gc.setFill(Color.PURPLE);
+    gc.setFill(Color.web("#065525"));
     gc.fillOval(x - a/2, y - a/2, a, a);
     gc.setFill(Color.WHITE);
+        gc.setFont(Font.font(13));
+
     gc.fillText("" + stopover.passengerZone().getPassengers().size(), x, y);
 
-    gc.setFill(Color.WHITE);
-    gc.fillText("" + stopover.passengerZone().getPassengers().size(), x, y);
-    String s = "";
-    for (Passenger passenger : stopover.passengerZone().getPassengers()){
-      s += ", (" + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getX() + ", " + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getY() + ")";
-    }
-    gc.fillText(s, x, y+20);
+    drawNamePlate(stopover.getName(), x, y);
   }
 
   @Override
@@ -181,21 +181,6 @@ public class WorldDrawer implements Drawer, Runnable {
     drawShip(vehicle);
   }
 
-  @Override
-  public void run() {
-    while(!Thread.currentThread().isInterrupted()) {
-      synchronized (this) {
-        try {
-          wait();
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        }
-      }
-
-      draw();
-    }
-  }
-
   private void drawStopovers() {
     double lineWidth = 1;
     gc.setStroke(Color.WHITE);
@@ -224,6 +209,16 @@ public class WorldDrawer implements Drawer, Runnable {
     }
   }
 
+  private void drawNamePlate(String s, double x, double y) {
+    gc.setFill(Color.WHITE);
+    double width = s.length() * 7;
+    double height = 14;
+    double topOffset = 12;
+    gc.fillRect(x - width/2, y + topOffset, width, height);
+    gc.setFill(Color.BLACK);
+    gc.setFont(Font.font("Courier", 11));
+    gc.fillText(s, x, y + topOffset + height/2);
+  }
   private void drawVehicles() {
     for (Vehicle vehicle : map.getAllVehicles()) {
       vehicle.draw(this);

@@ -1,6 +1,7 @@
 package gui;
 
 import core.Coordinates;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
@@ -15,10 +16,6 @@ public class WorldPanel extends Group {
   private WorldMap map;
   private WorldDrawer drawer;
   private ObjectDetailDrawer detailDrawer;
-  private DrawerClock drawerClock;
-  private Thread drawerThread;
-  private Thread detailDrawerThread;
-  private Thread drawerClockThread;
   private final double clickErrorMargin = 15;
   private final double worldWidth;
   private final double worldHeight;
@@ -35,12 +32,6 @@ public class WorldPanel extends Group {
 
     drawer = new WorldDrawer(map, worldCanvas.getGraphicsContext2D(), worldWidth, worldHeight);
     detailDrawer = new ObjectDetailDrawer(detailCanvas.getGraphicsContext2D(), detailPanelWidth, worldHeight);
-    drawerThread = new Thread(drawer);
-    detailDrawerThread = new Thread(detailDrawer);
-    drawerClock = new DrawerClock(33);
-    drawerClock.addListener(drawer);
-    drawerClock.addListener(detailDrawer);
-    drawerClockThread = new Thread(drawerClock);
     addEventHandlers();
 
     worldCanvas.setLayoutX(0);
@@ -53,18 +44,25 @@ public class WorldPanel extends Group {
   }
 
   public void start() {
-    // cannot start drawing threads in the constructor, because they will start drawing on a canvas that doesn't exist
-    drawerThread.start();
-    detailDrawerThread.start();
-    drawerClockThread.start();
+    // cannot start drawing in the constructor, because they will start drawing on a canvas that doesn't exist
 
+    new AnimationTimer() {
+      public void handle(long currentNanoTime)
+      {
+        drawer.draw();
+      }
+    }.start();
+
+    new AnimationTimer() {
+      public void handle(long currentNanoTime)
+      {
+        detailDrawer.draw();
+      }
+    }.start();
   }
 
   public void shutDown() {
     world.shutDown();
-    drawerThread.interrupt();
-    detailDrawerThread.interrupt();
-    drawerClockThread.interrupt();
   }
 
   private void addEventHandlers() {
@@ -74,7 +72,6 @@ public class WorldPanel extends Group {
       Stopover stopover = world.findStopoverAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
 
       if (vehicle != null) {
-        System.out.println("clicked vehicle " + vehicle + " because " + vehicle.getCoordinates().toString());
         // not sure if this synchronized block is needed
         synchronized (detailDrawer) {
           detailDrawer.setObject(vehicle);
@@ -82,7 +79,6 @@ public class WorldPanel extends Group {
         }
       }
       else if (stopover != null){
-        System.out.println("clicked stopover " + stopover  + " because " + stopover.getCoordinates().toString());
         synchronized (detailDrawer) {
           detailDrawer.setObject(stopover);
           detailDrawer.notify();
@@ -95,13 +91,14 @@ public class WorldPanel extends Group {
     try {
       StopoverNetwork network = new StopoverNetwork();
 
-      CivilAirport civilAirport1 = new CivilAirport(new Coordinates(450, 40), 5);
-      CivilAirport civilAirport2 = new CivilAirport(new Coordinates(60, 45), 5);
-      CivilAirport civilAirport3 = new CivilAirport(new Coordinates(170, 200), 5);
-      CivilAirport civilAirport4 = new CivilAirport(new Coordinates(620, 230), 5);
-      CivilAirport civilAirport5 = new CivilAirport(new Coordinates(490, 450), 5);
-      CivilAirport civilAirport6 = new CivilAirport(new Coordinates(700, 590), 5);
-      CivilAirport civilAirport7 = new CivilAirport(new Coordinates(230, 600), 5);
+      // TODO: come up with funny names
+      CivilAirport civilAirport1 = new CivilAirport("Paris", new Coordinates(450, 40), 5);
+      CivilAirport civilAirport2 = new CivilAirport("London", new Coordinates(60, 45), 5);
+      CivilAirport civilAirport3 = new CivilAirport("Warsaw", new Coordinates(170, 200), 5);
+      CivilAirport civilAirport4 = new CivilAirport("Tokyo", new Coordinates(620, 230), 5);
+      CivilAirport civilAirport5 = new CivilAirport("Goteborg", new Coordinates(490, 450), 5);
+      CivilAirport civilAirport6 = new CivilAirport("Helsinki", new Coordinates(700, 590), 5);
+      CivilAirport civilAirport7 = new CivilAirport("Madrid", new Coordinates(230, 600), 5);
 
       network.add(civilAirport1);
       network.add(civilAirport2);
@@ -157,10 +154,10 @@ public class WorldPanel extends Group {
       network.connect(airJunction7, civilAirport5);
       network.connect(airJunction7, civilAirport7);
 
-      MilitaryAirport militaryAirport1 = new MilitaryAirport(new Coordinates(760, 40), 4);
-      MilitaryAirport militaryAirport2 = new MilitaryAirport(new Coordinates(340, 260), 4);
-      MilitaryAirport militaryAirport3 = new MilitaryAirport(new Coordinates(770, 380), 4);
-      MilitaryAirport militaryAirport4 = new MilitaryAirport(new Coordinates(500, 610), 4);
+      MilitaryAirport militaryAirport1 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(760, 40), 4);
+      MilitaryAirport militaryAirport2 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(340, 260), 4);
+      MilitaryAirport militaryAirport3 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(770, 380), 4);
+      MilitaryAirport militaryAirport4 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(500, 610), 4);
 
       network.add(militaryAirport1);
       network.add(militaryAirport2);
@@ -179,12 +176,13 @@ public class WorldPanel extends Group {
       network.connect(militaryAirport4, airJunction6);
       network.connect(militaryAirport4, airJunction7);
 
-      Port port1 = new Port(new Coordinates(50, 230), 4);
-      Port port2 = new Port(new Coordinates(230, 280), 4);
-      Port port3 = new Port(new Coordinates(430, 350), 4);
-      Port port4 = new Port(new Coordinates(390, 490), 4);
-      Port port5 = new Port(new Coordinates(230, 530), 4);
-      Port port6 = new Port(new Coordinates(100, 620), 4);
+      // TODO: come up with funny names
+      Port port1 = new Port("Berlin", new Coordinates(50, 230), 4);
+      Port port2 = new Port("Poznan", new Coordinates(230, 280), 4);
+      Port port3 = new Port("York", new Coordinates(430, 350), 4);
+      Port port4 = new Port("Leeds", new Coordinates(390, 490), 4);
+      Port port5 = new Port("Hamburg", new Coordinates(230, 530), 4);
+      Port port6 = new Port("Lwow", new Coordinates(125, 575), 4);
 
       network.add(port1);
       network.add(port2);

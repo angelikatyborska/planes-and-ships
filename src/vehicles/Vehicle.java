@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import core.Coordinates;
 import gui.Drawable;
 import gui.Drawer;
-import gui.WorldDrawer;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
@@ -13,8 +12,6 @@ import world.WorldClockListener;
 import world.WorldMap;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
-
-import static java.lang.Thread.sleep;
 
 public abstract class Vehicle extends WorldClockListener implements Drawable {
   private final int id;
@@ -56,6 +53,10 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     processingRoute.unlock();
 
     return stopover;
+  }
+
+  public Stopover getNextCivilStopover() {
+    return (Stopover) getNextCivilDestination();
   }
 
   public Stopover getPreviousStopover() {
