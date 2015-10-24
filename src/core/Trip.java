@@ -63,7 +63,6 @@ public class Trip {
 
   public void checkpoint(PassengerZone checkpoint) {
    if (getNextCivilDestination().passengerZone() == checkpoint) {
-     System.err.println("checkpoint!");
      previousStopover++;
 
      if (goingBack) {

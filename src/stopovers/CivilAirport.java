@@ -1,6 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
+import core.Passenger;
 import core.PassengerZone;
 import gui.WorldDrawer;
 import vehicles.Airplane;
@@ -24,7 +25,13 @@ public class CivilAirport extends Airport implements CivilDestination {
 
   public void prepareVehicleForTravel(CivilAirplane vehicle) throws InterruptedException {
     super.prepareVehicleForTravel((Airplane) vehicle);
-    vehicle.passengerZone().moveAllTo(passengerZone);
+
+    // "wake up" all passengers, "throw" them out of the vehicle and let them know where they are
+    // it's up to the passenger whether he will get accommodated there or go to sleep
+    vehicle.passengerZone().removePassengersWithSignal(passengerZone);
+
+
+    // take all passengers waiting at the airport on board
     passengerZone.moveAllWithMatchingDestinationTo(vehicle.passengerZone(), vehicle.getNextCivilDestination());
   }
 

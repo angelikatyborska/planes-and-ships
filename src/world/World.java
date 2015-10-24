@@ -3,7 +3,6 @@ package world;
 import core.Coordinates;
 import core.Passenger;
 import core.PassengerGenerator;
-import core.PassengerZone;
 import stopovers.*;
 import vehicles.*;
 
@@ -42,7 +41,7 @@ public class World {
       CivilAirplane vehicle = vehicleGenerator.newCivilAirplane();
       CivilAirport startingPoint = map.getRandomCivilAirport();
       vehicle.setRoute(map.getRouteGenerator().newCivilAirRoute(startingPoint, 4));
-      addPassengersAccordingly(vehicle.passengerZone().getCapacity() / 2, startingPoint);
+      addPassengersAccordingly(vehicle.passengerZone().getCapacity() / 4, startingPoint);
       prepareVehicle(vehicle, startingPoint.getCoordinates());
 
     }
@@ -70,7 +69,7 @@ public class World {
       CivilShip vehicle = vehicleGenerator.newCivilShip();
       Port startingPoint = map.getRandomPort();
       vehicle.setRoute(map.getRouteGenerator().newCivilSeaRoute(startingPoint, 4));
-      addPassengersAccordingly((vehicle.passengerZone().getCapacity() / 2), startingPoint);
+      addPassengersAccordingly((vehicle.passengerZone().getCapacity() / 4), startingPoint);
       prepareVehicle(vehicle, startingPoint.getCoordinates());
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {
@@ -126,6 +125,7 @@ public class World {
   private void addPassengersAccordingly(int howMany, CivilDestination hometown) {
     try {
       ArrayList<Passenger> passengers = new ArrayList<>();
+
       for (int i = 0; i < howMany; i++) {
         Passenger newPassenger = passengerGenerator.randomPassenger(hometown);
         threads.put(newPassenger, new Thread(newPassenger));
@@ -133,7 +133,13 @@ public class World {
         passengers.add(newPassenger);
       }
 
-      passengers.forEach(hometown.passengerZone()::accommodate);
+      // TODO:  honestly, assuming that every new passenger started waiting at this point is just being optimistic, and not a good coder...
+      for (Passenger passenger : passengers) {
+        synchronized (passenger) {
+          passenger.setArrivedAtPassengerZone(hometown.passengerZone());
+          passenger.notify();
+        }
+      }
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {
       System.err.println("Tried to add passengers with the hometown of " + hometown + ", but no such CivilDestination exist on Map " + map);

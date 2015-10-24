@@ -1,6 +1,7 @@
 package core;
 
 import stopovers.CivilDestination;
+import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 
@@ -57,42 +58,72 @@ public class Passenger implements Runnable {
     return trip.getNextCivilDestination();
   }
 
+  public CivilDestination getPreviousCivilDestination() {
+    return trip.getPreviousCivilDestination();
+  }
+
   public void run() {
     while(!Thread.currentThread().isInterrupted()) {
       try {
         synchronized (this) {
           wait();
-        }
-        // TODO: this is no good, passenger doesn't teleport if it's the first thing he should do and
-        // if the passenger is going to accommodate himself, he wont be able to react to it! (he won't be waiting for the signal at that moment)
-        trip.checkpoint(arrivedAtPassengerZone);
-        if (arrivedAtPassengerZone == trip.getTo().passengerZone()) {
-          System.err.println("passenger arrived at his destination");
-          trip.getTo().passengerZone().removePassenger(this);
-          sleep(trip.getWaitingTime());
-          while (!trip.getTo().passengerZone().accommodate(this));
-          trip.checkpoint(trip.getTo().passengerZone());
-        }
-        else if (arrivedAtPassengerZone == trip.getFrom().passengerZone()) {
-          System.err.println("passenger came back home");
-          try {
-            trip.randomize();
-          } catch (StopoverNotFoundInStopoverNetworkException e) {
-            System.err.println("Passenger " + this + " tried to generate a new trip for himself");
-            e.printStackTrace();
-          }
-        }
-        else if (trip.getNextCivilDestination().getClass() != trip.getPreviousCivilDestination().getClass()) {
-          // teleport form port to airport or the other way around
-          System.err.println("passenger is gonna teleport");
-          arrivedAtPassengerZone.removePassenger(this);
-          while (!getNextCivilDestination().passengerZone().accommodate(this));
-          trip.checkpoint(getNextCivilDestination().passengerZone());
+
+          // everything below also has to be synchronized on this passenger so that he does all of this stuff before he is signaled again
+          handleArrivingSomewhere();
+          goByFootAsLongAsNecessary();
         }
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
     }
+  }
+
+  private void handleArrivingSomewhere() throws InterruptedException {
+    trip.checkpoint(arrivedAtPassengerZone);
+
+    if (arrivedAtPassengerZone == trip.getTo().passengerZone()) {
+      System.out.println("passenger " + this + " arrived at his destination at " + ((Stopover) trip.getTo()).getCoordinates().toString());
+
+      // passenger arrived at his destination, do not go to the (air)port, go "downtown" to do his business
+      sleep(trip.getWaitingTime());
+    }
+    else if (arrivedAtPassengerZone == trip.getFrom().passengerZone()) {
+      System.out.println("passenger " + this + " arrived home at " + ((Stopover) trip.getFrom()).getCoordinates().toString());
+      // passenger ended his trip, generate a new random trip and accommodate at first passenger zone
+      try {
+        trip.randomize();
+      } catch (StopoverNotFoundInStopoverNetworkException e) {
+        System.out.println("Passenger " + this + " tried to generate a new trip for himself");
+        e.printStackTrace();
+      }
+    }
+
+    // try to get back into passenger zone until successful
+    while (!arrivedAtPassengerZone.accommodate(this)) ;
+  }
+
+  private void goByFootAsLongAsNecessary() throws InterruptedException {
+    // no vehicle-based connection between different types of civil destinations, need to go by foot
+    boolean stillHaveToWalk = true;
+
+    do {
+      if (getNextCivilDestination().getClass() != getPreviousCivilDestination().getClass()) {
+        // leave previous city
+        getPreviousCivilDestination().passengerZone().removePassenger(this);
+
+        // going, going...
+        System.out.println("Passenger " + this + " is going by foot from " + ((Stopover) getPreviousCivilDestination()).getCoordinates().toString() + " to " + ((Stopover) getNextCivilDestination()).getCoordinates().toString());
+        sleep(3000);
+
+        // arrive at the next city
+        arrivedAtPassengerZone = getNextCivilDestination().passengerZone();
+        handleArrivingSomewhere();
+      }
+      else {
+        stillHaveToWalk = false;
+      }
+
+    } while (stillHaveToWalk);
   }
 }
 

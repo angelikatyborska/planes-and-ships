@@ -54,4 +54,8 @@ public class Coordinates {
     double dy = destination.getY() - y;
     return Math.atan2(dy, dx) + Math.PI / 2;
   }
+
+  public String toString() {
+    return "(" + x + ", " + y + ")";
+  }
 }

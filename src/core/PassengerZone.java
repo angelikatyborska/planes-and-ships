@@ -30,9 +30,37 @@ public class PassengerZone {
     return capacity;
   }
 
+  /**
+   * Removes a passenger from itself
+   * @param passenger
+   */
   public void removePassenger(Passenger passenger) {
     processingPassengers.lock();
     passengers.remove(passenger);
+    processingPassengers.unlock();
+  }
+
+  /**
+   * Removes all passengers from this PassengerZone letting them know that they arrived at destination PassengerZone
+   * @param destination PassengerZone to which passenger will be signaled to go next
+   */
+  public void removePassengersWithSignal(PassengerZone destination) {
+    processingPassengers.lock();
+    List<Passenger> passengersToRemove = new ArrayList<>();
+
+    for (Passenger passenger : passengers) {
+      passengersToRemove.add(passenger);
+    }
+
+    for (Passenger passenger : passengersToRemove) {
+      passengers.remove(passenger);
+
+      synchronized (passenger) {
+        passenger.setArrivedAtPassengerZone(destination);
+        passenger.notify();
+      }
+    }
+
     processingPassengers.unlock();
   }
 
@@ -47,12 +75,6 @@ public class PassengerZone {
 
     if (capacity > passengers.size()) {
       passengers.add(passenger);
-
-      synchronized (passenger) {
-        passenger.setArrivedAtPassengerZone(this);
-        passenger.notify();
-      }
-
       successful =  true;
     }
 
