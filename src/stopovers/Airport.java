@@ -1,7 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
-import gui.WorldDrawer;
+import gui.Drawer;
 import vehicles.*;
 
 public abstract class Airport extends Stopover {
@@ -48,7 +48,7 @@ public abstract class Airport extends Stopover {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawAirport(this);
   }
 }

@@ -1,10 +1,8 @@
 package vehicles;
 
-import gui.WorldDrawer;
+import gui.Drawer;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
-
-import static java.lang.Thread.sleep;
 
 public abstract class Ship extends Vehicle {
   public Ship(double velocity) {
@@ -12,8 +10,8 @@ public abstract class Ship extends Vehicle {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawShip(this);
   }
 
   @Override

@@ -1,7 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
-import gui.WorldDrawer;
+import gui.Drawer;
 import vehicles.Airplane;
 import vehicles.MilitaryAirplane;
 
@@ -19,7 +19,7 @@ public class MilitaryAirport extends Airport {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawMilitaryAirport(this);
   }
 }

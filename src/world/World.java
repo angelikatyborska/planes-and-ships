@@ -152,4 +152,24 @@ public class World {
   public void shutDown() {
     threads.forEach((runnable, thread) -> thread.interrupt());
   }
+
+  public Stopover findStopoverAtCoordinates(double x, double y, double errorMargin) {
+    Coordinates clickedCoordinates = new Coordinates(x, y);
+    for (Stopover stopover : getAllStopovers()) {
+      if (stopover.getCoordinates().distanceTo(clickedCoordinates) < errorMargin) {
+        return stopover;
+      }
+    }
+    return null;
+  }
+
+  public Vehicle findVehicleAtCoordinates(double x, double y, double errorMargin) {
+    Coordinates clickedCoordinates = new Coordinates(x, y);
+    for (Vehicle vehicle : getAllVehicles()) {
+      if (vehicle.getCoordinates().distanceTo(clickedCoordinates) <  errorMargin) {
+        return vehicle;
+      }
+    }
+    return null;
+  }
 }

@@ -1,9 +1,8 @@
 package stopovers;
 
 import core.Coordinates;
-import core.Passenger;
 import core.PassengerZone;
-import gui.WorldDrawer;
+import gui.Drawer;
 import vehicles.CivilShip;
 import vehicles.Vehicle;
 
@@ -39,7 +38,7 @@ public class Port extends Stopover implements CivilDestination {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawPort(this);
   }
 }

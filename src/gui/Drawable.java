@@ -1,5 +1,5 @@
 package gui;
 
 public interface Drawable {
-  void draw(WorldDrawer drawer);
+  void draw(Drawer drawer);
 }

@@ -1,7 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
-import gui.WorldDrawer;
+import gui.Drawer;
 
 public class Junction extends Stopover {
   public Junction(Coordinates coordinates) {
@@ -9,7 +9,7 @@ public class Junction extends Stopover {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawStopover(this);
   }
 }

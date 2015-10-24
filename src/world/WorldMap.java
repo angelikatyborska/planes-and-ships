@@ -24,6 +24,7 @@ public class WorldMap {
   }
 
   public List<Vehicle> getAllVehicles() {
+    // TODO: does this copy only the list or each key?
     return new ArrayList<>(vehicleCoordinates.keySet());
   }
 
@@ -98,7 +99,11 @@ public class WorldMap {
   }
 
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {
-    return vehicleCoordinates.get(vehicle);
+    // TODO: return a copy maybe?
+    processingVehicle.lock();
+    Coordinates coordinates = vehicleCoordinates.get(vehicle);
+    processingVehicle.unlock();
+    return coordinates;
   }
 
   public boolean moveVehicleTowardsTargetStopover(Vehicle vehicle, double velocity) throws StopoverNotFoundInStopoverNetworkException {
@@ -114,12 +119,14 @@ public class WorldMap {
   }
 
   protected void removeVehicle(Vehicle vehicle) {
+    processingVehicle.lock();
     Stopover stopover = getVehicleCurrentStopover(vehicle);
     if (stopover != null) {
       stopover.releaseVehicle(vehicle);
     }
 
     vehicleCoordinates.remove(vehicle);
+    processingVehicle.unlock();
   }
 
   protected Stopover findClosestStopoverOfType(Stopover from, Class<? extends Stopover> destinationType) throws StopoverNotFoundInStopoverNetworkException {

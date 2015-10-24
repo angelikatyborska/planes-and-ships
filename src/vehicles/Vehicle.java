@@ -3,6 +3,7 @@ package vehicles;
 import com.google.common.collect.Lists;
 import core.Coordinates;
 import gui.Drawable;
+import gui.Drawer;
 import gui.WorldDrawer;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
@@ -126,7 +127,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     }
   }
 
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawVehicle(this);
   }
 }

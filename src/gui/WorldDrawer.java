@@ -4,7 +4,6 @@ import core.Passenger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 import stopovers.*;
 import vehicles.*;
 import world.WorldMap;
@@ -13,9 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //  TODO: implement
-public class WorldDrawer implements Runnable {
-  private final WorldDrawerClock clock;
-  private final Thread clockThread;
+public class WorldDrawer implements Drawer, Runnable {
   private final WorldMap map;
   private final GraphicsContext gc;
   private final Image terrain;
@@ -25,14 +22,11 @@ public class WorldDrawer implements Runnable {
   private final double width;
   private final double offsetFromRoute = 6;
 
-  public WorldDrawer(int fps, WorldMap map, GraphicsContext gc) {
-    this.clock = new WorldDrawerClock(1000/fps, this);
-    clockThread = new Thread(clock);
-    clockThread.start();
+  public WorldDrawer(WorldMap map, GraphicsContext gc, double width, double height) {
     this.map = map;
     this.gc = gc;
-    this.width = gc.getCanvas().getWidth();
-    this.height = gc.getCanvas().getHeight();
+    this.width = width;
+    this.height = height;
     terrain = new Image("file:images/terrain.png");
     civilShip = new Image("file:images/civilship.png");
     civilAirplane = new Image("file:images/civilairplane.png");
@@ -44,11 +38,10 @@ public class WorldDrawer implements Runnable {
     drawTerrain();
     drawVehicles();
     drawStopovers();
-
-    gc.save();
   }
 
-  public void draw(Stopover stopover) {
+  @Override
+  public void drawStopover(Stopover stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
     double a = 6;
@@ -59,7 +52,8 @@ public class WorldDrawer implements Runnable {
     //gc.fillText(stopover.getName(), x, y);
   }
 
-  public void draw(Port stopover) {
+  @Override
+  public void drawPort(Port stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
     double a = 30;
@@ -76,11 +70,13 @@ public class WorldDrawer implements Runnable {
     gc.fillText(s, x, y+20);
   }
 
-  public void draw(Airport airport) {
+  @Override
+  public void drawAirport(Airport airport) {
 
   }
 
-  public void draw(CivilAirport stopover) {
+  @Override
+  public void drawCivilAirport(CivilAirport stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
     double a = 30;
@@ -99,7 +95,8 @@ public class WorldDrawer implements Runnable {
     gc.fillText(s, x, y+20);
   }
 
-  public void draw(MilitaryAirport stopover) {
+  @Override
+  public void drawMilitaryAirport(MilitaryAirport stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
     double a = 16;
@@ -110,11 +107,13 @@ public class WorldDrawer implements Runnable {
     //gc.fillText(stopover.getName(), x, y);
   }
 
-  public void draw(Vehicle vehicle) {
+  @Override
+  public void drawVehicle(Vehicle vehicle) {
 
   }
 
-  public void draw(Airplane vehicle) {
+  @Override
+  public void drawAirplane(Airplane vehicle) {
     double x = vehicle.getCoordinates().getX();
     double y = vehicle.getCoordinates().getY();
     double a = 8;
@@ -127,7 +126,8 @@ public class WorldDrawer implements Runnable {
     //gc.fillText(Integer.toString(vehicle.getId()), x+8, y+8);
   }
 
-  public void draw(CivilAirplane vehicle) {
+  @Override
+  public void drawCivilAirplane(CivilAirplane vehicle) {
     double x = vehicle.getCoordinates().getX() - civilShip.getWidth()/2;
     double y = vehicle.getCoordinates().getY() - civilShip.getHeight()/2;
 
@@ -140,12 +140,14 @@ public class WorldDrawer implements Runnable {
     gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
   }
 
-  public void draw(MilitaryAirplane vehicle) {
+  @Override
+  public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
     gc.setFill(Color.OLIVE);
-    draw((Airplane) vehicle);
+    drawAirplane(vehicle);
   }
 
-  public void draw(Ship vehicle) {
+  @Override
+  public void drawShip(Ship vehicle) {
     double x = vehicle.getCoordinates().getX();
     double y = vehicle.getCoordinates().getY();
     double a = 8;
@@ -157,7 +159,8 @@ public class WorldDrawer implements Runnable {
     gc.fillOval(x + dx - a / 2, y + dy - a / 2, a, a);
   }
 
-  public void draw(CivilShip vehicle) {
+  @Override
+  public void drawCivilShip(CivilShip vehicle) {
 //    gc.setFill(Color.BLACK);
 //    draw((Ship) vehicle);
     double x = vehicle.getCoordinates().getX() - civilShip.getWidth()/2;
@@ -172,9 +175,10 @@ public class WorldDrawer implements Runnable {
     gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
   }
 
-  public void draw(MilitaryShip vehicle) {
+  @Override
+  public void drawMilitaryShip(MilitaryShip vehicle) {
     gc.setFill(Color.OLIVE);
-    draw((Ship) vehicle);
+    drawShip(vehicle);
   }
 
   @Override
@@ -183,12 +187,12 @@ public class WorldDrawer implements Runnable {
       synchronized (this) {
         try {
           wait();
-          draw();
         } catch (InterruptedException e) {
-          clockThread.interrupt();
           Thread.currentThread().interrupt();
         }
       }
+
+      draw();
     }
   }
 

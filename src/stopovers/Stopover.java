@@ -2,7 +2,7 @@ package stopovers;
 
 import core.Coordinates;
 import gui.Drawable;
-import gui.WorldDrawer;
+import gui.Drawer;
 import vehicles.*;
 
 import java.util.ArrayList;
@@ -135,7 +135,7 @@ public class Stopover implements Drawable {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawStopover(this);
   }
 }

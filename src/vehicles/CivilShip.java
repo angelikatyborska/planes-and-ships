@@ -1,7 +1,7 @@
 package vehicles;
 
 import core.PassengerZone;
-import gui.WorldDrawer;
+import gui.Drawer;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
@@ -30,8 +30,8 @@ public class CivilShip extends Ship implements CivilVehicle {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawCivilShip(this);
   }
 
   @Override

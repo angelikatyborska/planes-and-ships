@@ -1,11 +1,8 @@
 package vehicles;
 
-import gui.WorldDrawer;
-import stopovers.Airport;
+import gui.Drawer;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
-
-import static java.lang.Thread.sleep;
 
 public abstract class Airplane extends Vehicle {
   private final double fuelCapacity;
@@ -43,8 +40,8 @@ public abstract class Airplane extends Vehicle {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawAirplane(this);
   }
 
   @Override

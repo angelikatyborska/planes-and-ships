@@ -1,11 +1,9 @@
 package vehicles;
 
 import core.Weapon;
-import gui.WorldDrawer;
+import gui.Drawer;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
-
-import static java.lang.Thread.sleep;
 
 public class MilitaryAirplane extends Airplane {
   private Weapon weapon;
@@ -16,8 +14,8 @@ public class MilitaryAirplane extends Airplane {
   }
 
   @Override
-  public void draw(WorldDrawer drawer) {
-    drawer.draw(this);
+  public void draw(Drawer drawer) {
+    drawer.drawMilitaryAirplane(this);
   }
 
   @Override

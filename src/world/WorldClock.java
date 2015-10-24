@@ -27,11 +27,9 @@ public class WorldClock implements Runnable {
   }
 
   public void addListener(WorldClockListener listener) {
-    listeners.add(listener);
-  }
-
-  public void addListeners(List<WorldClockListener> listeners) {
-    this.listeners.addAll(listeners);
+    synchronized (listeners) {
+      listeners.add(listener);
+    }
   }
 
   // TODO: implement pause
@@ -51,12 +49,15 @@ public class WorldClock implements Runnable {
   private void tick() {
     try {
       sleep(timeInterval);
-      for (WorldClockListener listener : listeners) {
-        synchronized (listener) {
-          listener.notify();
+      synchronized (listeners) {
+        for (WorldClockListener listener : listeners) {
+          synchronized (listener) {
+            listener.notify();
+          }
         }
       }
-    } catch (InterruptedException e) {
+    }
+    catch(InterruptedException e){
       Thread.currentThread().interrupt();
     }
   }
