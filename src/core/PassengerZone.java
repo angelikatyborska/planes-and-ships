@@ -3,7 +3,6 @@ package core;
 import stopovers.CivilDestination;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -31,8 +30,10 @@ public class PassengerZone {
     return capacity;
   }
 
-  private void removePassengers(List<Passenger> passengersToRemove) {
-    passengersToRemove.forEach(passengers::remove);
+  public void removePassenger(Passenger passenger) {
+    processingPassengers.lock();
+    passengers.remove(passenger);
+    processingPassengers.unlock();
   }
 
   /**
@@ -47,8 +48,9 @@ public class PassengerZone {
     if (capacity > passengers.size()) {
       passengers.add(passenger);
 
-      synchronized (passenger.getArrivedAt()) {
-        passenger.getArrivedAt().notify();
+      synchronized (passenger) {
+        passenger.setArrivedAtPassengerZone(this);
+        passenger.notify();
       }
 
       successful =  true;
@@ -64,11 +66,13 @@ public class PassengerZone {
    */
   public List<Passenger> getPassengers() {
     processingPassengers.lock();
-
-    ArrayList<Passenger> passengersCopy = new ArrayList<>(passengers);
-
+    List<Passenger> copy = new ArrayList<>(passengers);
     processingPassengers.unlock();
-    return passengersCopy;
+    return copy;
+  }
+
+  public List<Passenger> getPassengersUnsafe() {
+    return passengers;
   }
 
   /**
@@ -96,7 +100,6 @@ public class PassengerZone {
    */
   public void moveAllWithMatchingDestinationTo(PassengerZone target, CivilDestination destination) {
     processingPassengers.lock();
-    List<Passenger> passengerToMove = new ArrayList<>();
     List<Passenger> movedPassengers = new ArrayList<>();
 
     passengers.forEach((passenger) -> {
@@ -109,5 +112,9 @@ public class PassengerZone {
     removePassengers(movedPassengers);
 
     processingPassengers.unlock();
+  }
+
+  private void removePassengers(List<Passenger> passengersToRemove) {
+    passengersToRemove.forEach(passengers::remove);
   }
 }

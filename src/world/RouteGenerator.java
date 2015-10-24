@@ -37,13 +37,15 @@ public class RouteGenerator {
     return newRoute(from, Port.class, numberOfDestinations);
   }
 
-  public List<Stopover> newCivilRoute(CivilDestination from, CivilDestination finalDestination) throws StopoverNotFoundInStopoverNetworkException {
-    ArrayList<Stopover> route = new ArrayList<>();
+  public List<CivilDestination> newCivilRoute(CivilDestination from, CivilDestination finalDestination) throws StopoverNotFoundInStopoverNetworkException {
+    ArrayList<CivilDestination> route = new ArrayList<>();
 
-    Stopover to = (Stopover) finalDestination;
-    List<Stopover> through = map.findCivilRouteBetween((Stopover) from, to);
+    route.add(from);
+
+    CivilDestination to = finalDestination;
+    List<CivilDestination> through = map.findCivilRouteBetween(from, to);
     route.addAll(through);
-    route.add((Stopover) finalDestination);
+    route.add(finalDestination);
     return route;
   }
 

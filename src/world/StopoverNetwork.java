@@ -1,9 +1,7 @@
 package world;
 
-import stopovers.CivilAirport;
-import stopovers.Junction;
-import stopovers.Port;
-import stopovers.Stopover;
+import com.google.common.collect.Lists;
+import stopovers.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -189,12 +187,12 @@ public class StopoverNetwork {
   }
 
   // TODO: this is almost an exact copy of findJunctionsBetween, DRY this maybe?
-  public List<Stopover> findCivilRouteBetween(Stopover from, Stopover to) throws StopoverNotFoundInStopoverNetworkException {
+  public List<CivilDestination> findCivilRouteBetween(CivilDestination from, CivilDestination to) throws StopoverNotFoundInStopoverNetworkException {
     List<Stopover> stopovers = new ArrayList<>();
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>();
     List<StopoverNetworkNode> processedNodes = new ArrayList<>();
 
-    nodesToSearch.add(getNode(from));
+    nodesToSearch.add(getNode((Stopover) from));
 
     HashMap<StopoverNetworkNode, StopoverNetworkNode> childToParent = new HashMap<>();
     StopoverNetworkNode currentNode;
@@ -230,9 +228,21 @@ public class StopoverNetwork {
           currentNode = childToParent.get(currentNode);
         }
 
-        Collections.reverse(stopovers);
+        stopovers = Lists.reverse(stopovers);
 
-        return stopovers;
+        // TODO: it seems like this function is correct
+//        System.err.println("from " + from.getCoordinates().getX() + ", " + from.getCoordinates().getY());
+//        stopovers.forEach(stopover -> System.err.println(stopover.getCoordinates().getX() + ", " + stopover.getCoordinates().getY()));
+//        System.err.println("to " + to.getCoordinates().getX() + ", " + to.getCoordinates().getY());
+
+        ArrayList<CivilDestination> civilDestinations = new ArrayList<>();
+        for (Stopover stopover : stopovers) {
+          if (stopover instanceof CivilDestination) {
+            civilDestinations.add((CivilDestination) stopover);
+          }
+        }
+
+        return civilDestinations;
       }
     }
     return null;

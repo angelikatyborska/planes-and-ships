@@ -1,9 +1,7 @@
 package core;
 
 import stopovers.CivilDestination;
-import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
-import world.WorldClockListener;
 import world.WorldMap;
 
 import static java.lang.Thread.sleep;
@@ -17,7 +15,7 @@ public class Passenger implements Runnable {
   private final String PESEL;
   private final CivilDestination hometown;
   private Trip trip;
-  private Stopover arrivedAt;
+  private PassengerZone arrivedAtPassengerZone;
 
   /**
    *
@@ -36,7 +34,7 @@ public class Passenger implements Runnable {
     this.PESEL = PESEL;
     this.hometown = hometown;
     this.trip = new Trip(hometown, map);
-    this.arrivedAt = (Stopover) hometown;
+    this.arrivedAtPassengerZone = hometown.passengerZone();
   }
 
   public String getFirstName() {
@@ -51,12 +49,8 @@ public class Passenger implements Runnable {
     return PESEL;
   }
 
-  public void setArrivedAt(Stopover stopover) {
-    arrivedAt = stopover;
-  }
-
-  public Stopover getArrivedAt() {
-    return arrivedAt;
+  public void setArrivedAtPassengerZone(PassengerZone passengerZone) {
+    arrivedAtPassengerZone = passengerZone;
   }
 
   public CivilDestination getNextCivilDestination() {
@@ -65,24 +59,38 @@ public class Passenger implements Runnable {
 
   public void run() {
     while(!Thread.currentThread().isInterrupted()) {
-      synchronized (arrivedAt) {
-        try {
-          arrivedAt.wait();
-          trip.checkpoint();
-          if (arrivedAt == trip.getTo()) {
-            sleep(trip.getWaitingTime());
-          }
-          else if (arrivedAt == trip.getFrom()) {
-            try {
-              trip.randomize();
-            } catch (StopoverNotFoundInStopoverNetworkException e) {
-              System.err.println("Passenger " + this + " tried to generate a new trip for himself");
-              e.printStackTrace();
-            }
-          }
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
+      try {
+        synchronized (this) {
+          wait();
         }
+        // TODO: this is no good, passenger doesn't teleport if it's the first thing he should do and
+        // if the passenger is going to accommodate himself, he wont be able to react to it! (he won't be waiting for the signal at that moment)
+        trip.checkpoint(arrivedAtPassengerZone);
+        if (arrivedAtPassengerZone == trip.getTo().passengerZone()) {
+          System.err.println("passenger arrived at his destination");
+          trip.getTo().passengerZone().removePassenger(this);
+          sleep(trip.getWaitingTime());
+          while (!trip.getTo().passengerZone().accommodate(this));
+          trip.checkpoint(trip.getTo().passengerZone());
+        }
+        else if (arrivedAtPassengerZone == trip.getFrom().passengerZone()) {
+          System.err.println("passenger came back home");
+          try {
+            trip.randomize();
+          } catch (StopoverNotFoundInStopoverNetworkException e) {
+            System.err.println("Passenger " + this + " tried to generate a new trip for himself");
+            e.printStackTrace();
+          }
+        }
+        else if (trip.getNextCivilDestination().getClass() != trip.getPreviousCivilDestination().getClass()) {
+          // teleport form port to airport or the other way around
+          System.err.println("passenger is gonna teleport");
+          arrivedAtPassengerZone.removePassenger(this);
+          while (!getNextCivilDestination().passengerZone().accommodate(this));
+          trip.checkpoint(getNextCivilDestination().passengerZone());
+        }
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
       }
     }
   }

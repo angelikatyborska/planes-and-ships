@@ -4,17 +4,12 @@ import static org.mockito.Mockito.*;
 
 import stopovers.CivilAirport;
 import org.junit.Test;
-import stopovers.CivilDestination;
-import stopovers.Stopover;
-import world.StopoverNotFoundInStopoverNetworkException;
-import world.WorldMap;
 
 public class PassengerZoneTest {
   @Test
   public void shouldAccommodateWhenNotFull() {
     PassengerZone passengerZone = new PassengerZone(4);
     Passenger passenger = mock(Passenger.class);
-    stub(passenger.getArrivedAt()).toReturn(mock(Stopover.class));
 
     assertTrue(passengerZone.accommodate(passenger));
   }
@@ -23,7 +18,6 @@ public class PassengerZoneTest {
   public void shouldNotAccommodateWhenFull() {
     PassengerZone passengerZone = new PassengerZone(0);
     Passenger passenger = mock(Passenger.class);
-    stub(passenger.getArrivedAt()).toReturn(mock(Stopover.class));
 
     assertFalse(passengerZone.accommodate(passenger));
   }
@@ -36,9 +30,6 @@ public class PassengerZoneTest {
     Passenger passenger1 = mock(Passenger.class);
     Passenger passenger2 = mock(Passenger.class);
     Passenger passenger3 = mock(Passenger.class);
-    stub(passenger1.getArrivedAt()).toReturn(mock(Stopover.class));
-    stub(passenger2.getArrivedAt()).toReturn(mock(Stopover.class));
-    stub(passenger3.getArrivedAt()).toReturn(mock(Stopover.class));
 
     passengerZone1.accommodate(passenger1);
     passengerZone1.accommodate(passenger2);
@@ -62,11 +53,9 @@ public class PassengerZoneTest {
 
     Passenger passengerGoingToLondon = mock(Passenger.class);
     stub(passengerGoingToLondon.getNextCivilDestination()).toReturn(london);
-    stub(passengerGoingToLondon.getArrivedAt()).toReturn(mock(Stopover.class));
 
     Passenger passengerGoingToParis = mock(Passenger.class);
     stub(passengerGoingToParis.getNextCivilDestination()).toReturn(paris);
-    stub(passengerGoingToParis.getArrivedAt()).toReturn(mock(Stopover.class));
 
     passengerZone1.accommodate(passengerGoingToLondon);
     passengerZone1.accommodate(passengerGoingToParis);

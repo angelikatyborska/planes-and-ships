@@ -190,6 +190,9 @@ public class Main extends Application {
     world.addCivilAirplane();
     world.addCivilShip();
     world.addCivilShip();
+    world.addCivilShip();
+    world.addCivilShip();
+    world.addCivilShip();
 
     primaryStage.setOnCloseRequest(we -> { world.shutDown(); drawerThread.interrupt(); });
     primaryStage.show();

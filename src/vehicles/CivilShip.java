@@ -6,8 +6,6 @@ import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 
-import static java.lang.Thread.sleep;
-
 public class CivilShip extends Ship implements CivilVehicle {
   private final PassengerZone passengerZone;
 

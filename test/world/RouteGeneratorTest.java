@@ -91,6 +91,16 @@ public class RouteGeneratorTest {
   }
 
   @Test
+  public void StopoversInACivilRouteShouldBeConnected() throws StopoverNotFoundInStopoverNetworkException {
+    List<CivilDestination> civilRoute = routeGenerator.newCivilRoute(startingPort, endPort);
+
+    for (int i = 0; i < civilRoute.size() - 1; i++) {
+      List<Junction> junctionsBetweenNeighbours = map.findJunctionsBetween((Stopover) civilRoute.get(i), (Stopover) civilRoute.get(i + 1));
+      assertTrue(junctionsBetweenNeighbours.isEmpty());
+    }
+  }
+
+  @Test
   public void shouldFindTheOnlyCorrectRoute() throws StopoverNotFoundInStopoverNetworkException {
     List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort);
 

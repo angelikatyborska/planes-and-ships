@@ -12,8 +12,8 @@ public class Trip {
   private TripType type;
   private CivilDestination to;
   private CivilDestination from;
-  private List<Stopover> throughTo;
-  private List<Stopover> throughBack;
+  private List<CivilDestination> throughTo;
+  private List<CivilDestination> throughBack;
   private boolean goingBack;
   private int previousStopover;
   private WorldMap map;
@@ -26,12 +26,13 @@ public class Trip {
 
   public void randomize() throws StopoverNotFoundInStopoverNetworkException {
     do {
-      to = map.getRandomCivilDestination();
-    } while (to == from);
+      do {
+        to = map.getRandomCivilDestination();
+      } while (to == from);
+      throughTo = map.getRouteGenerator().newCivilRoute(from, to);
+      throughBack = map.getRouteGenerator().newCivilRoute(to, from);
+    } while (throughTo == null || throughBack == null);
 
-
-    throughTo = map.getRouteGenerator().newCivilRoute(from, to);
-    throughBack = map.getRouteGenerator().newCivilRoute(to, from);
     goingBack = false;
     previousStopover = 0;
 
@@ -52,51 +53,51 @@ public class Trip {
     return to;
   }
 
-  public List<Stopover> getThroughTo() {
+  public List<CivilDestination> getThroughTo() {
     return throughTo;
   }
 
-  public List<Stopover> getThroughBack() {
+  public List<CivilDestination> getThroughBack() {
     return throughBack;
   }
 
-  public void checkpoint() {
-    previousStopover++;
+  public void checkpoint(PassengerZone checkpoint) {
+   if (getNextCivilDestination().passengerZone() == checkpoint) {
+     System.err.println("checkpoint!");
+     previousStopover++;
 
-    if (goingBack) {
-      if (previousStopover == throughBack.size() - 1) {
-        goingBack = !goingBack;
-        previousStopover = 0;
-      }
-    }
-    else {
-      if (previousStopover == throughTo.size() - 1) {
-        goingBack = !goingBack;
-        previousStopover = 0;
-      }
-    }
+     if (goingBack) {
+       if (previousStopover == throughBack.size() - 1) {
+         goingBack = !goingBack;
+         previousStopover = 0;
+       }
+     } else {
+       if (previousStopover == throughTo.size() - 1) {
+         goingBack = !goingBack;
+         previousStopover = 0;
+       }
+     }
+   }
   }
 
   // TODO: show to the teacher - using instanceof
 
   public CivilDestination getNextCivilDestination() {
-    CivilDestination nextCivilDestination = null;
     if (goingBack) {
-      for (int i = previousStopover + 1; i < throughBack.size(); i++) {
-        if (throughBack.get(i) instanceof CivilDestination) {
-          nextCivilDestination = (CivilDestination) throughBack.get(i);
-        }
-      }
+      return throughBack.get(previousStopover + 1);
     }
     else {
-      for (int i = previousStopover + 1; i < throughTo.size(); i++) {
-        if (throughTo.get(i) instanceof CivilDestination) {
-          nextCivilDestination = (CivilDestination) throughTo.get(i);
-        }
-      }
+      return throughTo.get(previousStopover + 1);
     }
+  }
 
-    return nextCivilDestination;
+  public CivilDestination getPreviousCivilDestination() {
+    if (goingBack) {
+      return throughBack.get(previousStopover);
+    }
+    else {
+      return throughTo.get(previousStopover);
+    }
   }
 
   public int getWaitingTime() {

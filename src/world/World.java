@@ -6,6 +6,8 @@ import core.PassengerGenerator;
 import core.PassengerZone;
 import stopovers.*;
 import vehicles.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,8 +41,8 @@ public class World {
     try {
       CivilAirplane vehicle = vehicleGenerator.newCivilAirplane();
       CivilAirport startingPoint = map.getRandomCivilAirport();
-      vehicle.setRoute(map.getRouteGenerator().newCivilAirRoute(startingPoint, 2));
-      fillWithPassengers(vehicle.passengerZone().getCapacity() / 2, startingPoint.passengerZone(), startingPoint);
+      vehicle.setRoute(map.getRouteGenerator().newCivilAirRoute(startingPoint, 4));
+      addPassengersAccordingly(vehicle.passengerZone().getCapacity() / 2, startingPoint);
       prepareVehicle(vehicle, startingPoint.getCoordinates());
 
     }
@@ -67,8 +69,8 @@ public class World {
     try {
       CivilShip vehicle = vehicleGenerator.newCivilShip();
       Port startingPoint = map.getRandomPort();
-      vehicle.setRoute(map.getRouteGenerator().newCivilSeaRoute(startingPoint));
-      fillWithPassengers(vehicle.passengerZone().getCapacity() / 2, startingPoint.passengerZone(), startingPoint);
+      vehicle.setRoute(map.getRouteGenerator().newCivilSeaRoute(startingPoint, 4));
+      addPassengersAccordingly((vehicle.passengerZone().getCapacity() / 2), startingPoint);
       prepareVehicle(vehicle, startingPoint.getCoordinates());
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {
@@ -105,7 +107,7 @@ public class World {
   }
 
   private void removePassengersThread(CivilVehicle vehicle) throws InterruptedException {
-    for( Passenger passenger : vehicle.passengerZone().getPassengers()) {
+    for( Passenger passenger : vehicle.passengerZone().getPassengersUnsafe()) {
       Thread thread = threads.get(passenger);
       thread.interrupt();
       thread.join();
@@ -121,15 +123,19 @@ public class World {
     threads.get(vehicle).start();
   }
 
-  private void fillWithPassengers(int howMany, PassengerZone zone, CivilDestination hometown) {
+  private void addPassengersAccordingly(int howMany, CivilDestination hometown) {
     try {
+      ArrayList<Passenger> passengers = new ArrayList<>();
       for (int i = 0; i < howMany; i++) {
         Passenger newPassenger = passengerGenerator.randomPassenger(hometown);
         threads.put(newPassenger, new Thread(newPassenger));
-        zone.accommodate(passengerGenerator.randomPassenger(hometown));
         threads.get(newPassenger).start();
+        passengers.add(newPassenger);
       }
-    } catch (StopoverNotFoundInStopoverNetworkException e) {
+
+      passengers.forEach(hometown.passengerZone()::accommodate);
+    }
+    catch (StopoverNotFoundInStopoverNetworkException e) {
       System.err.println("Tried to add passengers with the hometown of " + hometown + ", but no such CivilDestination exist on Map " + map);
       System.err.println("All stopovers on map are: ");
       map.getAllStopovers().forEach(System.err::println);

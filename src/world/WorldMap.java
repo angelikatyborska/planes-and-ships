@@ -86,7 +86,7 @@ public class WorldMap {
     return stopoverNetwork.findJunctionsBetween(stopover1, stopover2);
   }
 
-  public List<Stopover> findCivilRouteBetween(Stopover stopover1, Stopover stopover2) throws StopoverNotFoundInStopoverNetworkException {
+  public List<CivilDestination> findCivilRouteBetween(CivilDestination stopover1, CivilDestination stopover2) throws StopoverNotFoundInStopoverNetworkException {
     return stopoverNetwork.findCivilRouteBetween(stopover1, stopover2);
   }
 

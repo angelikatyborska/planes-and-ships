@@ -1,5 +1,6 @@
 package gui;
 
+import core.Passenger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -61,12 +62,18 @@ public class WorldDrawer implements Runnable {
   public void draw(Port stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
-    double a = 16;
+    double a = 30;
 
     gc.setFill(Color.BLACK);
     gc.fillOval(x - a/2, y - a/2, a, a);
     gc.setFill(Color.BLACK);
-    //gc.fillText(stopover.getName(), x, y);
+    gc.setFill(Color.WHITE);
+    gc.fillText("" + stopover.passengerZone().getPassengers().size(), x, y);
+    String s = "";
+    for (Passenger passenger : stopover.passengerZone().getPassengers()){
+      s += ", (" + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getX() + ", " + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getY() + ")";
+    }
+    gc.fillText(s, x, y+20);
   }
 
   public void draw(Airport airport) {
@@ -76,12 +83,20 @@ public class WorldDrawer implements Runnable {
   public void draw(CivilAirport stopover) {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
-    double a = 16;
+    double a = 30;
 
     gc.setFill(Color.PURPLE);
     gc.fillOval(x - a/2, y - a/2, a, a);
-    gc.setFill(Color.BLACK);
-    //gc.fillText(stopover.getName(), x, y);
+    gc.setFill(Color.WHITE);
+    gc.fillText("" + stopover.passengerZone().getPassengers().size(), x, y);
+
+    gc.setFill(Color.WHITE);
+    gc.fillText("" + stopover.passengerZone().getPassengers().size(), x, y);
+    String s = "";
+    for (Passenger passenger : stopover.passengerZone().getPassengers()){
+      s += ", (" + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getX() + ", " + ((Stopover) passenger.getNextCivilDestination()).getCoordinates().getY() + ")";
+    }
+    gc.fillText(s, x, y+20);
   }
 
   public void draw(MilitaryAirport stopover) {
@@ -120,6 +135,9 @@ public class WorldDrawer implements Runnable {
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
     gc.drawImage(civilAirplane, x + dx, y + dy);
+
+    gc.setFill(Color.BLACK);
+    gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
   }
 
   public void draw(MilitaryAirplane vehicle) {
@@ -150,6 +168,8 @@ public class WorldDrawer implements Runnable {
     double dy = offsetFromRoute * Math.sin(angle);
 
     gc.drawImage(civilShip, x + dx, y + dy);
+    gc.setFill(Color.BLACK);
+    gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
   }
 
   public void draw(MilitaryShip vehicle) {
