@@ -8,7 +8,7 @@ import world.WorldMap;
 import static java.lang.Thread.sleep;
 
 /**
- * Represents a signle being that can be kept by CivilVehicle and CivilDestination via PassengerZone
+ * Represents a single being that can be kept by CivilVehicle and CivilDestination via PassengerZone
  */
 public class Passenger implements Runnable {
   private final String firstName;
@@ -50,6 +50,10 @@ public class Passenger implements Runnable {
     return PESEL;
   }
 
+  /**
+   * Let the passenger know where he has arrived. A call to notify() on the passenger should follow.
+   * @param passengerZone a PassengerZone to which the passenger has arrived
+   */
   public void setArrivedAtPassengerZone(PassengerZone passengerZone) {
     arrivedAtPassengerZone = passengerZone;
   }
@@ -85,7 +89,7 @@ public class Passenger implements Runnable {
   private void handleArrivingSomewhere() throws InterruptedException {
     trip.checkpoint(arrivedAtPassengerZone);
 
-    if (arrivedAtPassengerZone == trip.getTo().passengerZone()) {
+    if (arrivedAtDestination()) {
       System.out.println("passenger " + firstName.substring(0, 1) + ". " + lastName + " arrived at his destination at " + ((Stopover) trip.getTo()).getName());
 
       // passenger arrived at his destination, do not go to the (air)port, check in at the hotel
@@ -93,7 +97,7 @@ public class Passenger implements Runnable {
       sleep(trip.getWaitingTime());
       trip.getTo().hotel().removePassenger(this);
     }
-    else if (arrivedAtPassengerZone == trip.getFrom().passengerZone()) {
+    else if (arrivedAtHometown()) {
       System.out.println("passenger " + firstName.substring(0, 1) + ". " + lastName + " arrived home at " + ((Stopover) trip.getFrom()).getName());
       // passenger ended his trip, generate a new random trip and accommodate at first passenger zone
       try {
@@ -108,21 +112,27 @@ public class Passenger implements Runnable {
     while (!arrivedAtPassengerZone.accommodate(this)) ;
   }
 
+  private boolean arrivedAtHometown() {
+    return arrivedAtPassengerZone == trip.getFrom().passengerZone();
+  }
+
+  private boolean arrivedAtDestination() {
+    return arrivedAtPassengerZone == trip.getTo().passengerZone();
+  }
+
   private void goByFootAsLongAsNecessary() throws InterruptedException {
     // no vehicle-based connection between different types of civil destinations, need to go by foot
     boolean stillHaveToWalk = true;
 
     do {
       if (getNextCivilDestination().getClass() != getPreviousCivilDestination().getClass()) {
-        sleep(1000);
+        sleep(5000);
 
         // leave previous city
         getPreviousCivilDestination().passengerZone().removePassenger(this);
 
         // going, going...
         System.out.println("Passenger " + firstName.substring(0, 1) + ". " + lastName + " is going by foot from " + ((Stopover) getPreviousCivilDestination()).getName() + " to " + ((Stopover) getNextCivilDestination()).getName());
-        sleep(5000);
-
         // arrive at the next city
         arrivedAtPassengerZone = getNextCivilDestination().passengerZone();
         handleArrivingSomewhere();

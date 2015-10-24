@@ -8,11 +8,14 @@ import vehicles.*;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Stopover represents a place where a vehicle can stop.
+ * @see Vehicle
+ */
 public class Stopover implements Drawable {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
   private final ReentrantLock processingVehicleLock;
-  // TODO: implement naming stopovers
   private final String name;
 
   private ArrayList<Vehicle> accommodatedVehicles;
@@ -61,9 +64,9 @@ public class Stopover implements Drawable {
     return accommodatingSuccessful;
   }
 
-  // TODO: in idea - replace using 'instanceof' in this project by a method stopover.willAccommodateAnCivilAirplane that checks if an InvalidVehicleAtStopoverException is thrown
-
   // TODO: show to the teacher - using casting, I have to define those dummy methods, so that when I have a reference to a Stopover that is in fact eg. CivilAirport, I can call CivilAirport's accommodateVehice with the argument type CivilAirplane
+
+  // TODO: rename those methods with names suggesting which vehicle is getting accommodated, like "accommodateCivilAirplane"
   public boolean accommodateVehicle(Airplane vehicle) throws InvalidVehicleAtStopoverException {
     return accommodateVehicle((Vehicle) vehicle);
   }

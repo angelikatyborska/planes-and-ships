@@ -23,17 +23,4 @@ public class PortTest {
 
     port.accommodateVehicle(ship);
   }
-
-  // TODO: implement this test when checking for matching destinations between passenger and civilship is resolved
-//  @Test
-//  public void CivilShipShouldExchangePassengersAfterMaintenanceAtPort() throws InvalidVehicleAtStopoverException, InterruptedException {
-//    CivilAirplane civilAirplane = new CivilAirplane(1, 100, 100);
-//    Stopover civilAirport = new CivilAirport(new Coordinates(1, 1), 1);
-//    Passenger passenger1 = mock(Passenger.class);
-//
-//    assertTrue(civilAirplane.passengerZone().accommodate(passenger));
-//
-//    civilAirport.prepareVehicleForTravel(civilAirplane);
-//    assertTrue(civilAirplane.passengerZone().getPassengers().isEmpty());
-//  }
 }

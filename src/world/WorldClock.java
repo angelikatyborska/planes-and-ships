@@ -8,14 +8,12 @@ import static java.lang.Thread.sleep;
 public class WorldClock implements Runnable {
   private ArrayList<WorldClockListener> listeners;
   private int timeInterval;
-  private boolean paused;
   private boolean bounded;
   private int repetitions;
 
   public WorldClock(int timeInterval) {
     this.listeners = new ArrayList<>();
     this.timeInterval = timeInterval;
-    paused = false;
     bounded = false;
     repetitions = 0;
   }
@@ -31,8 +29,6 @@ public class WorldClock implements Runnable {
       listeners.add(listener);
     }
   }
-
-  // TODO: implement pause
 
   public void run() {
     if (bounded) {

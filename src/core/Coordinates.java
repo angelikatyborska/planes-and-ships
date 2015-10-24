@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * Represents a set of coordinates in the Cartesian coordinate system
+ */
 public class Coordinates {
   private double x;
   private double y;
@@ -22,36 +25,46 @@ public class Coordinates {
     return y;
   }
 
-  public double distanceTo(Coordinates destination) {
-    double destinationXOffset = destination.getX() - x;
-    double destinationYOffset = destination.getY() - y;
+  /**
+   * Calculates the distance in a straight line between coordinates and target coordinates
+   * @param target
+   * @return
+   */
+  public double distanceTo(Coordinates target) {
+    double destinationXOffset = target.getX() - x;
+    double destinationYOffset = target.getY() - y;
 
     return Math.sqrt(Math.pow(destinationXOffset, 2) + Math.pow(destinationYOffset, 2));
   }
 
-  public void moveTowards(Coordinates destination, double distance) {
-    double destinationXOffset = destination.getX() - x;
-    double destinationYOffset = destination.getY() - y;
-    double distanceToDestination = distanceTo(destination);
+  /**
+   * Recalculates coordinates so that they are closer to target coordinates by the value of distance in a straight line
+   * @param target
+   * @param distance
+   */
+  public void moveTowards(Coordinates target, double distance) {
+    double destinationXOffset = target.getX() - x;
+    double destinationYOffset = target.getY() - y;
+    double distanceToDestination = distanceTo(target);
 
     if (distanceToDestination > distance) {
       x = x + distance * destinationXOffset / distanceToDestination;
       y = y + distance * destinationYOffset / distanceToDestination;
     }
     else {
-      x = destination.getX();
-      y = destination.getY();
+      x = target.getX();
+      y = target.getY();
     }
   }
 
   /**
    *
-   * @param destination
-   * @return an angle in radians formed by the 0Y axis and the segment formed with these coordinates and destination coordinates
+   * @param target
+   * @return an angle in radians formed by the 0Y axis and the segment formed with these coordinates and target coordinates
    */
-  public double getBearing(Coordinates destination) {
-    double dx = destination.getX() - x;
-    double dy = destination.getY() - y;
+  public double getBearing(Coordinates target) {
+    double dx = target.getX() - x;
+    double dy = target.getY() - y;
     return Math.atan2(dy, dx) + Math.PI / 2;
   }
 

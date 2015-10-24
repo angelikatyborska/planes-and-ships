@@ -17,6 +17,7 @@ public class WorldPanel extends Group {
   private Button newCivilAirplaneButton;
   private Button newCivilShipButton;
   private Button newMilitaryShipButton;
+  private Button newMilitaryAirplaneButton;
   private World world;
   private WorldMap map;
   private WorldDrawer drawer;
@@ -36,6 +37,7 @@ public class WorldPanel extends Group {
     newCivilAirplaneButton = new Button();
     newCivilShipButton = new Button();
     newMilitaryShipButton = new Button();
+    newMilitaryAirplaneButton = new Button();
 
     buildWorld();
 
@@ -71,12 +73,15 @@ public class WorldPanel extends Group {
     newMilitaryShipButton.getStyleClass().add("add-ship-button");
     newMilitaryShipButton.getStyleClass().add("military");
 
+    newMilitaryAirplaneButton.getStyleClass().add("add-vehicle-button");
+    newMilitaryAirplaneButton.getStyleClass().add("add-airplane-button");
+    newMilitaryAirplaneButton.getStyleClass().add("military");
+
     getChildren().add(worldCanvas);
     getChildren().add(detailCanvas);
     getChildren().add(newCivilAirplaneButton);
     getChildren().add(newCivilShipButton);
     getChildren().add(newMilitaryShipButton);
-
   }
 
   public void start() {
@@ -145,7 +150,6 @@ public class WorldPanel extends Group {
     try {
       StopoverNetwork network = new StopoverNetwork();
 
-      // TODO: come up with funny names
       CivilAirport civilAirport1 = new CivilAirport("Inkville", new Coordinates(450, 40), 1);
       CivilAirport civilAirport2 = new CivilAirport("Paper Town", new Coordinates(60, 45), 1);
       CivilAirport civilAirport3 = new CivilAirport("Penborg", new Coordinates(170, 200), 1);
@@ -232,7 +236,6 @@ public class WorldPanel extends Group {
       network.connect(militaryAirport4, airJunction6);
       network.connect(militaryAirport4, airJunction7);
 
-      // TODO: come up with funny names
       Port port1 = new Port("Lettergrad", new Coordinates(50, 230), 1);
       Port port2 = new Port("New Notebook", new Coordinates(230, 280), 1);
       Port port3 = new Port("Inkton", new Coordinates(430, 350), 1);

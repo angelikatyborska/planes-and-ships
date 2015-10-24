@@ -117,7 +117,6 @@ public class WorldMap {
   }
 
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {
-    // TODO: return a copy maybe?
     processingVehicle.lock();
     Coordinates coordinates = vehicleCoordinates.get(vehicle);
     processingVehicle.unlock();
