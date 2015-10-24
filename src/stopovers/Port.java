@@ -1,6 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
+import core.Passenger;
 import core.PassengerZone;
 import gui.Drawer;
 import vehicles.CivilShip;
@@ -8,15 +9,20 @@ import vehicles.Vehicle;
 
 public class Port extends Stopover implements CivilDestination {
   private final PassengerZone passengerZone;
+  private final PassengerZone hotel;
 
   public Port(Coordinates coordinates, int vehicleCapacity) {
-    super(coordinates, vehicleCapacity);
-    passengerZone = new PassengerZone(Integer.MAX_VALUE);
+    this("", coordinates, vehicleCapacity);
   }
 
   public Port(String name, Coordinates coordinates, int vehicleCapacity) {
     super(name, coordinates, vehicleCapacity);
     passengerZone = new PassengerZone(Integer.MAX_VALUE);
+    hotel = new PassengerZone(Integer.MAX_VALUE);
+  }
+
+  public PassengerZone hotel() {
+    return hotel;
   }
 
   public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {

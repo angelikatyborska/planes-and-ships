@@ -7,6 +7,7 @@ import stopovers.*;
 import vehicles.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,9 +80,16 @@ public class World {
   }
 
   public void addMilitaryShip() {
-    MilitaryShip vehicle = vehicleGenerator.newMilitaryShip();
-    Port startingPoint = map.getRandomPort();
-    prepareVehicle(vehicle, startingPoint.getCoordinates());
+    try {
+      MilitaryShip vehicle = vehicleGenerator.newMilitaryShip();
+      Junction startingPoint = map.getAdjecentJunction(map.getRandomPort());
+      vehicle.setRoute(Arrays.asList(startingPoint, map.getAdjecentJunction(startingPoint)));
+      prepareVehicle(vehicle, startingPoint.getCoordinates());
+    }
+    catch (StopoverNotFoundInStopoverNetworkException e) {
+      System.err.println("Could not add vehicle, because randomly selected stopover from the map is not on the map");
+      e.printStackTrace();
+    }
   }
 
   public void removeVehicle(Vehicle vehicle) throws InterruptedException {

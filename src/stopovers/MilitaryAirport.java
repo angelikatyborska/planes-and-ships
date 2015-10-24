@@ -7,7 +7,7 @@ import vehicles.MilitaryAirplane;
 
 public class MilitaryAirport extends Airport {
   public MilitaryAirport(Coordinates coordinates, int vehicleCapacity) {
-    super(coordinates, vehicleCapacity);
+    this("", coordinates, vehicleCapacity);
   }
 
   public MilitaryAirport(String name, Coordinates coordinates, int vehicleCapacity) {

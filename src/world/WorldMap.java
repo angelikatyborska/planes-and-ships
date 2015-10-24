@@ -100,6 +100,22 @@ public class WorldMap {
     processingVehicle.unlock();
   }
 
+  public Junction getAdjecentJunction(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
+    Junction randomAdjecentJunction;
+
+    List<Junction> adjecentJunctions = new ArrayList<>();
+
+    for (Stopover neighbour : stopoverNetwork.getAllNeighbouringStopovers(stopover)) {
+      if (neighbour instanceof Junction) {
+        adjecentJunctions.add((Junction) neighbour);
+      }
+    }
+
+    randomAdjecentJunction = adjecentJunctions.get((int) Math.floor(Math.random() * adjecentJunctions.size()));
+
+    return randomAdjecentJunction;
+  }
+
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {
     // TODO: return a copy maybe?
     processingVehicle.lock();

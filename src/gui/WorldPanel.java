@@ -4,6 +4,8 @@ import core.Coordinates;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import stopovers.*;
 import vehicles.Vehicle;
@@ -12,6 +14,9 @@ import world.*;
 public class WorldPanel extends Group {
   private Canvas worldCanvas;
   private Canvas detailCanvas;
+  private Button newCivilAirplaneButton;
+  private Button newCivilShipButton;
+  private Button newMilitaryShipButton;
   private World world;
   private WorldMap map;
   private WorldDrawer drawer;
@@ -21,12 +26,17 @@ public class WorldPanel extends Group {
   private final double worldHeight;
   private final double detailPanelWidth;
 
+
   public WorldPanel() {
     this.worldWidth = 800;
     this.detailPanelWidth = 300;
     this.worldHeight = 640;
     worldCanvas = new Canvas(worldWidth, worldHeight);
     detailCanvas = new Canvas(detailPanelWidth, worldHeight);
+    newCivilAirplaneButton = new Button();
+    newCivilShipButton = new Button();
+    newMilitaryShipButton = new Button();
+
 
     buildWorld();
 
@@ -36,11 +46,37 @@ public class WorldPanel extends Group {
 
     worldCanvas.setLayoutX(0);
     worldCanvas.setLayoutY(0);
+
     detailCanvas.setLayoutX(worldWidth);
     detailCanvas.setLayoutY(0);
 
+    newCivilAirplaneButton.setLayoutX(worldWidth + 120);
+    newCivilAirplaneButton.setLayoutY(worldHeight - 40);
+
+    newCivilShipButton.setLayoutX(worldWidth + 170);
+    newCivilShipButton.setLayoutY(worldHeight - 40);
+
+    newMilitaryShipButton.setLayoutX(worldWidth + 220);
+    newMilitaryShipButton.setLayoutY(worldHeight - 40);
+
+    newCivilAirplaneButton.getStyleClass().add("add-vehicle-button");
+    newCivilAirplaneButton.getStyleClass().add("add-airplane-button");
+    newCivilAirplaneButton.getStyleClass().add("civil-airplane");
+
+    newCivilShipButton.getStyleClass().add("add-vehicle-button");
+    newCivilShipButton.getStyleClass().add("add-ship-button");
+    newCivilShipButton.getStyleClass().add("civil-ship");
+
+    newMilitaryShipButton.getStyleClass().add("add-vehicle-button");
+    newMilitaryShipButton.getStyleClass().add("add-ship-button");
+    newMilitaryShipButton.getStyleClass().add("military");
+
     getChildren().add(worldCanvas);
     getChildren().add(detailCanvas);
+    getChildren().add(newCivilAirplaneButton);
+    getChildren().add(newCivilShipButton);
+    getChildren().add(newMilitaryShipButton);
+
   }
 
   public void start() {
@@ -67,7 +103,6 @@ public class WorldPanel extends Group {
 
   private void addEventHandlers() {
     addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-      System.out.println(e.getX() + " "  + e.getY());
       Vehicle vehicle = world.findVehicleAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
       Stopover stopover = world.findStopoverAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
 
@@ -85,6 +120,18 @@ public class WorldPanel extends Group {
         }
       }
     });
+
+    newCivilAirplaneButton.setOnAction(e -> {
+      world.addCivilAirplane();
+    });
+
+    newCivilShipButton.setOnAction(e -> {
+      world.addCivilShip();
+    });
+
+    newMilitaryShipButton.setOnAction(e -> {
+      world.addMilitaryShip();
+    });
   }
 
   private void buildWorld() {
@@ -92,13 +139,13 @@ public class WorldPanel extends Group {
       StopoverNetwork network = new StopoverNetwork();
 
       // TODO: come up with funny names
-      CivilAirport civilAirport1 = new CivilAirport("Paris", new Coordinates(450, 40), 5);
-      CivilAirport civilAirport2 = new CivilAirport("London", new Coordinates(60, 45), 5);
-      CivilAirport civilAirport3 = new CivilAirport("Warsaw", new Coordinates(170, 200), 5);
-      CivilAirport civilAirport4 = new CivilAirport("Tokyo", new Coordinates(620, 230), 5);
-      CivilAirport civilAirport5 = new CivilAirport("Goteborg", new Coordinates(490, 450), 5);
-      CivilAirport civilAirport6 = new CivilAirport("Helsinki", new Coordinates(700, 590), 5);
-      CivilAirport civilAirport7 = new CivilAirport("Madrid", new Coordinates(230, 600), 5);
+      CivilAirport civilAirport1 = new CivilAirport("Paris", new Coordinates(450, 40), 1);
+      CivilAirport civilAirport2 = new CivilAirport("London", new Coordinates(60, 45), 1);
+      CivilAirport civilAirport3 = new CivilAirport("Warsaw", new Coordinates(170, 200), 1);
+      CivilAirport civilAirport4 = new CivilAirport("Tokyo", new Coordinates(620, 230), 1);
+      CivilAirport civilAirport5 = new CivilAirport("Goteborg", new Coordinates(490, 450), 1);
+      CivilAirport civilAirport6 = new CivilAirport("Helsinki", new Coordinates(700, 590), 1);
+      CivilAirport civilAirport7 = new CivilAirport("Madrid", new Coordinates(230, 600), 1);
 
       network.add(civilAirport1);
       network.add(civilAirport2);
@@ -154,10 +201,10 @@ public class WorldPanel extends Group {
       network.connect(airJunction7, civilAirport5);
       network.connect(airJunction7, civilAirport7);
 
-      MilitaryAirport militaryAirport1 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(760, 40), 4);
-      MilitaryAirport militaryAirport2 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(340, 260), 4);
-      MilitaryAirport militaryAirport3 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(770, 380), 4);
-      MilitaryAirport militaryAirport4 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(500, 610), 4);
+      MilitaryAirport militaryAirport1 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(760, 40), 1);
+      MilitaryAirport militaryAirport2 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(340, 260), 1);
+      MilitaryAirport militaryAirport3 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(770, 380), 1);
+      MilitaryAirport militaryAirport4 = new MilitaryAirport("XXX TOP SECRET", new Coordinates(500, 610), 1);
 
       network.add(militaryAirport1);
       network.add(militaryAirport2);
@@ -177,12 +224,12 @@ public class WorldPanel extends Group {
       network.connect(militaryAirport4, airJunction7);
 
       // TODO: come up with funny names
-      Port port1 = new Port("Berlin", new Coordinates(50, 230), 4);
-      Port port2 = new Port("Poznan", new Coordinates(230, 280), 4);
-      Port port3 = new Port("York", new Coordinates(430, 350), 4);
-      Port port4 = new Port("Leeds", new Coordinates(390, 490), 4);
-      Port port5 = new Port("Hamburg", new Coordinates(230, 530), 4);
-      Port port6 = new Port("Lwow", new Coordinates(125, 575), 4);
+      Port port1 = new Port("Berlin", new Coordinates(50, 230), 1);
+      Port port2 = new Port("Poznan", new Coordinates(230, 280), 1);
+      Port port3 = new Port("York", new Coordinates(430, 350), 1);
+      Port port4 = new Port("Leeds", new Coordinates(390, 490), 1);
+      Port port5 = new Port("Hamburg", new Coordinates(230, 530), 1);
+      Port port6 = new Port("Lwow", new Coordinates(125, 575), 1);
 
       network.add(port1);
       network.add(port2);
@@ -196,20 +243,26 @@ public class WorldPanel extends Group {
       Junction seaJunction3 = new Junction(new Coordinates(170, 430));
       Junction seaJunction4 = new Junction(new Coordinates(70, 470));
       Junction seaJunction5 = new Junction(new Coordinates(300, 480));
+      Junction seaJunction6 = new Junction(new Coordinates(20, 340));
 
       network.add(seaJunction1);
       network.add(seaJunction2);
       network.add(seaJunction3);
       network.add(seaJunction4);
       network.add(seaJunction5);
+      network.add(seaJunction6);
 
+      network.connect(seaJunction1, seaJunction2);
       network.connect(seaJunction1, seaJunction3);
       network.connect(seaJunction1, seaJunction4);
+      network.connect(seaJunction1, seaJunction6);
 
       network.connect(seaJunction2, seaJunction3);
       network.connect(seaJunction2, seaJunction5);
 
       network.connect(seaJunction3, seaJunction4);
+
+      network.connect(seaJunction4, seaJunction6);
 
       network.connect(seaJunction1, port1);
       network.connect(seaJunction1, port2);
@@ -225,6 +278,8 @@ public class WorldPanel extends Group {
       network.connect(seaJunction5, port4);
       network.connect(seaJunction5, port5);
 
+      network.connect(seaJunction6, port1);
+
       network.connect(port1, civilAirport3);
       network.connect(port2, civilAirport3);
       network.connect(port3, civilAirport5);
@@ -235,15 +290,6 @@ public class WorldPanel extends Group {
 
       map = new WorldMap(network);
       world = new World(new WorldClock(50), map);
-
-      world.addCivilAirplane();
-      world.addCivilAirplane();
-      world.addCivilAirplane();
-      world.addCivilShip();
-      world.addCivilShip();
-      world.addCivilShip();
-      world.addCivilShip();
-      world.addCivilShip();
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {
       e.printStackTrace();

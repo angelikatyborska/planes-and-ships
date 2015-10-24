@@ -16,7 +16,11 @@ public class Main extends Application {
 
     WorldPanel root = new WorldPanel();
 
-    primaryStage.setScene(new Scene(root));
+    Scene scene = new Scene(root);
+    scene.getStylesheets().add("gui/stylesheet.css");
+
+    primaryStage.setScene(scene);
+
 
     root.start();
 

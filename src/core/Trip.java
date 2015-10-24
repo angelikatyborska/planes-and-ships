@@ -102,9 +102,9 @@ public class Trip {
   public int getWaitingTime() {
     switch (type) {
       case HOLIDAY:
-        return 10000;
+        return (int) Math.floor(Math.random() * 10000 + 10000);
       case BUSINESS:
-        return 5000;
+        return (int) Math.floor(Math.random() * 10000 + 5000);
       default:
         return 7500;
     }

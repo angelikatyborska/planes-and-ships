@@ -6,8 +6,8 @@ import core.Weapon;
 public class VehicleGenerator {
   // TODO: come up with some funny names
   private static String[] CivilShipsCompanies = {"LaIsla Cruises", "Happy Travel", "Waves", "Polskie Rejsy Morskie", "Good German Ships"};
-  private static double minVelocity = 1;
-  private static double maxVelocity = 3;
+  private static double minVelocity = 0.3;
+  private static double maxVelocity = 2;
 
   public CivilAirplane newCivilAirplane() {
     return new CivilAirplane(randomVelocity(), Integer.MAX_VALUE, randomPassengerCapacity());

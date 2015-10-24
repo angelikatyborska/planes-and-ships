@@ -1,0 +1,28 @@
+.add-vehicle-button {
+    -fx-background-color: #DFB951;
+    -fx-background-radius: 50%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+}
+
+.add-airplane-button {
+    -fx-background-image: url('/images/civilairplane.png')
+}
+
+.add-ship-button {
+    -fx-background-image: url('/images/civilship.png')
+}
+
+.civil-airplane {
+    -fx-background-color: #065525;
+}
+
+.civil-ship {
+    -fx-background-color: #0e3a5f;
+}
+
+.military {
+    -fx-background-color: darkolivegreen;
+}

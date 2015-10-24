@@ -6,7 +6,7 @@ import vehicles.*;
 
 public abstract class Airport extends Stopover {
   public Airport(Coordinates coordinates, int vehicleCapacity) {
-    super(coordinates, vehicleCapacity);
+    this("", coordinates, vehicleCapacity);
   }
 
   public Airport(String name, Coordinates coordinates, int vehicleCapacity) {

@@ -4,6 +4,7 @@ import core.PassengerZone;
 import gui.Drawer;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
+import stopovers.Port;
 import stopovers.Stopover;
 
 public class CivilShip extends Ship implements CivilVehicle {
@@ -39,5 +40,15 @@ public class CivilShip extends Ship implements CivilVehicle {
     while (!stopover.accommodateVehicle(this)) {}
     stopover.prepareVehicleForTravel(this);
     stopover.releaseVehicle(this);
+  }
+
+  public Port getNextPort() {
+    for (int i = previousStopoverNumber; i < route.size(); i++) {
+      if (route.get(i) instanceof Port) {
+        return (Port) route.get(i);
+      }
+    }
+
+    return null;
   }
 }

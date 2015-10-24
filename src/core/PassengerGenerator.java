@@ -9,8 +9,8 @@ import java.util.List;
 
 public class PassengerGenerator {
   // TODO: come up with a better way to store (more!) potential names
-  private static String[] firstNames = {"Anna", "Barbara", "Czesław", "Dariusz", "Elbżbieta"};
-  private static String[] lastNames = {"Andrzejewicz", "Baranowicz", "Czekaj", "Dębicz", "Ezofowicz"};
+  private static String[] firstNames = {"Alice", "Bob", "Stephen", "Katherine", "Maurice", "Wallace"};
+  private static String[] lastNames = {"Moss", "Mills", "Evans", "Harper", "Smith", "Goodman", "Sandberg", "Kowalski", "Nowak", "Rodrigez"};
   private WorldMap map;
 
   public PassengerGenerator(WorldMap map) {

@@ -8,17 +8,21 @@ import vehicles.CivilAirplane;
 
 public class CivilAirport extends Airport implements CivilDestination {
   private final PassengerZone passengerZone;
+  private final PassengerZone hotel;
 
   public CivilAirport(Coordinates coordinates, int vehicleCapacity) {
-    super(coordinates, vehicleCapacity);
-    passengerZone = new PassengerZone(Integer.MAX_VALUE);
+    this("", coordinates, vehicleCapacity);
   }
 
   public CivilAirport(String name, Coordinates coordinates, int vehicleCapacity) {
     super(name,coordinates, vehicleCapacity);
     passengerZone = new PassengerZone(Integer.MAX_VALUE);
+    hotel = new PassengerZone(Integer.MAX_VALUE);
   }
 
+  public PassengerZone hotel() {
+    return hotel;
+  }
 
   public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtStopoverException {
     throw new InvalidVehicleAtStopoverException(airplane, this);

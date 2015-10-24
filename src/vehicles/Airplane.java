@@ -1,6 +1,8 @@
 package vehicles;
 
 import gui.Drawer;
+import stopovers.Airport;
+import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 
@@ -37,6 +39,16 @@ public abstract class Airplane extends Vehicle {
 
   public void crashLanding() {
     // should reroute to next nearest airport and disappear (it's damaged!) (what about passengers?)
+  }
+
+  public Airport getNextAirport() {
+    for (int i = previousStopoverNumber; i < route.size(); i++) {
+      if (route.get(i) instanceof Airport) {
+        return (Airport) route.get(i);
+      }
+    }
+
+    return null;
   }
 
   @Override

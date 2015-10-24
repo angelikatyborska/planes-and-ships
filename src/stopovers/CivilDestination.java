@@ -4,4 +4,5 @@ import core.PassengerZone;
 
 public interface CivilDestination {
   PassengerZone passengerZone();
+  PassengerZone hotel();
 }

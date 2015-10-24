@@ -10,6 +10,8 @@ import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldClockListener;
 import world.WorldMap;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -25,6 +27,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     this.id = this.hashCode();
     this.velocity = velocity;
     this.processingRoute = new ReentrantLock();
+    this.route = new ArrayList<>();
   }
 
   public double getVelocity() {
@@ -48,11 +51,9 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   }
 
   public Stopover getNextStopover() {
-    processingRoute.lock();
-    Stopover stopover =  route.get(previousStopoverNumber + 1);
-    processingRoute.unlock();
-
-    return stopover;
+    synchronized (route) {
+      return route.get(previousStopoverNumber + 1);
+    }
   }
 
   public Stopover getNextCivilStopover() {
@@ -60,39 +61,40 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   }
 
   public Stopover getPreviousStopover() {
-    processingRoute.lock();
-    Stopover stopover = route.get(previousStopoverNumber);
-    processingRoute.unlock();
-
-    return stopover;
+    synchronized (route) {
+      return route.get(previousStopoverNumber);
+    }
   }
 
   public CivilDestination getNextCivilDestination() {
-    for (int i = previousStopoverNumber; i < route.size(); i++) {
-      if (route.get(i) instanceof CivilDestination) {
-        return (CivilDestination) route.get(i);
+    synchronized (route) {
+      for (int i = previousStopoverNumber; i < route.size(); i++) {
+        if (route.get(i) instanceof CivilDestination) {
+          return (CivilDestination) route.get(i);
+        }
       }
-    }
 
-    return null;
+      return null;
+    }
   }
 
   public void setRoute(List<Stopover> route) {
-    processingRoute.lock();
-    previousStopoverNumber = 0;
-    this.route = route;
-    processingRoute.unlock();
+    synchronized (route) {
+      previousStopoverNumber = 0;
+      this.route.clear();
+      this.route.addAll(route);
+    }
   }
 
   public void updateRoute() {
-    processingRoute.lock();
-    previousStopoverNumber++;
+    synchronized (route) {
+      previousStopoverNumber++;
 
-    if (previousStopoverNumber == route.size() - 1) {
-      route = Lists.reverse(route);
-      previousStopoverNumber = 0;
+      if (previousStopoverNumber == route.size() - 1) {
+        route = Lists.reverse(route);
+        previousStopoverNumber = 0;
+      }
     }
-    processingRoute.unlock();
   }
 
   public boolean hasArrivedAtStopover(Stopover stopover) {
@@ -103,6 +105,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
   // TODO: something about that below, it seems like awful design
   // every Vehicle has to copy this method because "this" needs to be a reference of specific type
+  // visitor pattern again?
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
     while (!stopover.accommodateVehicle(this)) {}
     stopover.prepareVehicleForTravel(this);

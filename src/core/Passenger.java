@@ -86,18 +86,20 @@ public class Passenger implements Runnable {
     trip.checkpoint(arrivedAtPassengerZone);
 
     if (arrivedAtPassengerZone == trip.getTo().passengerZone()) {
-      System.out.println("passenger " + this + " arrived at his destination at " + ((Stopover) trip.getTo()).getCoordinates().toString());
+      System.out.println("passenger " + firstName.substring(0, 1) + ". " + lastName + " arrived at his destination at " + ((Stopover) trip.getTo()).getName());
 
-      // passenger arrived at his destination, do not go to the (air)port, go "downtown" to do his business
+      // passenger arrived at his destination, do not go to the (air)port, check in at the hotel
+      while(!trip.getTo().hotel().accommodate(this));
       sleep(trip.getWaitingTime());
+      trip.getTo().hotel().removePassenger(this);
     }
     else if (arrivedAtPassengerZone == trip.getFrom().passengerZone()) {
-      System.out.println("passenger " + this + " arrived home at " + ((Stopover) trip.getFrom()).getCoordinates().toString());
+      System.out.println("passenger " + firstName.substring(0, 1) + ". " + lastName + " arrived home at " + ((Stopover) trip.getFrom()).getName());
       // passenger ended his trip, generate a new random trip and accommodate at first passenger zone
       try {
         trip.randomize();
       } catch (StopoverNotFoundInStopoverNetworkException e) {
-        System.out.println("Passenger " + this + " tried to generate a new trip for himself");
+        System.out.println("Passenger " + firstName.substring(0, 1) + ". " + lastName + " tried to generate a new trip for himself");
         e.printStackTrace();
       }
     }
@@ -112,12 +114,14 @@ public class Passenger implements Runnable {
 
     do {
       if (getNextCivilDestination().getClass() != getPreviousCivilDestination().getClass()) {
+        sleep(1000);
+
         // leave previous city
         getPreviousCivilDestination().passengerZone().removePassenger(this);
 
         // going, going...
-        System.out.println("Passenger " + this + " is going by foot from " + ((Stopover) getPreviousCivilDestination()).getCoordinates().toString() + " to " + ((Stopover) getNextCivilDestination()).getCoordinates().toString());
-        sleep(3000);
+        System.out.println("Passenger " + firstName.substring(0, 1) + ". " + lastName + " is going by foot from " + ((Stopover) getPreviousCivilDestination()).getName() + " to " + ((Stopover) getNextCivilDestination()).getName());
+        sleep(5000);
 
         // arrive at the next city
         arrivedAtPassengerZone = getNextCivilDestination().passengerZone();
