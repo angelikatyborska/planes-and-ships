@@ -21,10 +21,9 @@ public class Main extends Application {
 
     primaryStage.setScene(scene);
 
-
     root.start();
 
-    primaryStage.setOnCloseRequest(we -> { root.shutDown(); });
+    primaryStage.setOnCloseRequest(we -> root.shutDown());
     primaryStage.show();
 
     // TODO: change reentrant locks to synchronized blocks in the whole project?

@@ -8,11 +8,11 @@
 }
 
 .add-airplane-button {
-    -fx-background-image: url('/images/civilairplane.png')
+    -fx-background-image: url('/images/airplane.png')
 }
 
 .add-ship-button {
-    -fx-background-image: url('/images/civilship.png')
+    -fx-background-image: url('/images/ship.png')
 }
 
 .civil-airplane {

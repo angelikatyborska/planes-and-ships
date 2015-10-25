@@ -10,6 +10,8 @@ import javafx.scene.text.Font;
 import stopovers.*;
 import vehicles.*;
 
+import java.util.HashMap;
+
 public class ObjectDetailDrawer implements Drawer {
   private final GraphicsContext gc;
   private final double width;
@@ -18,18 +20,17 @@ public class ObjectDetailDrawer implements Drawer {
   private double textTop = 50;
   private double lineHeight = 35;
   private double textLeft = 15;
-  private final Image civilShip = new Image("/images/civilship.png");
-  private final Image civilAirplane = new Image("/images/civilairplane.png");
-  private final Image paper = new Image("/images/paper.png");
-  private final Color civilNavy = Color.web("#0e3a5f");
-  private final Color civilGreen = Color.web("#065525");
   private final String fontFamily = "Courier";
+  private final HashMap<String, Image> images;
+  private final HashMap<String, Color> colors;
 
-  public ObjectDetailDrawer(GraphicsContext gc, double width, double height) {
+  public ObjectDetailDrawer(GraphicsContext gc, HashMap<String, Image> images, HashMap<String, Color> colors, double width, double height) {
     this.gc = gc;
     this.width = width;
     this.height = height;
     this.object = null;
+    this.colors = colors;
+    this.images = images;
   }
 
   public void setObject(Drawable object) {
@@ -63,13 +64,13 @@ public class ObjectDetailDrawer implements Drawer {
   public void drawCivilAirplane(CivilAirplane vehicle) {
     drawAirplane(vehicle);
     listPassengers(vehicle.passengerZone());
-    drawVehicleToken(civilGreen, civilAirplane);
+    drawVehicleToken(colors.get("civilGreen"), images.get("airplane'"));
   }
 
   @Override
   public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
     drawAirplane(vehicle);
-    drawVehicleToken(Color.DARKOLIVEGREEN, civilAirplane);
+    drawVehicleToken(colors.get("military"), images.get("airplane'"));
   }
 
   @Override
@@ -81,14 +82,14 @@ public class ObjectDetailDrawer implements Drawer {
   public void drawCivilShip(CivilShip vehicle) {
     drawShip(vehicle);
     listPassengers(vehicle.passengerZone());
-    drawVehicleToken(civilNavy, civilShip);
+    drawVehicleToken(colors.get("civilNavy"), images.get("ship"));
     drawNextDestination(vehicle.getNextPort().getName());
   }
 
   @Override
   public void drawMilitaryShip(MilitaryShip vehicle) {
     drawShip(vehicle);
-    drawVehicleToken(Color.DARKOLIVEGREEN, civilShip);
+    drawVehicleToken(colors.get("military"), images.get("ship"));
   }
 
   @Override
@@ -120,7 +121,7 @@ public class ObjectDetailDrawer implements Drawer {
   }
 
   private void drawPanel() {
-    gc.drawImage(paper, 0, 0);
+    gc.drawImage(images.get("paper"), 0, 0);
   }
 
   private void drawTitle(String title) {

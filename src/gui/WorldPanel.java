@@ -6,10 +6,14 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import stopovers.*;
 import vehicles.Vehicle;
 import world.*;
+
+import java.util.HashMap;
 
 public class WorldPanel extends Group {
   private Canvas worldCanvas;
@@ -41,11 +45,25 @@ public class WorldPanel extends Group {
 
     buildWorld();
 
-    drawer = new WorldDrawer(map, worldCanvas.getGraphicsContext2D(), worldWidth, worldHeight);
-    detailDrawer = new ObjectDetailDrawer(detailCanvas.getGraphicsContext2D(), detailPanelWidth, worldHeight);
+    HashMap<String, Image> images = new HashMap<>();
+
+    images.put("airplane", new Image("/images/airplane.png"));
+    images.put("ship", new Image("/images/ship.png"));
+    images.put("paper", new Image("/images/paper.png"));
+    images.put("terrain", new Image("/images/terrain.png"));
+
+    HashMap<String, Color> colors = new HashMap<>();
+
+    colors.put("civilNavy", Color.web("#0e3a5f"));
+    colors.put("civilGreen", Color.web("#065525"));
+    colors.put("military", Color.DARKOLIVEGREEN);
+
+    drawer = new WorldDrawer(map, worldCanvas.getGraphicsContext2D(), images, colors,  worldWidth, worldHeight);
+    detailDrawer = new ObjectDetailDrawer(detailCanvas.getGraphicsContext2D(), images, colors, detailPanelWidth, worldHeight);
 
     addEventHandlers();
 
+    // TODO: maybe this stuff below can be done in a xml file?
     worldCanvas.setLayoutX(0);
     worldCanvas.setLayoutY(0);
 
@@ -85,7 +103,6 @@ public class WorldPanel extends Group {
   }
 
   public void start() {
-    // cannot start drawing in the constructor, because they will start drawing on a canvas that doesn't exist
 
     new AnimationTimer() {
       public void handle(long currentNanoTime)

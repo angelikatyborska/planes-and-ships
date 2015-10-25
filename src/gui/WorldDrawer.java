@@ -12,6 +12,7 @@ import vehicles.*;
 import world.WorldMap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class WorldDrawer implements Drawer {
@@ -22,20 +23,19 @@ public class WorldDrawer implements Drawer {
   private final double offsetFromRoute = 6;
   private double cursorX;
   private double cursorY;
-  private final Image terrain = new Image("/images/terrain.png");
-  private final Image civilShip = new Image("/images/civilship.png");
-  private final Image civilAirplane = new Image("/images/civilairplane.png");
-  private final Color civilNavy = Color.web("#0e3a5f");
-  private final Color civilGreen = Color.web("#065525");
   private final String fontFamily = "Courier";
+  private final HashMap<String, Image> images;
+  private final HashMap<String, Color> colors;
 
-  public WorldDrawer(WorldMap map, GraphicsContext gc, double width, double height) {
+  public WorldDrawer(WorldMap map, GraphicsContext gc, HashMap<String, Image> images, HashMap<String, Color> colors, double width, double height) {
     this.map = map;
     this.gc = gc;
     this.width = width;
     this.height = height;
     this.cursorX = 0;
     this.cursorY = 0;
+    this.colors = colors;
+    this.images = images;
     gc.setTextAlign(TextAlignment.CENTER);
     gc.setTextBaseline(VPos.CENTER);
   }
@@ -67,7 +67,7 @@ public class WorldDrawer implements Drawer {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
 
-    drawStopover(stopover, 24, civilNavy);
+    drawStopover(stopover, 24, colors.get("civilNavy"));
     drawPassengerCounter(stopover, x, y);
     drawNamePlate(stopover);
   }
@@ -82,7 +82,7 @@ public class WorldDrawer implements Drawer {
     double x = stopover.getCoordinates().getX();
     double y = stopover.getCoordinates().getY();
 
-    drawStopover(stopover, 24, civilGreen);
+    drawStopover(stopover, 24, colors.get("civilGreen"));
     drawPassengerCounter(stopover, x, y);
     drawNamePlate(stopover);
   }
@@ -112,13 +112,13 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawCivilAirplane(CivilAirplane vehicle) {
-    double x = vehicle.getCoordinates().getX() - civilShip.getWidth()/2;
-    double y = vehicle.getCoordinates().getY() - civilShip.getHeight()/2;
+    double x = vehicle.getCoordinates().getX() - images.get("airplane").getWidth()/2;
+    double y = vehicle.getCoordinates().getY() - images.get("airplane").getHeight()/2;
 
     double angle = vehicle.getBearing();
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
-    gc.drawImage(civilAirplane, x + dx, y + dy);
+    gc.drawImage(images.get("airplane"), x + dx, y + dy);
 
     gc.setFill(Color.BLACK);
     gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
@@ -126,7 +126,7 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
-    gc.setFill(Color.OLIVE);
+    gc.setFill(colors.get("military"));
     drawAirplane(vehicle);
   }
 
@@ -145,28 +145,28 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawCivilShip(CivilShip vehicle) {
-    double x = vehicle.getCoordinates().getX() - civilShip.getWidth()/2;
-    double y = vehicle.getCoordinates().getY() - civilShip.getHeight()/2;
+    double x = vehicle.getCoordinates().getX() - images.get("ship").getWidth()/2;
+    double y = vehicle.getCoordinates().getY() - images.get("ship").getHeight()/2;
 
     double angle = vehicle.getBearing();
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
 
-    gc.drawImage(civilShip, x + dx, y + dy);
+    gc.drawImage(images.get("ship"), x + dx, y + dy);
     gc.setFill(Color.BLACK);
     gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
   }
 
   @Override
   public void drawMilitaryShip(MilitaryShip vehicle) {
-    double x = vehicle.getCoordinates().getX() - civilShip.getWidth()/2;
-    double y = vehicle.getCoordinates().getY() - civilShip.getHeight()/2;
+    double x = vehicle.getCoordinates().getX() - images.get("ship").getWidth()/2;
+    double y = vehicle.getCoordinates().getY() - images.get("ship").getHeight()/2;
 
     double angle = vehicle.getBearing();
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
 
-    gc.drawImage(civilShip, x + dx, y + dy);
+    gc.drawImage(images.get("ship"), x + dx, y + dy);
   }
 
   private void drawStopovers() {
@@ -218,7 +218,7 @@ public class WorldDrawer implements Drawer {
   }
 
   private void drawTerrain() {
-    gc.drawImage(terrain, 0, 0);
+    gc.drawImage(images.get("terrain"), 0, 0);
   }
 
   private void drawStopover(Stopover stopover, double radius, Color color) {
