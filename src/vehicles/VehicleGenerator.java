@@ -17,11 +17,15 @@ public class VehicleGenerator {
   }
 
   public CivilShip newCivilShip() {
-    return new CivilShip(randomVelocity(), randomPassengerCapacity());
+    return new CivilShip(randomVelocity(), randomPassengerCapacity(), randomCompany());
   }
 
   public MilitaryShip newMilitaryShip() {
     return new MilitaryShip(randomVelocity(), randomWeaponType());
+  }
+
+  private static String randomCompany() {
+    return CivilShipsCompanies[(int) Math.floor(Math.random() * CivilShipsCompanies.length)];
   }
 
   private static double randomVelocity() {

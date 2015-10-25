@@ -84,6 +84,7 @@ public class ObjectDetailDrawer implements Drawer {
   public void drawCivilShip(CivilShip vehicle) {
     listPassengers(vehicle.passengerZone());
     drawVehicle(vehicle, colors.get("civilNavy"), images.get("ship"));
+    drawSubtitle("owned by: " + vehicle.getCompany());
     drawNextDestination(vehicle.getNextPort().getName());
   }
 
@@ -137,6 +138,12 @@ public class ObjectDetailDrawer implements Drawer {
     gc.setFill(Color.BLACK);
     gc.setFont(Font.font(fontFamily, 30));
     gc.fillText(title, textLeft, textTop);
+  }
+
+  private void drawSubtitle(String subtitle) {
+    gc.setFill(Color.BLACK);
+    gc.setFont(Font.font(fontFamily, 12));
+    gc.fillText(subtitle, textLeft, textTop - lineHeight);
   }
 
   private void drawCoordinates(Coordinates coordinates) {

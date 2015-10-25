@@ -6,7 +6,6 @@ import core.Coordinates;
 import org.junit.Test;
 import vehicles.CivilAirplane;
 import vehicles.CivilShip;
-import vehicles.Ship;
 
 public class PortTest {
   @Test

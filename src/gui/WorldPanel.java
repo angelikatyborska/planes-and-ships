@@ -112,17 +112,17 @@ public class WorldPanel extends Group {
       Vehicle vehicle = world.findVehicleAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
       Stopover stopover = world.findStopoverAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
 
-      setCurrentVehicle(vehicle);
-
       if (vehicle != null) {
         // not sure if this synchronized block is needed
         synchronized (detailDrawer) {
+          setCurrentVehicle(vehicle);
           detailDrawer.setObject(vehicle);
           detailDrawer.notify();
         }
       }
       else if (stopover != null){
         synchronized (detailDrawer) {
+          setCurrentVehicle(null);
           detailDrawer.setObject(stopover);
           detailDrawer.notify();
         }
@@ -222,6 +222,7 @@ public class WorldPanel extends Group {
   }
 
   private void buildWorld() {
+    // TODO: this belongs in a different file, building the world is not the responsibility of GUI!
     try {
       StopoverNetwork network = new StopoverNetwork();
 

@@ -9,10 +9,16 @@ import stopovers.Stopover;
 
 public class CivilShip extends Ship implements CivilVehicle {
   private final PassengerZone passengerZone;
+  private final String company;
 
-  public CivilShip(double velocity, int passengerCapacity) {
+  public CivilShip(double velocity, int passengerCapacity, String company) {
     super(velocity);
     passengerZone = new PassengerZone(passengerCapacity);
+    this.company = company;
+  }
+
+  public CivilShip(double velocity, int passengerCapacity) {
+    this(velocity, passengerCapacity, "");
   }
 
   // TODO: show to the teacher - using instanceof
@@ -23,6 +29,10 @@ public class CivilShip extends Ship implements CivilVehicle {
       }
     }
     return null;
+  }
+
+  public String getCompany() {
+    return company;
   }
 
   @Override
