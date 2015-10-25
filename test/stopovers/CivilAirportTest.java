@@ -6,8 +6,9 @@ import core.Coordinates;
 import org.junit.Test;
 import vehicles.CivilAirplane;
 import vehicles.Airplane;
+import vehicles.CivilShip;
 import vehicles.MilitaryAirplane;
-import vehicles.Vehicle;
+
 
 public class CivilAirportTest {
   @Test
@@ -15,15 +16,15 @@ public class CivilAirportTest {
     CivilAirplane civilAirplane = new CivilAirplane(1, 5, 100);
     Stopover civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 
-    assertTrue(civilAirport.accommodateVehicle(civilAirplane));
+    assertTrue(civilAirport.accommodateCivilAirplane(civilAirplane));
   }
 
   @Test(expected= InvalidVehicleAtStopoverException.class)
-  public void shouldNotAccommodateAirplane() throws InvalidVehicleAtStopoverException {
-    Airplane airplane = mock(Airplane.class, CALLS_REAL_METHODS);
+  public void shouldNotAccommodateCivilShip() throws InvalidVehicleAtStopoverException {
+    CivilShip ship = mock(CivilShip.class, CALLS_REAL_METHODS);
     Stopover civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 
-    civilAirport.accommodateVehicle(airplane);
+    civilAirport.accommodateCivilShip(ship);
   }
 
   @Test(expected= InvalidVehicleAtStopoverException.class)
@@ -31,6 +32,6 @@ public class CivilAirportTest {
     MilitaryAirplane airplane = mock(MilitaryAirplane.class, CALLS_REAL_METHODS);
     Stopover civilAirport = new CivilAirport(new Coordinates(1, 1), 5);
 
-    civilAirport.accommodateVehicle(airplane);
+    civilAirport.accommodateMilitaryAirplane(airplane);
   }
 }

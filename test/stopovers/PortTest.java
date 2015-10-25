@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import core.Coordinates;
 import org.junit.Test;
+import vehicles.CivilAirplane;
 import vehicles.CivilShip;
 import vehicles.Ship;
 
@@ -13,14 +14,14 @@ public class PortTest {
     CivilShip civilShip = new CivilShip(1, 100);
     Port port = new Port(new Coordinates(1, 1), 5);
 
-    assertTrue(port.accommodateVehicle(civilShip));
+    assertTrue(port.accommodateCivilShip(civilShip));
   }
 
   @Test(expected= InvalidVehicleAtStopoverException.class)
-  public void shouldNotAccommodateShip() throws InvalidVehicleAtStopoverException {
-    Ship ship = mock(Ship.class);
+  public void shouldNotAccommodateCivilAirplane() throws InvalidVehicleAtStopoverException {
+    CivilAirplane airplane = mock(CivilAirplane.class);
     Port port = new Port(new Coordinates(1, 1), 5);
 
-    port.accommodateVehicle(ship);
+    port.accommodateCivilAirplane(airplane);
   }
 }

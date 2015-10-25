@@ -17,15 +17,7 @@ public class MilitaryAirportTest {
     MilitaryAirplane militaryAirplane = new MilitaryAirplane(1, 5, Weapon.WeaponType.BOMB);
     Stopover militaryAirport = new MilitaryAirport(new Coordinates(1, 1), 5);
 
-    assertTrue(militaryAirport.accommodateVehicle(militaryAirplane));
-  }
-
-  @Test(expected= InvalidVehicleAtStopoverException.class)
-  public void shouldNotAccommodateAirplane() throws InvalidVehicleAtStopoverException {
-    Airplane airplane = mock(Airplane.class, CALLS_REAL_METHODS);
-    Stopover militaryAirport = new MilitaryAirport(new Coordinates(1, 1), 5);
-
-    militaryAirport.accommodateVehicle(airplane);
+    assertTrue(militaryAirport.accommodateMilitaryAirplane(militaryAirplane));
   }
 
   @Test(expected= InvalidVehicleAtStopoverException.class)
@@ -33,7 +25,7 @@ public class MilitaryAirportTest {
     CivilAirplane airplane = mock(CivilAirplane.class, CALLS_REAL_METHODS);
     Stopover militaryAirport = new MilitaryAirport(new Coordinates(1, 1), 5);
 
-    militaryAirport.accommodateVehicle(airplane);
+    militaryAirport.accommodateCivilAirplane(airplane);
   }
 
   @Test(expected= InvalidVehicleAtStopoverException.class)
@@ -41,6 +33,6 @@ public class MilitaryAirportTest {
     CivilShip vehicle = mock(CivilShip.class, CALLS_REAL_METHODS);
     Stopover militaryAirport = new MilitaryAirport(new Coordinates(1, 1), 5);
 
-    militaryAirport.accommodateVehicle(vehicle);
+    militaryAirport.accommodateCivilShip(vehicle);
   }
 }

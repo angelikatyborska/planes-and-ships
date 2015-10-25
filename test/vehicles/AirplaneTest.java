@@ -1,17 +1,19 @@
 package vehicles;
 
 import static org.junit.Assert.*;
-import core.Coordinates;
-import stopovers.Airport;
-import stopovers.Stopover;
-import stopovers.InvalidVehicleAtStopoverException;
+
 import org.junit.Test;
+import stopovers.InvalidVehicleAtStopoverException;
+import stopovers.Stopover;
 
 public class AirplaneTest {
   private class StubAirplane extends Airplane {
     public StubAirplane(double velocity, double fuelCapacity) {
       super(velocity, fuelCapacity);
     }
+
+    @Override
+    public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {}
   }
 
   @Test

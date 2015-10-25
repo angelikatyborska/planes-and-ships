@@ -103,14 +103,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     return (vehicleCoord.getX() == stopoverCoord.getX() && vehicleCoord.getY() == stopoverCoord.getY());
   }
 
-  // TODO: something about that below, it seems like awful design
-  // every Vehicle has to copy this method because "this" needs to be a reference of specific type
-  // visitor pattern again?
-  public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateVehicle(this)) {}
-    stopover.prepareVehicleForTravel(this);
-    stopover.releaseVehicle(this);
-  }
+  public abstract void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException;
 
   @Override
   public void tick() throws InterruptedException {

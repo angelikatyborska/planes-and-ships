@@ -36,8 +36,8 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
 
   @Override
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateVehicle(this)) {}
-    stopover.prepareVehicleForTravel(this);
+    while (!stopover.accommodateCivilAirplane(this)) {}
+    stopover.prepareCivilAirplaneForTravel(this);
     stopover.releaseVehicle(this);
   }
 }

@@ -20,8 +20,8 @@ public class MilitaryAirplane extends Airplane {
 
   @Override
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateVehicle(this)) {}
-    stopover.prepareVehicleForTravel(this);
+    while (!stopover.accommodateMilitaryAirplane(this)) {}
+    stopover.prepareMilitaryAirplaneForTravel(this);
     stopover.releaseVehicle(this);
   }
 }

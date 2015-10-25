@@ -14,7 +14,7 @@ public class StopoverTest {
     Stopover stopover = new Stopover(coordinates, 1);
     Vehicle mockedVehicle = mock(Vehicle.class);
 
-    assertTrue(stopover.accommodateVehicle(mockedVehicle));
+    assertTrue(stopover.accommodate(mockedVehicle));
     assertEquals(1, stopover.getAccommodatedVehicles().size());
   }
 
@@ -24,7 +24,7 @@ public class StopoverTest {
     Stopover stopover = new Stopover(coordinates, 0);
     Vehicle mockedVehicle = mock(Vehicle.class);
 
-    assertFalse(stopover.accommodateVehicle(mockedVehicle));
+    assertFalse(stopover.accommodate(mockedVehicle));
     assertEquals(0, stopover.getAccommodatedVehicles().size());
   }
 
@@ -34,7 +34,7 @@ public class StopoverTest {
     Stopover stopover = new Stopover(coordinates, 5);
     Vehicle mockedVehicle = mock(Vehicle.class);
 
-    stopover.accommodateVehicle(mockedVehicle);
+    stopover.accommodate(mockedVehicle);
 
     assertTrue(stopover.releaseVehicle(mockedVehicle));
     assertEquals(0, stopover.getAccommodatedVehicles().size());

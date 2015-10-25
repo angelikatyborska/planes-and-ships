@@ -13,43 +13,23 @@ public abstract class Airport extends Stopover {
     super(name, coordinates, vehicleCapacity);
   }
 
-  // TODO: show to the teacher - using casting
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
-    throw new InvalidVehicleAtStopoverException(vehicle, this);
+  public boolean accommodateCivilAirplane(CivilAirplane vehicle) throws InvalidVehicleAtStopoverException {
+    return accommodate(vehicle);
   }
 
-  public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtStopoverException {
-    return super.accommodateVehicle((Vehicle) airplane);
+  public boolean accommodateMilitaryAirplane(MilitaryAirplane vehicle) throws InvalidVehicleAtStopoverException {
+    return accommodate(vehicle);
   }
 
-  public boolean accommodateVehicle(CivilAirplane airplane) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Airplane) airplane);
-  }
-
-  public boolean accommodateVehicle(MilitaryAirplane airplane) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Airplane) airplane);
-  }
-
-  public boolean accommodateVehicle(CivilShip vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
-  }
-
-  public boolean accommodateVehicle(MilitaryShip vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
-  }
-
-  public void prepareVehicleForTravel(Airplane vehicle) throws InterruptedException {
-    super.prepareVehicleForTravel(vehicle);
+  public void prepareAirplaneForTravel(Airplane vehicle) throws InterruptedException {
+    super.prepareAirplaneForTravel(vehicle);
     vehicle.refillFuel();
   }
 
-  public void prepareVehicleForTravel(CivilAirplane vehicle) throws InterruptedException {
-    prepareVehicleForTravel((Airplane) vehicle);
+  public void prepareCivilAirplaneForTravel(CivilAirplane vehicle) throws InterruptedException {
+    super.prepareCivilAirplaneForTravel(vehicle);
   }
 
-  public void prepareVehicleForTravel(MilitaryAirplane vehicle) throws InterruptedException {
-    prepareVehicleForTravel((Airplane) vehicle);
-  }
 
   @Override
   public void draw(Drawer drawer) {

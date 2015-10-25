@@ -19,7 +19,7 @@ public class CivilAirplaneTest {
     airplane.setRoute(new ArrayList<>());
 
     airplane.burnFuel(50);
-    airport.prepareVehicleForTravel(airplane);
+    airport.prepareAirplaneForTravel(airplane);
 
     assertEquals(100, airplane.getFuel(), 0.00001);
   }

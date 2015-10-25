@@ -55,11 +55,4 @@ public abstract class Airplane extends Vehicle {
   public void draw(Drawer drawer) {
     drawer.drawAirplane(this);
   }
-
-  @Override
-  public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateVehicle(this)) {}
-    stopover.prepareVehicleForTravel(this);
-    stopover.releaseVehicle(this);
-  }
 }

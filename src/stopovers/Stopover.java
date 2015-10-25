@@ -48,47 +48,21 @@ public class Stopover implements Drawable {
     return accommodatedVehicles;
   }
 
-  public boolean accommodateVehicle(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
-    boolean accommodatingSuccessful;
-    processingVehicleLock.lock();
-
-    if (accommodatedVehicles.size() < vehicleCapacity) {
-      accommodatedVehicles.add(vehicle);
-      accommodatingSuccessful = true;
-    }
-    else {
-      accommodatingSuccessful = false;
-    }
-
-    processingVehicleLock.unlock();
-    return accommodatingSuccessful;
+  // default: no one allowed, so that overriding means white-listing
+  public boolean accommodateCivilAirplane(CivilAirplane vehicle) throws InvalidVehicleAtStopoverException {
+    throw new InvalidVehicleAtStopoverException(vehicle, this);
   }
 
-  // TODO: show to the teacher - using casting, I have to define those dummy methods, so that when I have a reference to a Stopover that is in fact eg. CivilAirport, I can call CivilAirport's accommodateVehice with the argument type CivilAirplane
-
-  // TODO: rename those methods with names suggesting which vehicle is getting accommodated, like "accommodateCivilAirplane"
-  public boolean accommodateVehicle(Airplane vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
+  public boolean accommodateMilitaryAirplane(MilitaryAirplane vehicle) throws InvalidVehicleAtStopoverException {
+    throw new InvalidVehicleAtStopoverException(vehicle, this);
   }
 
-  public boolean accommodateVehicle(Ship vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
+  public boolean accommodateCivilShip(CivilShip vehicle) throws InvalidVehicleAtStopoverException {
+    throw new InvalidVehicleAtStopoverException(vehicle, this);
   }
 
-  public boolean accommodateVehicle(CivilAirplane vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
-  }
-
-  public boolean accommodateVehicle(MilitaryAirplane vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
-  }
-
-  public boolean accommodateVehicle(CivilShip vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
-  }
-
-  public boolean accommodateVehicle(MilitaryShip vehicle) throws InvalidVehicleAtStopoverException {
-    return accommodateVehicle((Vehicle) vehicle);
+  public boolean accommodateMilitaryShip(MilitaryShip vehicle) throws InvalidVehicleAtStopoverException {
+    throw new InvalidVehicleAtStopoverException(vehicle, this);
   }
 
   public boolean releaseVehicle(Vehicle vehicle) {
@@ -111,38 +85,52 @@ public class Stopover implements Drawable {
     return accommodatedVehicles.contains(vehicle);
   }
 
-  // TODO: show to the teacher - using casting, twin methods just for overriding
-
   public void prepareVehicleForTravel(Vehicle vehicle) {
     vehicle.updateRoute();
   }
 
-  public void prepareVehicleForTravel(Airplane vehicle) throws InterruptedException {
-    prepareVehicleForTravel((Vehicle) vehicle);
+  public void prepareAirplaneForTravel(Airplane vehicle) throws InterruptedException {
+    prepareVehicleForTravel(vehicle);
   }
 
-  public void prepareVehicleForTravel(Ship vehicle) throws InterruptedException {
-    prepareVehicleForTravel((Vehicle) vehicle);
+  public void prepareShipForTravel(Ship vehicle) throws InterruptedException {
+    prepareVehicleForTravel(vehicle);
   }
 
-  public void prepareVehicleForTravel(CivilAirplane vehicle) throws InterruptedException {
-    prepareVehicleForTravel((Vehicle) vehicle);
+  public void prepareCivilAirplaneForTravel(CivilAirplane vehicle) throws InterruptedException {
+    prepareAirplaneForTravel(vehicle);
   }
 
-  public void prepareVehicleForTravel(MilitaryAirplane vehicle) throws InterruptedException {
-    prepareVehicleForTravel((Vehicle) vehicle);
+  public void prepareMilitaryAirplaneForTravel(MilitaryAirplane vehicle) throws InterruptedException {
+    prepareAirplaneForTravel(vehicle);
   }
 
-  public void prepareVehicleForTravel(CivilShip vehicle) throws InterruptedException {
-    prepareVehicleForTravel((Vehicle) vehicle);
+  public void prepareCivilShipForTravel(CivilShip vehicle) throws InterruptedException {
+    prepareShipForTravel(vehicle);
   }
 
-  public void prepareVehicleForTravel(MilitaryShip vehicle) {
-    prepareVehicleForTravel((Vehicle) vehicle);
+  public void prepareMilitaryShipForTravel(MilitaryShip vehicle) throws InterruptedException {
+    prepareShipForTravel(vehicle);
   }
 
   @Override
   public void draw(Drawer drawer) {
     drawer.drawStopover(this);
+  }
+
+  protected boolean accommodate(Vehicle vehicle) throws InvalidVehicleAtStopoverException {
+    boolean accommodatingSuccessful;
+    processingVehicleLock.lock();
+
+    if (accommodatedVehicles.size() < vehicleCapacity) {
+      accommodatedVehicles.add(vehicle);
+      accommodatingSuccessful = true;
+    }
+    else {
+      accommodatingSuccessful = false;
+    }
+
+    processingVehicleLock.unlock();
+    return accommodatingSuccessful;
   }
 }

@@ -3,8 +3,10 @@ package stopovers;
 import core.Coordinates;
 import core.PassengerZone;
 import gui.Drawer;
-import vehicles.Airplane;
 import vehicles.CivilAirplane;
+import vehicles.MilitaryAirplane;
+
+import static java.lang.Thread.sleep;
 
 public class CivilAirport extends Airport implements CivilDestination {
   private final PassengerZone passengerZone;
@@ -24,21 +26,16 @@ public class CivilAirport extends Airport implements CivilDestination {
     return hotel;
   }
 
-  public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtStopoverException {
-    throw new InvalidVehicleAtStopoverException(airplane, this);
+  public boolean accommodateMilitaryAirplane(MilitaryAirplane vehicle) throws InvalidVehicleAtStopoverException {
+    throw new InvalidVehicleAtStopoverException(vehicle, this);
   }
 
-  public boolean accommodateVehicle(CivilAirplane civilAirplane) throws InvalidVehicleAtStopoverException {
-    return super.accommodateVehicle((Airplane) civilAirplane);
-  }
-
-  public void prepareVehicleForTravel(CivilAirplane vehicle) throws InterruptedException {
-    super.prepareVehicleForTravel((Airplane) vehicle);
+  public void prepareCivilAirplaneForTravel(CivilAirplane vehicle) throws InterruptedException {
+    super.prepareCivilAirplaneForTravel(vehicle);
 
     // "wake up" all passengers, "throw" them out of the vehicle and let them know where they are
     // it's up to the passenger whether he will get accommodated there or go to sleep
     vehicle.passengerZone().removePassengersWithSignal(passengerZone);
-
 
     // take all passengers waiting at the airport on board
     passengerZone.moveAllWithMatchingDestinationTo(vehicle.passengerZone(), vehicle.getNextCivilDestination());

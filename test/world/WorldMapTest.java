@@ -5,12 +5,16 @@ import static org.mockito.Mockito.*;
 
 import core.Coordinates;
 import org.junit.Test;
+import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 import vehicles.Vehicle;
 
 public class WorldMapTest {
   private class StubVehicle extends Vehicle {
     public StubVehicle(double velocity) { super(velocity); }
+
+    @Override
+    public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {}
   }
 
   @Test

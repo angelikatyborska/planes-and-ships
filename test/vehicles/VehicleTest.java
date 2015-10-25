@@ -3,6 +3,7 @@ package vehicles;
 import core.Coordinates;
 import org.junit.Test;
 import stopovers.CivilAirport;
+import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 import world.*;
 
@@ -19,6 +20,9 @@ public class VehicleTest {
     }
 
     public Stopover getPreviousStopover() { return null; }
+
+    @Override
+    public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {}
 
     public Stopover getNextStopover() { return stopover; }
   }

@@ -2,8 +2,7 @@ package stopovers;
 
 import core.Coordinates;
 import gui.Drawer;
-import vehicles.Airplane;
-import vehicles.MilitaryAirplane;
+import vehicles.CivilAirplane;
 
 public class MilitaryAirport extends Airport {
   public MilitaryAirport(Coordinates coordinates, int vehicleCapacity) {
@@ -14,12 +13,8 @@ public class MilitaryAirport extends Airport {
     super(name, coordinates, vehicleCapacity);
   }
 
-  public boolean accommodateVehicle(Airplane airplane) throws InvalidVehicleAtStopoverException {
-    throw new InvalidVehicleAtStopoverException(airplane, this);
-  }
-
-  public boolean accommodateVehicle(MilitaryAirplane militaryAirplane) throws InvalidVehicleAtStopoverException {
-    return super.accommodateVehicle((Airplane) militaryAirplane);
+  public boolean accommodateCivilAirplane(CivilAirplane vehicle) throws InvalidVehicleAtStopoverException {
+    throw new InvalidVehicleAtStopoverException(vehicle, this);
   }
 
   @Override
