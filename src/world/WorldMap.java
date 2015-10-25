@@ -19,8 +19,8 @@ public class WorldMap {
     this.stopoverNetwork = stopoverNetwork;
     this.vehicleCoordinates = new HashMap<>();
     processingVehicle = new ReentrantLock();
-    safetyRadius = 12;
     routeGenerator = new RouteGenerator(this);
+    safetyRadius = 12;
   }
 
   public List<Vehicle> getAllVehicles() {

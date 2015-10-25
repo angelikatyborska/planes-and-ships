@@ -230,11 +230,6 @@ public class StopoverNetwork {
 
         stopovers = Lists.reverse(stopovers);
 
-        // TODO: it seems like this function is correct
-//        System.err.println("from " + from.getCoordinates().getX() + ", " + from.getCoordinates().getY());
-//        stopovers.forEach(stopover -> System.err.println(stopover.getCoordinates().getX() + ", " + stopover.getCoordinates().getY()));
-//        System.err.println("to " + to.getCoordinates().getX() + ", " + to.getCoordinates().getY());
-
         ArrayList<CivilDestination> civilDestinations = new ArrayList<>();
         for (Stopover stopover : stopovers) {
           if (stopover instanceof CivilDestination) {
