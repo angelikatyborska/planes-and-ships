@@ -19,7 +19,7 @@ public class Junction extends Stopover {
 
   @Override
   public void draw(Drawer drawer) {
-    drawer.drawStopover(this);
+    drawer.drawJunction(this);
   }
 
   public boolean accommodateCivilAirplane(CivilAirplane vehicle) throws InvalidVehicleAtStopoverException {

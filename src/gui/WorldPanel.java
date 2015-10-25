@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -22,7 +23,9 @@ public class WorldPanel extends Group {
   private Button newCivilShipButton;
   private Button newMilitaryShipButton;
   private Button newMilitaryAirplaneButton;
+  private Button removeVehicleButton;
   private World world;
+  private Vehicle currentVehicle;
   private WorldMap map;
   private WorldDrawer drawer;
   private ObjectDetailDrawer detailDrawer;
@@ -38,10 +41,6 @@ public class WorldPanel extends Group {
     this.worldHeight = 640;
     worldCanvas = new Canvas(worldWidth, worldHeight);
     detailCanvas = new Canvas(detailPanelWidth, worldHeight);
-    newCivilAirplaneButton = new Button();
-    newCivilShipButton = new Button();
-    newMilitaryShipButton = new Button();
-    newMilitaryAirplaneButton = new Button();
 
     buildWorld();
 
@@ -57,11 +56,10 @@ public class WorldPanel extends Group {
     colors.put("civilNavy", Color.web("#0e3a5f"));
     colors.put("civilGreen", Color.web("#065525"));
     colors.put("military", Color.DARKOLIVEGREEN);
+    colors.put("junctionBeige", Color.BEIGE);
 
     drawer = new WorldDrawer(map, worldCanvas.getGraphicsContext2D(), images, colors,  worldWidth, worldHeight);
     detailDrawer = new ObjectDetailDrawer(detailCanvas.getGraphicsContext2D(), images, colors, detailPanelWidth, worldHeight);
-
-    addEventHandlers();
 
     // TODO: maybe this stuff below can be done in a xml file?
     worldCanvas.setLayoutX(0);
@@ -70,36 +68,11 @@ public class WorldPanel extends Group {
     detailCanvas.setLayoutX(worldWidth);
     detailCanvas.setLayoutY(0);
 
-    newCivilAirplaneButton.setLayoutX(worldWidth + 120);
-    newCivilAirplaneButton.setLayoutY(worldHeight - 40);
-
-    newCivilShipButton.setLayoutX(worldWidth + 170);
-    newCivilShipButton.setLayoutY(worldHeight - 40);
-
-    newMilitaryShipButton.setLayoutX(worldWidth + 220);
-    newMilitaryShipButton.setLayoutY(worldHeight - 40);
-
-    newCivilAirplaneButton.getStyleClass().add("add-vehicle-button");
-    newCivilAirplaneButton.getStyleClass().add("add-airplane-button");
-    newCivilAirplaneButton.getStyleClass().add("civil-airplane");
-
-    newCivilShipButton.getStyleClass().add("add-vehicle-button");
-    newCivilShipButton.getStyleClass().add("add-ship-button");
-    newCivilShipButton.getStyleClass().add("civil-ship");
-
-    newMilitaryShipButton.getStyleClass().add("add-vehicle-button");
-    newMilitaryShipButton.getStyleClass().add("add-ship-button");
-    newMilitaryShipButton.getStyleClass().add("military");
-
-    newMilitaryAirplaneButton.getStyleClass().add("add-vehicle-button");
-    newMilitaryAirplaneButton.getStyleClass().add("add-airplane-button");
-    newMilitaryAirplaneButton.getStyleClass().add("military");
-
     getChildren().add(worldCanvas);
     getChildren().add(detailCanvas);
-    getChildren().add(newCivilAirplaneButton);
-    getChildren().add(newCivilShipButton);
-    getChildren().add(newMilitaryShipButton);
+
+    addButtons();
+    addEventHandlers();
   }
 
   public void start() {
@@ -123,10 +96,23 @@ public class WorldPanel extends Group {
     world.shutDown();
   }
 
+  private void setCurrentVehicle(Vehicle vehicle) {
+    currentVehicle = vehicle;
+
+    if (currentVehicle == null) {
+      removeVehicleButton.setVisible(false);
+    }
+    else {
+      removeVehicleButton.setVisible(true);
+    }
+  }
+
   private void addEventHandlers() {
     addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
       Vehicle vehicle = world.findVehicleAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
       Stopover stopover = world.findStopoverAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
+
+      setCurrentVehicle(vehicle);
 
       if (vehicle != null) {
         // not sure if this synchronized block is needed
@@ -155,12 +141,84 @@ public class WorldPanel extends Group {
     newMilitaryShipButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
     newMilitaryShipButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
+    removeVehicleButton.setOnAction(e -> removeCurrentVehicle());
+    removeVehicleButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
+    removeVehicleButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
+
     worldCanvas.setOnMouseEntered(e -> getScene().setCursor(Cursor.CROSSHAIR));
     worldCanvas.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
     worldCanvas.setOnMouseMoved(e -> {
       drawer.setCursorX(e.getX());
       drawer.setCursorY(e.getY());
     });
+  }
+
+  private void removeCurrentVehicle() {
+    if (currentVehicle != null) {
+      detailDrawer.setObject(null);
+
+      try {
+        world.removeVehicle(currentVehicle);
+      }
+      catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+      setCurrentVehicle(null);
+    }
+  }
+
+  private void addButtons() {
+    // TODO: section out buttons for adding vehicles so that users do not think that those buttons are connected to the current location
+    newCivilAirplaneButton = new Button();
+    newCivilShipButton = new Button();
+    newMilitaryShipButton = new Button();
+    newMilitaryAirplaneButton = new Button();
+    removeVehicleButton = new Button();
+
+    newCivilAirplaneButton.setTooltip(new Tooltip("new civil airplane"));
+    newCivilShipButton.setTooltip(new Tooltip("new civil ship"));
+    newMilitaryShipButton.setTooltip(new Tooltip("new military ship"));
+    newMilitaryAirplaneButton.setTooltip(new Tooltip("new military airplane"));
+    removeVehicleButton.setTooltip(new Tooltip("remove vehicle"));
+
+
+    newCivilAirplaneButton.setLayoutX(worldWidth + 120);
+    newCivilAirplaneButton.setLayoutY(worldHeight - 40);
+
+    newCivilShipButton.setLayoutX(worldWidth + 170);
+    newCivilShipButton.setLayoutY(worldHeight - 40);
+
+    newMilitaryShipButton.setLayoutX(worldWidth + 220);
+    newMilitaryShipButton.setLayoutY(worldHeight - 40);
+
+    removeVehicleButton.setLayoutX(worldWidth + detailPanelWidth - 50);
+    removeVehicleButton.setLayoutY(27);
+
+    newCivilAirplaneButton.getStyleClass().add("button");
+    newCivilAirplaneButton.getStyleClass().add("add-airplane-button");
+    newCivilAirplaneButton.getStyleClass().add("civil-airplane");
+
+    newCivilShipButton.getStyleClass().add("button");
+    newCivilShipButton.getStyleClass().add("add-ship-button");
+    newCivilShipButton.getStyleClass().add("civil-ship");
+
+    newMilitaryShipButton.getStyleClass().add("button");
+    newMilitaryShipButton.getStyleClass().add("add-ship-button");
+    newMilitaryShipButton.getStyleClass().add("military");
+
+    newMilitaryAirplaneButton.getStyleClass().add("button");
+    newMilitaryAirplaneButton.getStyleClass().add("add-airplane-button");
+    newMilitaryAirplaneButton.getStyleClass().add("military");
+
+    removeVehicleButton.getStyleClass().add("button");
+    removeVehicleButton.getStyleClass().add("remove-vehicle-button");
+
+    getChildren().add(newCivilAirplaneButton);
+    getChildren().add(newCivilShipButton);
+    getChildren().add(newMilitaryShipButton);
+    getChildren().add(removeVehicleButton);
+    removeVehicleButton.setVisible(false);
   }
 
   private void buildWorld() {

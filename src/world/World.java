@@ -93,17 +93,13 @@ public class World {
   }
 
   public void removeVehicle(Vehicle vehicle) throws InterruptedException {
-    removeVehicleThread(vehicle);
-  }
+    // TODO: show to the teacher - using instanceof
+    if (vehicle instanceof CivilVehicle) {
+      removePassengersThread((CivilVehicle) vehicle);
+    }
 
-  public void removeVehicle(CivilAirplane vehicle) throws InterruptedException {
-    removePassengersThread(vehicle);
     removeVehicleThread(vehicle);
-  }
-
-  public void removeVehicle(CivilShip vehicle) throws InterruptedException {
-    removePassengersThread(vehicle);
-    removeVehicleThread(vehicle);
+    map.removeVehicle(vehicle);
   }
 
   private void removeVehicleThread(Vehicle vehicle) throws InterruptedException {

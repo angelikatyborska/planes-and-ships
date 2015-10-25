@@ -47,11 +47,15 @@ public class ObjectDetailDrawer implements Drawer {
     }
   }
 
+  private void drawVehicle(Vehicle vehicle, Color color, Image image) {
+    drawHeader(color, image, "#" + Integer.toString(vehicle.getId()).substring(0, 4));
+    drawCoordinates(vehicle.getCoordinates());
+  }
+
 
   @Override
   public void drawVehicle(Vehicle vehicle) {
-    drawTitle("#" + Integer.toString(vehicle.getId()).substring(0, 4));
-    drawCoordinates(vehicle.getCoordinates());
+    drawVehicle(vehicle, Color.BLACK, null);
   }
 
   @Override
@@ -62,15 +66,13 @@ public class ObjectDetailDrawer implements Drawer {
 
   @Override
   public void drawCivilAirplane(CivilAirplane vehicle) {
-    drawAirplane(vehicle);
+    drawVehicle(vehicle, colors.get("civilGreen"), images.get("airplane"));
     listPassengers(vehicle.passengerZone());
-    drawVehicleToken(colors.get("civilGreen"), images.get("airplane'"));
   }
 
   @Override
   public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
-    drawAirplane(vehicle);
-    drawVehicleToken(colors.get("military"), images.get("airplane'"));
+    drawVehicle(vehicle, colors.get("military"), images.get("airplane"));
   }
 
   @Override
@@ -80,43 +82,50 @@ public class ObjectDetailDrawer implements Drawer {
 
   @Override
   public void drawCivilShip(CivilShip vehicle) {
-    drawShip(vehicle);
     listPassengers(vehicle.passengerZone());
-    drawVehicleToken(colors.get("civilNavy"), images.get("ship"));
+    drawVehicle(vehicle, colors.get("civilNavy"), images.get("ship"));
     drawNextDestination(vehicle.getNextPort().getName());
   }
 
   @Override
   public void drawMilitaryShip(MilitaryShip vehicle) {
-    drawShip(vehicle);
-    drawVehicleToken(colors.get("military"), images.get("ship"));
+    drawVehicle(vehicle, colors.get("military"), images.get("ship"));
   }
 
-  @Override
-  public void drawStopover(Stopover stopover) {
-    drawTitle(stopover.getName());
+  public void drawStopover(Stopover stopover, Color color) {
+    drawHeader(color, null, stopover.getName());
     drawCoordinates(stopover.getCoordinates());
   }
 
   @Override
+  public void drawStopover(Stopover stopover) {
+    drawStopover(stopover, Color.BLACK);
+  }
+
+  public void drawJunction(Junction stopover) {
+    drawStopover(stopover, colors.get("junctionBeige"));
+  }
+
+  @Override
   public void drawAirport(Airport stopover) {
-    drawStopover(stopover);
+    drawStopover(stopover, colors.get("junctionBeige"));
   }
 
   @Override
   public void drawCivilAirport(CivilAirport stopover) {
-    drawAirport(stopover);
+    drawStopover(stopover, colors.get("civilGreen"));
+
     listPassengers(stopover.passengerZone(), stopover.hotel());
   }
 
   @Override
   public void drawMilitaryAirport(MilitaryAirport stopover) {
-    drawAirport(stopover);
+    drawStopover(stopover, colors.get("military"));
   }
 
   @Override
   public void drawPort(Port stopover) {
-    drawStopover(stopover);
+    drawStopover(stopover, colors.get("civilNavy"));
     listPassengers(stopover.passengerZone(), stopover.hotel());
   }
 
@@ -131,6 +140,7 @@ public class ObjectDetailDrawer implements Drawer {
   }
 
   private void drawCoordinates(Coordinates coordinates) {
+    gc.setFill(Color.BLACK);
     gc.setFont(Font.font(fontFamily, 15));
     String s = (int) coordinates.getX() + ", " + (int) coordinates.getY();
     gc.fillText(s, textLeft, textTop + lineHeight);
@@ -141,6 +151,7 @@ public class ObjectDetailDrawer implements Drawer {
   }
 
   private void listPassengers(PassengerZone passengerZone, PassengerZone hotel) {
+    gc.setFill(Color.BLACK);
     gc.setFont(Font.font(fontFamily, 12));
 
     gc.fillText("Boarding area:", textLeft, textTop + 3 * lineHeight);
@@ -178,12 +189,20 @@ public class ObjectDetailDrawer implements Drawer {
     gc.fillText(s, textLeft, textTop + 2 * lineHeight);
   }
 
-  private void drawVehicleToken(Color color, Image image) {
-    double top = 5;
+  private void drawToken(Color color, Image image, double offset) {
+    double top = 27;
     double radius = 15;
-    double right = 50;
+    double margin = 5;
     gc.setFill(color);
-    gc.fillOval(width - right, top, 2 * radius, 2 * radius);
-    gc.drawImage(image, width - right + radius - image.getWidth()/2, top + radius - image.getHeight()/2);
+    gc.fillOval(textLeft + offset + margin, top, 2 * radius, 2 * radius);
+    if (image != null) {
+      gc.drawImage(image, textLeft + offset + margin + radius - image.getWidth() / 2, top + radius - image.getHeight() / 2);
+    }
   }
+
+  private void drawHeader(Color color, Image image, String s) {
+    drawTitle(s);
+    drawToken(color, image, s.length() * 19);
+
   }
+}

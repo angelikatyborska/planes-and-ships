@@ -59,7 +59,12 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawStopover(Stopover stopover) {
-    drawStopover(stopover, 6, Color.WHITE);
+    drawStopover(stopover, 6, colors.get("junctionBeige"));
+  }
+
+  @Override
+  public void drawJunction(Junction stopover) {
+    drawStopover(stopover, 6, colors.get("junctionBeige"));
   }
 
   @Override

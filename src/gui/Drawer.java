@@ -17,4 +17,5 @@ public interface Drawer {
   void drawCivilAirport(CivilAirport stopover);
   void drawMilitaryAirport(MilitaryAirport stopover);
   void drawPort(Port port);
+  void drawJunction(Junction junction);
 }
