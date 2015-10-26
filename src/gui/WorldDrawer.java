@@ -1,6 +1,5 @@
 package gui;
 
-import core.Passenger;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -9,14 +8,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import stopovers.*;
 import vehicles.*;
-import world.WorldMap;
+import world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class WorldDrawer implements Drawer {
-  private final WorldMap map;
+  private final World world;
   private final GraphicsContext gc;
   private final double height;
   private final double width;
@@ -27,8 +26,8 @@ public class WorldDrawer implements Drawer {
   private final HashMap<String, Image> images;
   private final HashMap<String, Color> colors;
 
-  public WorldDrawer(WorldMap map, GraphicsContext gc, HashMap<String, Image> images, HashMap<String, Color> colors, double width, double height) {
-    this.map = map;
+  public WorldDrawer(World world, GraphicsContext gc, HashMap<String, Image> images, HashMap<String, Color> colors, double width, double height) {
+    this.world = world;
     this.gc = gc;
     this.width = width;
     this.height = height;
@@ -182,11 +181,11 @@ public class WorldDrawer implements Drawer {
 
     List<Stopover> alreadyDrewLinesToNeighbours = new ArrayList<>();
 
-    for (Stopover stopover : map.getAllStopovers()) {
+    for (Stopover stopover : world.getAllStopovers()) {
       double x1 = stopover.getCoordinates().getX();
       double y1 = stopover.getCoordinates().getY();
 
-      for (Stopover neighbour : map.getNeighbouringStopovers(stopover)) {
+      for (Stopover neighbour : world.getNeighbouringStopovers(stopover)) {
         // don't draw the same line twice
         if (!alreadyDrewLinesToNeighbours.contains(neighbour)) {
           double x2 = neighbour.getCoordinates().getX();
@@ -197,7 +196,7 @@ public class WorldDrawer implements Drawer {
       alreadyDrewLinesToNeighbours.add(stopover);
     }
 
-    for (Stopover stopover : map.getAllStopovers()) {
+    for (Stopover stopover : world.getAllStopovers()) {
       stopover.draw(this);
     }
   }
@@ -217,7 +216,7 @@ public class WorldDrawer implements Drawer {
     gc.fillText(stopover.getName(), x, y + topOffset + height/2);
   }
   private void drawVehicles() {
-    for (Vehicle vehicle : map.getAllVehicles()) {
+    for (Vehicle vehicle : world.getAllVehicles()) {
       vehicle.draw(this);
     }
   }

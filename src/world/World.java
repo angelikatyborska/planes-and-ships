@@ -37,6 +37,10 @@ public class World {
     return map.getAllStopovers();
   }
 
+  public List<Stopover> getNeighbouringStopovers(Stopover stopover) {
+    return map.getNeighbouringStopovers(stopover);
+  }
+
   public void addCivilAirplane() {
     try {
       CivilAirplane vehicle = vehicleGenerator.newCivilAirplane();
