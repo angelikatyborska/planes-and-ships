@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+// TODO: fix a bug where a vehicle's next stopover is not correct just after leaving the initial destination and before accommodating somewhere for the first time
 public abstract class Vehicle extends WorldClockListener implements Drawable {
   private final int id;
   private final double velocity;

@@ -68,6 +68,7 @@ public class ObjectDetailDrawer implements Drawer {
   public void drawCivilAirplane(CivilAirplane vehicle) {
     drawVehicle(vehicle, colors.get("civilGreen"), images.get("airplane"));
     listPassengers(vehicle.passengerZone());
+    drawNextDestination(vehicle.getNextAirport().getName());
   }
 
   @Override
