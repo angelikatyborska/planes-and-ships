@@ -6,6 +6,7 @@ import gui.Drawable;
 import gui.Drawer;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
+import stopovers.Junction;
 import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldClockListener;
@@ -14,8 +15,8 @@ import world.WorldMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
-// TODO: fix a bug where a vehicle's next stopover is not correct just after leaving the initial destination and before accommodating somewhere for the first time
 public abstract class Vehicle extends WorldClockListener implements Drawable {
   private final int id;
   private final double velocity;
@@ -51,6 +52,10 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     return id;
   }
 
+  public List<String> routeToStrings() {
+    return route.stream().filter(stopover -> !(stopover instanceof Junction)).map(Stopover::getName).collect(Collectors.toList());
+  }
+
   public Stopover getNextStopover() {
     synchronized (route) {
       return route.get(previousStopoverNumber + 1);
@@ -69,7 +74,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
   public CivilDestination getNextCivilDestination() {
     synchronized (route) {
-      for (int i = previousStopoverNumber; i < route.size(); i++) {
+      for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
         if (route.get(i) instanceof CivilDestination) {
           return (CivilDestination) route.get(i);
         }
@@ -97,6 +102,18 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
       }
     }
   }
+
+  public void randomizeCurrentRoute() {
+    List<Stopover> newRoute = new ArrayList<>();
+
+    // new route must start with previous and next stopover from current route
+    newRoute.add(route.get(previousStopoverNumber));
+    newRoute.addAll(newSubRoute());
+
+    setRoute(newRoute);
+  }
+
+  protected abstract List<Stopover> newSubRoute();
 
   public boolean hasArrivedAtStopover(Stopover stopover) {
     Coordinates vehicleCoord = getCoordinates();

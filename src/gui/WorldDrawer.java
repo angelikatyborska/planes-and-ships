@@ -93,7 +93,7 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawMilitaryAirport(MilitaryAirport stopover) {
-    drawStopover(stopover, 16, Color.DARKOLIVEGREEN);
+    drawStopover(stopover, 16, colors.get("military"));
   }
 
   @Override
@@ -103,15 +103,13 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawAirplane(Airplane vehicle) {
-    double x = vehicle.getCoordinates().getX();
-    double y = vehicle.getCoordinates().getY();
-    double a = 8;
+    double x = vehicle.getCoordinates().getX() - images.get("airplane").getWidth()/2;
+    double y = vehicle.getCoordinates().getY() - images.get("airplane").getHeight()/2;
 
     double angle = vehicle.getBearing();
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
-
-    gc.fillOval(x + dx - a / 2, y + dy - a / 2, a, a);
+    gc.drawImage(images.get("airplane"), x + dx, y + dy);
   }
 
   @Override

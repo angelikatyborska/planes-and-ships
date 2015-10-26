@@ -59,8 +59,8 @@ public class World {
   public void addMilitaryAirplane(MilitaryShip ship) {
     try {
       MilitaryAirplane vehicle = vehicleGenerator.newMilitaryAirplane(ship.getWeapon().getType());
-      MilitaryAirport startingPoint = map.getRandomMilitaryAirport();
-      vehicle.setRoute(map.getRouteGenerator().newMilitaryAirRoute(startingPoint));
+      MilitaryAirport startingPoint = map.findClosestMetricallyMilitaryAirport(ship.getPreviousStopover());
+      vehicle.setRoute(map.getRouteGenerator().newMilitaryAirRoute(startingPoint, 4));
       prepareVehicle(vehicle, ship.getCoordinates());
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {

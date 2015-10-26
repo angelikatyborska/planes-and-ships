@@ -2,10 +2,10 @@ package vehicles;
 
 import core.PassengerZone;
 import gui.Drawer;
-import stopovers.CivilDestination;
-import stopovers.InvalidVehicleAtStopoverException;
-import stopovers.Port;
-import stopovers.Stopover;
+import stopovers.*;
+import world.StopoverNotFoundInStopoverNetworkException;
+
+import java.util.List;
 
 public class CivilShip extends Ship implements CivilVehicle {
   private final PassengerZone passengerZone;
@@ -52,8 +52,18 @@ public class CivilShip extends Ship implements CivilVehicle {
     stopover.releaseVehicle(this);
   }
 
+  @Override
+  public List<Stopover> newSubRoute() {
+    try {
+      return worldMap.getRouteGenerator().newRoute(route.get(previousStopoverNumber + 1), Port.class, 4);
+    } catch (StopoverNotFoundInStopoverNetworkException e) {
+      e.printStackTrace();
+    };
+    return null;
+  }
+
   public Port getNextPort() {
-    for (int i = previousStopoverNumber; i < route.size(); i++) {
+    for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
       if (route.get(i) instanceof Port) {
         return (Port) route.get(i);
       }

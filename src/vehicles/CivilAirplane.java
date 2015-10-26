@@ -2,9 +2,13 @@ package vehicles;
 
 import core.PassengerZone;
 import gui.Drawer;
+import stopovers.CivilAirport;
 import stopovers.CivilDestination;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
+import world.StopoverNotFoundInStopoverNetworkException;
+
+import java.util.List;
 
 public class CivilAirplane extends Airplane implements CivilVehicle {
   private final PassengerZone passengerZone;
@@ -21,6 +25,16 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
         return (CivilDestination) route.get(i);
       }
     }
+    return null;
+  }
+
+  @Override
+  public List<Stopover> newSubRoute() {
+    try {
+      return worldMap.getRouteGenerator().newRoute(route.get(previousStopoverNumber + 1), CivilAirport.class, 4);
+    } catch (StopoverNotFoundInStopoverNetworkException e) {
+      e.printStackTrace();
+    };
     return null;
   }
 

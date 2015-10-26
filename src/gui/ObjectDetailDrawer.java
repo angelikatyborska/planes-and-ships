@@ -11,6 +11,7 @@ import stopovers.*;
 import vehicles.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ObjectDetailDrawer implements Drawer {
   private final GraphicsContext gc;
@@ -69,11 +70,13 @@ public class ObjectDetailDrawer implements Drawer {
     drawVehicle(vehicle, colors.get("civilGreen"), images.get("airplane"));
     listPassengers(vehicle.passengerZone());
     drawNextDestination(vehicle.getNextAirport().getName());
+    drawRoute(vehicle.routeToStrings());
   }
 
   @Override
   public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
     drawVehicle(vehicle, colors.get("military"), images.get("airplane"));
+    drawRoute(vehicle.routeToStrings());
   }
 
   @Override
@@ -87,16 +90,12 @@ public class ObjectDetailDrawer implements Drawer {
     drawVehicle(vehicle, colors.get("civilNavy"), images.get("ship"));
     drawSubtitle("owned by: " + vehicle.getCompany());
     drawNextDestination(vehicle.getNextPort().getName());
+    drawRoute(vehicle.routeToStrings());
   }
 
   @Override
   public void drawMilitaryShip(MilitaryShip vehicle) {
     drawVehicle(vehicle, colors.get("military"), images.get("ship"));
-  }
-
-  public void drawStopover(Stopover stopover, Color color) {
-    drawHeader(color, null, stopover.getName());
-    drawCoordinates(stopover.getCoordinates());
   }
 
   @Override
@@ -131,6 +130,11 @@ public class ObjectDetailDrawer implements Drawer {
     listPassengers(stopover.passengerZone(), stopover.hotel());
   }
 
+  private void drawStopover(Stopover stopover, Color color) {
+    drawHeader(color, null, stopover.getName());
+    drawCoordinates(stopover.getCoordinates());
+  }
+
   private void drawPanel() {
     gc.drawImage(images.get("paper"), 0, 0);
   }
@@ -162,7 +166,7 @@ public class ObjectDetailDrawer implements Drawer {
     gc.setFill(Color.BLACK);
     gc.setFont(Font.font(fontFamily, 12));
 
-    gc.fillText("Boarding area:", textLeft, textTop + 3 * lineHeight);
+    gc.fillText("Boarding area:", textLeft, textTop + 6 * lineHeight);
 
     double i = 0.5;
     for (Passenger passenger : passengerZone.getPassengers()) {
@@ -171,12 +175,12 @@ public class ObjectDetailDrawer implements Drawer {
       s += passenger.getLastName();
       s += " -> " + passenger.getNextCivilStopover().getName();
 
-      gc.fillText(s, textLeft, textTop + (i + 3) * lineHeight);
+      gc.fillText(s, textLeft, textTop + (i + 6) * lineHeight);
       i += 0.5;
     }
 
     if (hotel != null) {
-      gc.fillText("Hotel:", textLeft, textTop + (i + 3.5) * lineHeight);
+      gc.fillText("Hotel:", textLeft, textTop + (i + 6.5) * lineHeight);
 
       for (Passenger passenger : hotel.getPassengers()) {
         String s = "- ";
@@ -184,17 +188,27 @@ public class ObjectDetailDrawer implements Drawer {
         s += passenger.getLastName();
         s += " -> " + passenger.getNextCivilStopover().getName();
 
-        gc.fillText(s, textLeft, textTop + (i + 4) * lineHeight);
+        gc.fillText(s, textLeft, textTop + (i + 7) * lineHeight);
         i += 0.5;
       }
     }
   }
 
   private void drawNextDestination(String nextDestination) {
-    gc.setFont(Font.font(fontFamily, 15));
+    gc.setFont(Font.font(fontFamily, 18));
     gc.setFill(Color.BLACK);
     String s = "-> " + nextDestination;
     gc.fillText(s, textLeft, textTop + 2 * lineHeight);
+  }
+
+  private void drawRoute(List<String> destinationNames) {
+    gc.setFont(Font.font(fontFamily, 12));
+    gc.setFill(Color.BLACK);
+    int i = 0;
+    for (String name : destinationNames) {
+      gc.fillText(i + ". " + name, textLeft, textTop + (2.5 + (0.5 * i)) * lineHeight);
+      i++;
+    }
   }
 
   private void drawToken(Color color, Image image, double offset) {

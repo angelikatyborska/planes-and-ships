@@ -7,6 +7,8 @@ import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 import world.*;
 
+import java.util.List;
+
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
 
@@ -20,6 +22,9 @@ public class VehicleTest {
     }
 
     public Stopover getPreviousStopover() { return null; }
+
+    @Override
+    protected List<Stopover> newSubRoute() { return null; }
 
     @Override
     public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {}

@@ -9,12 +9,17 @@ import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 import vehicles.Vehicle;
 
+import java.util.List;
+
 public class WorldMapTest {
   private class StubVehicle extends Vehicle {
     public StubVehicle(double velocity) { super(velocity); }
 
     @Override
     public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {}
+
+    @Override
+    protected List<Stopover> newSubRoute() { return null; }
   }
 
   @Test

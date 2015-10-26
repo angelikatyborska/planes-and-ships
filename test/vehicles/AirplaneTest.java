@@ -6,6 +6,8 @@ import org.junit.Test;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 
+import java.util.List;
+
 public class AirplaneTest {
   private class StubAirplane extends Airplane {
     public StubAirplane(double velocity, double fuelCapacity) {
@@ -14,6 +16,9 @@ public class AirplaneTest {
 
     @Override
     public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {}
+
+    @Override
+    protected List<Stopover> newSubRoute() { return null; }
   }
 
   @Test

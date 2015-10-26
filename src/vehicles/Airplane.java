@@ -42,7 +42,7 @@ public abstract class Airplane extends Vehicle {
   }
 
   public Airport getNextAirport() {
-    for (int i = previousStopoverNumber; i < route.size(); i++) {
+    for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
       if (route.get(i) instanceof Airport) {
         return (Airport) route.get(i);
       }

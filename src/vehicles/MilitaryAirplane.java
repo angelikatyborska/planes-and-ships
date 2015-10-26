@@ -3,7 +3,11 @@ package vehicles;
 import core.Weapon;
 import gui.Drawer;
 import stopovers.InvalidVehicleAtStopoverException;
+import stopovers.MilitaryAirport;
 import stopovers.Stopover;
+import world.StopoverNotFoundInStopoverNetworkException;
+
+import java.util.List;
 
 public class MilitaryAirplane extends Airplane {
   private Weapon weapon;
@@ -23,5 +27,15 @@ public class MilitaryAirplane extends Airplane {
     while (!stopover.accommodateMilitaryAirplane(this)) {}
     stopover.prepareMilitaryAirplaneForTravel(this);
     stopover.releaseVehicle(this);
+  }
+
+  @Override
+  public List<Stopover> newSubRoute() {
+    try {
+      return worldMap.getRouteGenerator().newRoute(route.get(previousStopoverNumber + 1), MilitaryAirport.class, 4);
+    } catch (StopoverNotFoundInStopoverNetworkException e) {
+      e.printStackTrace();
+    };
+    return null;
   }
 }

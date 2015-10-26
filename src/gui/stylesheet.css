@@ -20,6 +20,11 @@
     -fx-background-color: #da0000;
 }
 
+.change-route-button {
+    -fx-background-image: url('/images/shuffle.png');
+    -fx-background-color: darkorange;
+}
+
 .civil-airplane {
     -fx-background-color: #065525;
 }

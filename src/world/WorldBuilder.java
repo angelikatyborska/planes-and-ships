@@ -33,7 +33,7 @@ public class WorldBuilder {
       Junction airJunction4 = new Junction(new Coordinates(720, 220));
       Junction airJunction5 = new Junction(new Coordinates(550, 330));
       Junction airJunction6 = new Junction(new Coordinates(650, 470));
-      Junction airJunction7 = new Junction(new Coordinates(400, 550));
+      Junction airJunction7 = new Junction(new Coordinates(400, 620));
 
       network.add(airJunction1);
       network.add(airJunction2);
@@ -76,12 +76,16 @@ public class WorldBuilder {
       MilitaryAirport militaryAirport1 = new MilitaryAirport("TOP SECRET", new Coordinates(760, 40), 1);
       MilitaryAirport militaryAirport2 = new MilitaryAirport("TOP SECRET", new Coordinates(340, 260), 1);
       MilitaryAirport militaryAirport3 = new MilitaryAirport("TOP SECRET", new Coordinates(770, 380), 1);
-      MilitaryAirport militaryAirport4 = new MilitaryAirport("TOP SECRET", new Coordinates(500, 610), 1);
+      MilitaryAirport militaryAirport4 = new MilitaryAirport("TOP SECRET", new Coordinates(600, 610), 1);
+      MilitaryAirport militaryAirport5 = new MilitaryAirport("TOP SECRET", new Coordinates(230, 23), 1);
+      MilitaryAirport militaryAirport6 = new MilitaryAirport("TOP SECRET", new Coordinates(320, 560), 1);
 
       network.add(militaryAirport1);
       network.add(militaryAirport2);
       network.add(militaryAirport3);
       network.add(militaryAirport4);
+      network.add(militaryAirport5);
+      network.add(militaryAirport6);
 
       network.connect(militaryAirport1, airJunction2);
       network.connect(militaryAirport1, airJunction4);
@@ -96,6 +100,12 @@ public class WorldBuilder {
 
       network.connect(militaryAirport4, airJunction6);
       network.connect(militaryAirport4, airJunction7);
+
+      network.connect(militaryAirport5, airJunction1);
+
+      network.connect(militaryAirport6, airJunction7);
+
+
 
       Port port1 = new Port("Lettergrad", new Coordinates(50, 230), 1);
       Port port2 = new Port("New Notebook", new Coordinates(230, 280), 1);

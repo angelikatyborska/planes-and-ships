@@ -49,7 +49,7 @@ public class RouteGenerator {
     return route;
   }
 
-  private List<Stopover> newRoute(Stopover from, Class<? extends Stopover> type, int n) throws StopoverNotFoundInStopoverNetworkException {
+  public List<Stopover> newRoute(Stopover from, Class<? extends Stopover> type, int n) throws StopoverNotFoundInStopoverNetworkException {
     int i = 0;
     ArrayList<Stopover> route = new ArrayList<>();
 

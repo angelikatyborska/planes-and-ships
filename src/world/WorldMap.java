@@ -24,7 +24,6 @@ public class WorldMap {
   }
 
   public List<Vehicle> getAllVehicles() {
-    // TODO: does this copy only the list or each key?
     return new ArrayList<>(vehicleCoordinates.keySet());
   }
 
@@ -116,6 +115,11 @@ public class WorldMap {
     return randomAdjecentJunction;
   }
 
+  /**
+   *
+   * @param vehicle
+   * @return a reference to the vehicle's Coordinate object
+   */
   public Coordinates getVehicleCoordinates(Vehicle vehicle) {
     processingVehicle.lock();
     Coordinates coordinates = vehicleCoordinates.get(vehicle);
@@ -160,11 +164,10 @@ public class WorldMap {
   }
 
   private boolean canVehicleMove(Vehicle vehicleToMove) {
-    return !vehicleCoordinates.keySet().stream().anyMatch(otherVehicle -> {
-      return areVehiclesGoingFromAndToSameStopovers(vehicleToMove, otherVehicle)
-        && isVehicleBehindOtherVehicle(vehicleToMove, otherVehicle)
-        && areVehiclesTooClose(vehicleToMove, otherVehicle);
-    });
+    return !vehicleCoordinates.keySet().stream().anyMatch(otherVehicle ->
+      areVehiclesGoingFromAndToSameStopovers(vehicleToMove, otherVehicle)
+      && isVehicleBehindOtherVehicle(vehicleToMove, otherVehicle)
+      && areVehiclesTooClose(vehicleToMove, otherVehicle));
   }
 
   private boolean areVehiclesTooClose(Vehicle vehicleMoving, Vehicle otherVehicle) {

@@ -6,7 +6,7 @@ import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
 
-import java.util.Arrays;
+import java.util.List;
 
 
 public class MilitaryShip extends Ship {
@@ -40,13 +40,19 @@ public class MilitaryShip extends Ship {
       previousStopoverNumber++;
 
       if (previousStopoverNumber == route.size() - 1) {
-        randomizeRoute();
+        pickNewRandomRoute();
         previousStopoverNumber = 0;
       }
     }
   }
 
-  private void randomizeRoute() {
+  @Override
+  protected List<Stopover> newSubRoute() {
+    // can't change the route of MilitaryShip
+    return null;
+  }
+
+  private void pickNewRandomRoute() {
     synchronized (route) {
       Stopover previousStopover = route.get(route.size() - 1);
       try {
