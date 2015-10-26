@@ -1,6 +1,5 @@
 package gui;
 
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -75,32 +74,20 @@ public class VehicleControlButtons extends Group {
 
   private void addEventHandlers() {
     newCivilAirplaneButton.setOnAction(e -> world.addCivilAirplane());
-    newCivilAirplaneButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
-    newCivilAirplaneButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
     newCivilShipButton.setOnAction(e -> world.addCivilShip());
-    newCivilShipButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
-    newCivilShipButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
     newMilitaryShipButton.setOnAction(e -> world.addMilitaryShip());
-    newMilitaryShipButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
-    newMilitaryShipButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
     removeVehicleButton.setOnAction(e -> removeCurrentVehicle());
-    removeVehicleButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
-    removeVehicleButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
     newMilitaryAirplaneButton.setOnAction(e -> world.addMilitaryAirplane((MilitaryShip) currentVehicle));
-    newMilitaryAirplaneButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
-    newMilitaryAirplaneButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
 
     changeVehicleRouteButton.setOnAction(e -> currentVehicle.randomizeCurrentRoute());
-    changeVehicleRouteButton.setOnMouseEntered(e -> getScene().setCursor(Cursor.HAND));
-    changeVehicleRouteButton.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
   }
 
   private void addButtons() {
-    // TODO: section out buttons for adding vehicles so that users do not think that those buttons are connected to the current location
+    // TODO: section out visually buttons for adding vehicles so that users do not think that those buttons are connected to the current location
     newCivilAirplaneButton = new Button();
     newCivilShipButton = new Button();
     newMilitaryShipButton = new Button();

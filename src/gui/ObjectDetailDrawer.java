@@ -68,7 +68,6 @@ public class ObjectDetailDrawer implements Drawer {
   @Override
   public void drawCivilAirplane(CivilAirplane vehicle) {
     drawVehicle(vehicle, colors.get("civilGreen"), images.get("airplane"));
-    listPassengers(vehicle.passengerZone());
     drawNextDestination(vehicle.getNextAirport().getName());
     drawRoute(vehicle.routeToStrings());
   }
@@ -86,7 +85,6 @@ public class ObjectDetailDrawer implements Drawer {
 
   @Override
   public void drawCivilShip(CivilShip vehicle) {
-    listPassengers(vehicle.passengerZone());
     drawVehicle(vehicle, colors.get("civilNavy"), images.get("ship"));
     drawSubtitle("owned by: " + vehicle.getCompany());
     drawNextDestination(vehicle.getNextPort().getName());
@@ -115,8 +113,6 @@ public class ObjectDetailDrawer implements Drawer {
   @Override
   public void drawCivilAirport(CivilAirport stopover) {
     drawStopover(stopover, colors.get("civilGreen"));
-
-    listPassengers(stopover.passengerZone(), stopover.hotel());
   }
 
   @Override
@@ -127,7 +123,6 @@ public class ObjectDetailDrawer implements Drawer {
   @Override
   public void drawPort(Port stopover) {
     drawStopover(stopover, colors.get("civilNavy"));
-    listPassengers(stopover.passengerZone(), stopover.hotel());
   }
 
   private void drawStopover(Stopover stopover, Color color) {
@@ -156,42 +151,6 @@ public class ObjectDetailDrawer implements Drawer {
     gc.setFont(Font.font(fontFamily, 15));
     String s = (int) coordinates.getX() + ", " + (int) coordinates.getY();
     gc.fillText(s, textLeft, textTop + lineHeight);
-  }
-
-  private void listPassengers(PassengerZone passengerZone) {
-    listPassengers(passengerZone, null);
-  }
-
-  private void listPassengers(PassengerZone passengerZone, PassengerZone hotel) {
-    gc.setFill(Color.BLACK);
-    gc.setFont(Font.font(fontFamily, 12));
-
-    gc.fillText("Boarding area:", textLeft, textTop + 6 * lineHeight);
-
-    double i = 0.5;
-    for (Passenger passenger : passengerZone.getPassengers()) {
-      String s = "- ";
-      s += passenger.getFirstName().substring(0, 1) + ". ";
-      s += passenger.getLastName();
-      s += " -> " + passenger.getNextCivilStopover().getName();
-
-      gc.fillText(s, textLeft, textTop + (i + 6) * lineHeight);
-      i += 0.5;
-    }
-
-    if (hotel != null) {
-      gc.fillText("Hotel:", textLeft, textTop + (i + 6.5) * lineHeight);
-
-      for (Passenger passenger : hotel.getPassengers()) {
-        String s = "- ";
-        s += passenger.getFirstName().substring(0, 1) + ". ";
-        s += passenger.getLastName();
-        s += " -> " + passenger.getNextCivilStopover().getName();
-
-        gc.fillText(s, textLeft, textTop + (i + 7) * lineHeight);
-        i += 0.5;
-      }
-    }
   }
 
   private void drawNextDestination(String nextDestination) {

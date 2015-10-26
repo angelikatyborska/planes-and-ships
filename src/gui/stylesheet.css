@@ -5,6 +5,11 @@
     -fx-background-position: center;
     -fx-min-width: 30px;
     -fx-min-height: 30px;
+    -fx-cursor: hand;
+}
+
+.world-canvas {
+    -fx-cursor: crosshair;
 }
 
 .add-airplane-button {
@@ -35,4 +40,10 @@
 
 .military {
     -fx-background-color: darkolivegreen;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-cell-size: 18px;
 }

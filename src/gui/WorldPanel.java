@@ -1,13 +1,15 @@
 package gui;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import stopovers.*;
+import vehicles.CivilVehicle;
 import vehicles.Vehicle;
 import world.*;
 
@@ -17,9 +19,11 @@ public class WorldPanel extends Group {
   private Canvas worldCanvas;
   private Canvas detailCanvas;
   private VehicleControlButtons vehicleControlButtons;
+  private PassengerList passengerList;
+  private PassengerList passengerListHotel;
+  private Label passengerListLabel;
+  private Label passengerListHotelLabel;
   private World world;
-  private Vehicle currentVehicle;
-  private WorldMap map;
   private WorldDrawer drawer;
   private ObjectDetailDrawer detailDrawer;
   private final double clickErrorMargin = 15;
@@ -48,11 +52,34 @@ public class WorldPanel extends Group {
     detailCanvas.setLayoutY(0);
 
     vehicleControlButtons = new VehicleControlButtons(world, worldWidth, worldHeight, worldWidth + detailPanelWidth);
-    vehicleControlButtons.setActionBeforeRemovingVehicle(v -> detailDrawer.setObject(null));
+    vehicleControlButtons.setActionBeforeRemovingVehicle(v -> {
+      detailDrawer.setObject(null);
+      passengerList.setPassengerZone(null);
+      passengerListHotel.setPassengerZone(null);
+    });
+
+    passengerListLabel = new Label();
+    passengerListHotelLabel = new Label("Sleeping at the hotel:");
+
+    passengerListLabel.setFont(Font.font("Courier", 15));
+    passengerListHotelLabel.setFont(Font.font("Courier", 15));
+
+    passengerListLabel.setLayoutX(worldWidth + 15);
+    passengerListLabel.setLayoutY(247);
+    passengerListHotelLabel.setLayoutX(worldWidth + 15);
+    passengerListHotelLabel.setLayoutY(387);
+    passengerList = new PassengerList(detailPanelWidth - 52, worldWidth + 15, 263);
+    passengerListHotel = new PassengerList(detailPanelWidth - 52, worldWidth + 15, 406);
 
     getChildren().add(worldCanvas);
     getChildren().add(detailCanvas);
     getChildren().add(vehicleControlButtons);
+    getChildren().add(passengerList);
+    getChildren().add(passengerListHotel);
+    getChildren().add(passengerListLabel);
+    getChildren().add(passengerListHotelLabel);
+    passengerListLabel.setVisible(false);
+    passengerListHotelLabel.setVisible(false);
 
     addEventHandlers();
   }
@@ -63,13 +90,9 @@ public class WorldPanel extends Group {
       public void handle(long currentNanoTime)
       {
         drawer.draw();
-      }
-    }.start();
-
-    new AnimationTimer() {
-      public void handle(long currentNanoTime)
-      {
         detailDrawer.draw();
+        passengerList.refresh();
+        passengerListHotel.refresh();
       }
     }.start();
   }
@@ -89,6 +112,18 @@ public class WorldPanel extends Group {
           vehicleControlButtons.setCurrentVehicle(vehicle);
           detailDrawer.setObject(vehicle);
           detailDrawer.notify();
+          passengerListHotel.setPassengerZone(null);
+          passengerListHotelLabel.setVisible(false);
+
+          if (vehicle instanceof CivilVehicle) {
+            passengerList.setPassengerZone(((CivilVehicle) vehicle).passengerZone());
+            passengerListLabel.setVisible(true);
+            passengerListLabel.setText("On board:");
+          }
+          else {
+            passengerList.setPassengerZone(null);
+            passengerListLabel.setVisible(false);
+          }
         }
       }
       else if (stopover != null){
@@ -96,12 +131,27 @@ public class WorldPanel extends Group {
           vehicleControlButtons.setCurrentVehicle(null);
           detailDrawer.setObject(stopover);
           detailDrawer.notify();
+          detailDrawer.notify();
+
+
+          if (stopover instanceof CivilDestination) {
+            passengerList.setPassengerZone(((CivilDestination) stopover).passengerZone());
+            passengerListHotel.setPassengerZone(((CivilDestination) stopover).hotel());
+            passengerListLabel.setVisible(true);
+            passengerListLabel.setText("Waiting for departure:");
+            passengerListHotelLabel.setVisible(true);
+          }
+          else {
+            passengerList.setPassengerZone(null);
+            passengerListHotel.setPassengerZone(null);
+            passengerListLabel.setVisible(false);
+            passengerListHotelLabel.setVisible(false);
+          }
         }
       }
     });
 
-    worldCanvas.setOnMouseEntered(e -> getScene().setCursor(Cursor.CROSSHAIR));
-    worldCanvas.setOnMouseExited(e -> getScene().setCursor(Cursor.DEFAULT));
+    worldCanvas.getStyleClass().add("world-canvas");
     worldCanvas.setOnMouseMoved(e -> {
       drawer.setCursorX(e.getX());
       drawer.setCursorY(e.getY());

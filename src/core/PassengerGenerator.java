@@ -17,11 +17,18 @@ public class PassengerGenerator {
     this.map = map;
   }
 
+  /**
+   *
+   * @param hometown
+   * @return A passenger with randomly filled out fields. Please note that the PESEL number is not correct, it's just a string of random digits and it does not correspond to the random age.
+   * @throws StopoverNotFoundInStopoverNetworkException
+   */
   public Passenger randomPassenger(CivilDestination hometown) throws StopoverNotFoundInStopoverNetworkException {
     String firstName = firstNames[(int) Math.floor(Math.random() * firstNames.length)];
     String lastName = lastNames[(int) Math.floor(Math.random() * lastNames.length)];
+    int age = (int) Math.floor(Math.random() * 50 + 18);
     String PESEL = randomPESEL();
-    return new Passenger(map, firstName, lastName, PESEL, hometown);
+    return new Passenger(map, firstName, lastName, age, PESEL, hometown);
   }
 
   public List<Passenger> randomPassengers(CivilDestination hometown, int n) throws StopoverNotFoundInStopoverNetworkException {

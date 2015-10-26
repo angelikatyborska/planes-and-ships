@@ -1,5 +1,7 @@
 package core;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import stopovers.CivilDestination;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @see vehicles.CivilVehicle
  */
 public class PassengerZone {
-  private final ArrayList<Passenger> passengers;
+  private final ObservableList<Passenger> passengers;
   private final int capacity;
   private final ReentrantLock processingPassengers;
 
@@ -21,7 +23,7 @@ public class PassengerZone {
    * @param capacity How many passengers can be accommodated at this PassengerZone
    */
   public PassengerZone(int capacity) {
-    passengers = new ArrayList<>();
+    this.passengers = FXCollections.observableArrayList();
     this.capacity = capacity;
     this.processingPassengers = new ReentrantLock();
   }
@@ -86,11 +88,11 @@ public class PassengerZone {
    *
    * @return a list of all currently accommodates passengers
    */
-  public List<Passenger> getPassengers() {
+  public ObservableList<Passenger> getPassengers() {
     processingPassengers.lock();
-    List<Passenger> copy = new ArrayList<>(passengers);
+    ObservableList<Passenger> list = passengers;
     processingPassengers.unlock();
-    return copy;
+    return list;
   }
 
   public List<Passenger> getPassengersUnsafe() {

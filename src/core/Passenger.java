@@ -13,6 +13,7 @@ import static java.lang.Thread.sleep;
 public class Passenger implements Runnable {
   private final String firstName;
   private final String lastName;
+  private final int age;
   private final String PESEL;
   private final CivilDestination hometown;
   private Trip trip;
@@ -29,9 +30,10 @@ public class Passenger implements Runnable {
    * @see PassengerZone
    * @see stopovers.CivilDestination
    */
-  public Passenger(WorldMap map, String firstName, String lastName, String PESEL, CivilDestination hometown) throws StopoverNotFoundInStopoverNetworkException {
+  public Passenger(WorldMap map, String firstName, String lastName, int age, String PESEL, CivilDestination hometown) throws StopoverNotFoundInStopoverNetworkException {
     this.firstName = firstName;
     this.lastName = lastName;
+    this.age = age;
     this.PESEL = PESEL;
     this.hometown = hometown;
     this.trip = new Trip(hometown, map);
@@ -46,8 +48,25 @@ public class Passenger implements Runnable {
     return lastName;
   }
 
+  public int getAge() {
+    return age;
+  }
+
   public String getPESEL() {
     return PESEL;
+  }
+
+  public String getTripType() {
+    switch (trip.getTripType()) {
+      case BUSINESS:
+        return "Business trip";
+      default:
+        return "Vacation";
+    }
+  }
+
+  public String getHometown() {
+    return ((Stopover) hometown).getName();
   }
 
   /**
@@ -90,20 +109,16 @@ public class Passenger implements Runnable {
     trip.checkpoint(arrivedAtPassengerZone);
 
     if (arrivedAtDestination()) {
-      System.out.println("passenger " + firstName.substring(0, 1) + ". " + lastName + " arrived at his destination at " + ((Stopover) trip.getTo()).getName());
-
       // passenger arrived at his destination, do not go to the (air)port, check in at the hotel
       while(!trip.getTo().hotel().accommodate(this));
       sleep(trip.getWaitingTime());
       trip.getTo().hotel().removePassenger(this);
     }
     else if (arrivedAtHometown()) {
-      System.out.println("passenger " + firstName.substring(0, 1) + ". " + lastName + " arrived home at " + ((Stopover) trip.getFrom()).getName());
       // passenger ended his trip, generate a new random trip and accommodate at first passenger zone
       try {
         trip.randomize();
       } catch (StopoverNotFoundInStopoverNetworkException e) {
-        System.out.println("Passenger " + firstName.substring(0, 1) + ". " + lastName + " tried to generate a new trip for himself");
         e.printStackTrace();
       }
     }
@@ -132,7 +147,6 @@ public class Passenger implements Runnable {
         getPreviousCivilDestination().passengerZone().removePassenger(this);
 
         // going, going...
-        System.out.println("Passenger " + firstName.substring(0, 1) + ". " + lastName + " is going by foot from " + ((Stopover) getPreviousCivilDestination()).getName() + " to " + ((Stopover) getNextCivilDestination()).getName());
         // arrive at the next city
         arrivedAtPassengerZone = getNextCivilDestination().passengerZone();
         handleArrivingSomewhere();

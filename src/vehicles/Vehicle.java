@@ -41,7 +41,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   }
 
   public Coordinates getCoordinates() {
-    return worldMap.getVehicleCoordinates(this);
+      return worldMap.getVehicleCoordinates(this);
   }
 
   public double getBearing() {
@@ -53,7 +53,9 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   }
 
   public List<String> routeToStrings() {
-    return route.stream().filter(stopover -> !(stopover instanceof Junction)).map(Stopover::getName).collect(Collectors.toList());
+    synchronized (route) {
+      return route.stream().filter(stopover -> !(stopover instanceof Junction)).map(Stopover::getName).collect(Collectors.toList());
+    }
   }
 
   public Stopover getNextStopover() {
@@ -104,11 +106,13 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   }
 
   public void randomizeCurrentRoute() {
-    List<Stopover> newRoute = new ArrayList<>();
+      List<Stopover> newRoute = new ArrayList<>();
 
-    // new route must start with previous and next stopover from current route
-    newRoute.add(route.get(previousStopoverNumber));
-    newRoute.addAll(newSubRoute());
+    synchronized (route) {
+      // new route must start with previous and next stopover from current route
+      newRoute.add(route.get(previousStopoverNumber));
+      newRoute.addAll(newSubRoute());
+    }
 
     setRoute(newRoute);
   }

@@ -109,4 +109,8 @@ public class Trip {
         return 7500;
     }
   }
+
+  public TripType getTripType() {
+    return type;
+  }
 }
