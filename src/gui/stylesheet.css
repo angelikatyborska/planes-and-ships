@@ -46,4 +46,5 @@
     -fx-background-color: transparent;
     -fx-text-fill: black;
     -fx-cell-size: 18px;
+    -fx-font: 12px "Courier";
 }
