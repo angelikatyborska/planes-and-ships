@@ -4,13 +4,16 @@ import core.Passenger;
 import core.PassengerZone;
 import gui.passport.Passport;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,9 +75,19 @@ public class PassengerList extends ListView {
     Stage stage = new Stage();
     stage.setTitle(passenger.getFirstName() + " " + passenger.getLastName());
 
-    Group passport = new Passport(passenger);
+    GridPane passportPane = new GridPane();
 
-    Scene scene = new Scene(passport);
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(Passport.class.getResource("passport.fxml"));
+    try {
+      passportPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Passport passport = loader.getController();
+    passport.setPassenger(passenger);
+
+    Scene scene = new Scene(passportPane);
 
     stage.setScene(scene);
     stage.show();
