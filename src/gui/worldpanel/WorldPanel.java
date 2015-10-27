@@ -1,15 +1,16 @@
 package gui.worldpanel;
 
-import gui.WorldDrawer;
+import gui.canvas.WorldDrawer;
+import gui.buttons.VehicleControlButtons;
 import gui.buttons.VehicleCreationButtons;
 import gui.objectdetails.ObjectDetails;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import stopovers.Stopover;
 import vehicles.Vehicle;
@@ -23,9 +24,11 @@ public class WorldPanel {
   private World world;
   private WorldDrawer drawer;
   private ObjectDetails objectDetailsController;
+  private VehicleControlButtons vehicleControlButtonsController;
   @FXML private Canvas worldCanvas;
-  @FXML Group objectDetails;
-  @FXML Group vehicleCreationButtons;
+  @FXML VBox objectDetails;
+  @FXML VBox vehicleCreationButtons;
+  @FXML VBox vehicleControlButtons;
 
   public WorldPanel() {
   }
@@ -56,6 +59,21 @@ public class WorldPanel {
     objectDetailsController = loader2.getController();
     objectDetailsController.setObject(null);
 
+
+    FXMLLoader loader3 = new FXMLLoader();
+    loader3.setLocation(VehicleControlButtons.class.getResource("vehicle-control-buttons.fxml"));
+    try {
+      vehicleControlButtons.getChildren().add(loader3.load());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    vehicleControlButtonsController = loader3.getController();
+    vehicleControlButtonsController.setWorld(world);
+    vehicleControlButtonsController.setVehicle(null);
+    vehicleControlButtonsController.setActionBeforeRemovingVehicle(v -> {
+      objectDetailsController.setObject(null);
+    });
+
     worldCanvas.setOnMouseClicked(e -> worldCanvasClicked(e));
   }
 
@@ -81,9 +99,12 @@ public class WorldPanel {
 
     if (vehicle != null) {
       objectDetailsController.setObject(vehicle);
+      vehicleControlButtonsController.setVehicle(vehicle);
+
     }
     else if (stopover != null){
       objectDetailsController.setObject(stopover);
+      vehicleControlButtonsController.setVehicle(null);
     }
 
     objectDetailsController.refresh();

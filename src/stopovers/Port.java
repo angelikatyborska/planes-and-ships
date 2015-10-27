@@ -1,9 +1,8 @@
 package stopovers;
 
 import core.Coordinates;
-import core.Passenger;
 import core.PassengerZone;
-import gui.Drawer;
+import gui.canvas.Drawer;
 import vehicles.*;
 
 import static java.lang.Thread.sleep;

@@ -1,8 +1,8 @@
 package stopovers;
 
 import core.Coordinates;
-import gui.Drawable;
-import gui.Drawer;
+import gui.canvas.Drawable;
+import gui.canvas.Drawer;
 import vehicles.*;
 
 import java.util.ArrayList;

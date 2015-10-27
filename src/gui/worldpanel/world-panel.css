@@ -9,12 +9,16 @@
 }
 
 .details {
-    -fx-min-height: 600px;
+    -fx-height: 600px;
     -fx-alignment: top-left;
 }
 
-.vehicle-creation-buttons {
-    -fx-alignment: bottom-left;
+.vehicle-creation-buttons-group {
+    -fx-padding: 10px 20px 0;
+}
+
+.vehicle-control-buttons-group {
+    -fx-padding: 17px 0 0 250px;
 }
 
 .list-view .list-cell {

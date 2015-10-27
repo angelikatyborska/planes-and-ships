@@ -1,3 +1,9 @@
+.object-details-pane {
+    -fx-max-width: 260px;
+    -fx-min-height: 590px;
+    -fx-padding: 3px 10px;
+}
+
 .list-view .list-cell {
     -fx-background-color: transparent;
     -fx-text-fill: black;
@@ -5,13 +11,45 @@
     -fx-font: 12px "Courier";
 }
 
+.list-view {
+    -fx-background-color: transparent;
+    -fx-max-height: 200px;
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.list-view:selected {
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.list-view:focused {
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    }
+
+.label {
+    -fx-min-height: 35px;
+    -fx-alignment: bottom-left;
+}
 
 .title {
     -fx-font: 26px "Courier";
 }
 
+.subtitle {
+    -fx-font: 12px "Courier";
+    -fx-min-height: 13px;
+}
+
 .minor-detail {
     -fx-font: 12px "Courier";
+    -fx-min-height: 18px;
+    -fx-alignment: center-left;
 }
 
 .detail {
@@ -20,4 +58,14 @@
 
 .major-detail {
     -fx-font: 18px "Courier";
+}
+
+.destinations {
+    -fx-min-height: 105px;
+    -fx-max-height: 105px;
+}
+
+.passengers {
+    -fx-min-height: 105px;
+    -fx-max-height: 105px;
 }

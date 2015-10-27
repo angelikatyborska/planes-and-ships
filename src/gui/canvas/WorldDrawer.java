@@ -1,4 +1,4 @@
-package gui;
+package gui.canvas;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;

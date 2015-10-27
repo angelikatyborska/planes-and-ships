@@ -1,7 +1,7 @@
 package vehicles;
 
 import core.PassengerZone;
-import gui.Drawer;
+import gui.canvas.Drawer;
 import stopovers.*;
 import world.StopoverNotFoundInStopoverNetworkException;
 

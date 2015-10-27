@@ -1,15 +1,13 @@
-package gui;
+package gui.objectdetails;
 
 import core.Passenger;
 import core.PassengerZone;
 import gui.passport.Passport;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -21,44 +19,37 @@ public class PassengerList extends ListView {
   static class PassengerCell extends ListCell<Passenger> {
     @Override
     public void updateItem(Passenger passenger, boolean empty) {
-      // for some magic reason -fx-font-family in css doesn't want to accept any value, so I have to set the font here
       super.updateItem(passenger, empty);
       if (passenger != null) {
         String s = passenger.getFirstName().substring(0, 1) + ". " + passenger.getLastName() + " -> " + passenger.getNextCivilStopover().getName();
         setText(s);
-      }
-      else {
+      } else {
         setText("");
       }
       setOnMouseClicked(e -> {
-        if (e.getClickCount() > 1) {
-          openPassengerInfoWindow(passenger);
-        }
+        openPassengerInfoWindow(passenger);
+        System.err.println("should open passport");
       });
     }
   }
 
   private List<Passenger> passengers;
 
-  public PassengerList(double width, double x, double y) {
-    setPrefWidth(width);
-    setPrefHeight(105);
-    setLayoutX(x);
-    setLayoutY(y);
-    setBackground(Background.EMPTY);
+  public PassengerList() {
     passengers = new ArrayList<>();
 
     setCellFactory(list -> new PassengerCell());
   }
 
   public void setPassengerZone(PassengerZone passengerZone) {
-    if (passengerZone != null) {
-      passengers = passengerZone.getPassengers();
-      setVisible(true);
-    }
-    else {
-      passengers = new ArrayList<>();
-      setVisible(false);
+    synchronized (this) {
+      if (passengerZone != null) {
+        passengers = passengerZone.getPassengers();
+        setVisible(true);
+      } else {
+        passengers = new ArrayList<>();
+        setVisible(false);
+      }
     }
   }
 

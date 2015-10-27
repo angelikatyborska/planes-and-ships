@@ -1,10 +1,7 @@
 package vehicles;
 
-import gui.Drawer;
+import gui.canvas.Drawer;
 import stopovers.Airport;
-import stopovers.CivilDestination;
-import stopovers.InvalidVehicleAtStopoverException;
-import stopovers.Stopover;
 
 public abstract class Airplane extends Vehicle {
   private final double fuelCapacity;

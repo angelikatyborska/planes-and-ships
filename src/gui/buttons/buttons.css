@@ -7,6 +7,22 @@
     -fx-min-height: 30px;
     -fx-cursor: hand;
     -fx-padding: 5px;
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.button:focused {
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.button:selected {
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .world-canvas {
@@ -45,4 +61,8 @@
 
 .vehicle-creation-buttons {
     -fx-hgap: 5px;
+}
+
+.vehicle-control-buttons {
+    -fx-vgap: 5px;
 }

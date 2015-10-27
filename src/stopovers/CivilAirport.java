@@ -2,7 +2,7 @@ package stopovers;
 
 import core.Coordinates;
 import core.PassengerZone;
-import gui.Drawer;
+import gui.canvas.Drawer;
 import vehicles.CivilAirplane;
 import vehicles.MilitaryAirplane;
 

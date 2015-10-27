@@ -1,7 +1,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tooltip?>
-<GridPane fx:controller="gui.buttons.VehicleControlButtons" xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" stylesheets="/gui/buttons/buttons.css"
+<GridPane fx:controller="gui.buttons.VehicleControlButtons" xmlns:fx="http://javafx.com/fxml" alignment="TOP_RIGHT" stylesheets="/gui/buttons/buttons.css"
           styleClass="vehicle-control-buttons">
     <Button fx:id="removeVehicleButton" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="button, remove" onAction="#removeVehicle">
         <tooltip>

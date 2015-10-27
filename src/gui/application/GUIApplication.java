@@ -1,6 +1,5 @@
 package gui.application;
 
-import gui.WorldPanelOld;
 import gui.worldpanel.WorldPanel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,6 +1,6 @@
 package vehicles;
 
-import gui.Drawer;
+import gui.canvas.Drawer;
 
 public abstract class Ship extends Vehicle {
   public Ship(double velocity) {

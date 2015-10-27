@@ -1,7 +1,7 @@
 package stopovers;
 
 import core.Coordinates;
-import gui.Drawer;
+import gui.canvas.Drawer;
 import vehicles.CivilAirplane;
 
 public class MilitaryAirport extends Airport {

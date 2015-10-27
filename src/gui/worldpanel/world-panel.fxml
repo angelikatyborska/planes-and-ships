@@ -1,16 +1,13 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.Group?>
+<?import javafx.scene.layout.VBox?>
 <GridPane fx:controller="gui.worldpanel.WorldPanel" xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" stylesheets="/gui/worldpanel/world-panel.css"
           styleClass="vehicle-control-buttons">
     <Canvas fx:id="worldCanvas" width="800" height="640" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="world-canvas">
     </Canvas>
     <GridPane fx:id="DetailPanelPane" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="detail-panel">
-        <Group fx:id="objectDetails" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="details">
-
-        </Group>
-        <Group fx:id="vehicleCreationButtons" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="vehicle-creation-buttons">
-
-        </Group>
+        <VBox fx:id="vehicleCreationButtons" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="vehicle-creation-buttons-group" />
+        <VBox fx:id="vehicleControlButtons" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="vehicle-control-buttons-group" />
+        <VBox fx:id="objectDetails" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="details" />
     </GridPane>
 </GridPane>

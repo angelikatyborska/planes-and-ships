@@ -1,7 +1,7 @@
 package vehicles;
 
 import core.Weapon;
-import gui.Drawer;
+import gui.canvas.Drawer;
 import stopovers.InvalidVehicleAtStopoverException;
 import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
