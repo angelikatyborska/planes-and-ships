@@ -9,11 +9,11 @@ public class VehicleGenerator {
   private static double maxVelocity = 2;
 
   public CivilAirplane newCivilAirplane() {
-    return new CivilAirplane(randomVelocity(), Integer.MAX_VALUE, randomPassengerCapacity());
+    return new CivilAirplane(randomVelocity(), 3000, randomPassengerCapacity());
   }
 
   public MilitaryAirplane newMilitaryAirplane(Weapon.WeaponType weaponType) {
-    return new MilitaryAirplane(randomVelocity(), Integer.MAX_VALUE, weaponType);
+    return new MilitaryAirplane(randomVelocity(), 3000, weaponType);
   }
 
   public CivilShip newCivilShip() {

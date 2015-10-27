@@ -1,0 +1,23 @@
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-cell-size: 18px;
+    -fx-font: 12px "Courier";
+}
+
+
+.title {
+    -fx-font: 26px "Courier";
+}
+
+.minor-detail {
+    -fx-font: 12px "Courier";
+}
+
+.detail {
+    -fx-font: 14px "Courier";
+}
+
+.major-detail {
+    -fx-font: 18px "Courier";
+}

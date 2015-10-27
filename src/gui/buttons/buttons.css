@@ -21,12 +21,12 @@
     -fx-background-image: url('/images/ship.png');
 }
 
-.remove-vehicle-button {
+.remove {
     -fx-background-image: url('/images/ballofpaper.png');
     -fx-background-color: #da0000;
 }
 
-.change-route-button {
+.randomize {
     -fx-background-image: url('/images/shuffle.png');
     -fx-background-color: darkorange;
 }

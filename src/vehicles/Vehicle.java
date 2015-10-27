@@ -127,10 +127,19 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
   public abstract void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException;
 
+  public void vehicleMovedCallback() { }
+
+  public boolean canMove() {
+    return true;
+  }
+
   @Override
   public void tick() throws InterruptedException {
     try {
-      worldMap.moveVehicleTowardsTargetStopover(this, this.velocity);
+      if (canMove()) {
+        worldMap.moveVehicleTowardsTargetStopover(this, this.velocity);
+        vehicleMovedCallback();
+      }
 
       if (hasArrivedAtStopover(getNextStopover())) {
         Stopover stopover = getNextStopover();

@@ -1,0 +1,25 @@
+.world-canvas {
+    -fx-cursor: crosshair;
+}
+
+.detail-panel {
+    -fx-min-width: 300px;
+    -fx-max-height: 640px;
+    -fx-background-image: url('/images/paper.png');
+}
+
+.details {
+    -fx-min-height: 600px;
+    -fx-alignment: top-left;
+}
+
+.vehicle-creation-buttons {
+    -fx-alignment: bottom-left;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-cell-size: 18px;
+    -fx-font: 12px "Courier";
+}

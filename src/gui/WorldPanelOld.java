@@ -15,10 +15,10 @@ import world.*;
 
 import java.util.HashMap;
 
-public class WorldPanel extends Group {
+public class WorldPanelOld extends Group {
   private Canvas worldCanvas;
   private Canvas detailCanvas;
-  private VehicleControlButtons vehicleControlButtons;
+  private VehicleButtons vehicleButtons;
   private PassengerList passengerList;
   private PassengerList passengerListHotel;
   private Label passengerListLabel;
@@ -32,7 +32,7 @@ public class WorldPanel extends Group {
   private final double detailPanelWidth;
 
 
-  public WorldPanel() {
+  public WorldPanelOld() {
     this.worldWidth = 800;
     this.detailPanelWidth = 300;
     this.worldHeight = 640;
@@ -51,8 +51,8 @@ public class WorldPanel extends Group {
     detailCanvas.setLayoutX(worldWidth);
     detailCanvas.setLayoutY(0);
 
-    vehicleControlButtons = new VehicleControlButtons(world, worldWidth, worldHeight, worldWidth + detailPanelWidth);
-    vehicleControlButtons.setActionBeforeRemovingVehicle(v -> {
+    vehicleButtons = new VehicleButtons(world, worldWidth, worldHeight, worldWidth + detailPanelWidth);
+    vehicleButtons.setActionBeforeRemovingVehicle(v -> {
       detailDrawer.setObject(null);
       passengerList.setPassengerZone(null);
       passengerListHotel.setPassengerZone(null);
@@ -73,7 +73,7 @@ public class WorldPanel extends Group {
 
     getChildren().add(worldCanvas);
     getChildren().add(detailCanvas);
-    getChildren().add(vehicleControlButtons);
+    getChildren().add(vehicleButtons);
     getChildren().add(passengerList);
     getChildren().add(passengerListHotel);
     getChildren().add(passengerListLabel);
@@ -109,7 +109,7 @@ public class WorldPanel extends Group {
       if (vehicle != null) {
         // not sure if this synchronized block is needed
         synchronized (detailDrawer) {
-          vehicleControlButtons.setCurrentVehicle(vehicle);
+          vehicleButtons.setVehicle(vehicle);
           detailDrawer.setObject(vehicle);
           detailDrawer.notify();
           passengerListHotel.setPassengerZone(null);
@@ -128,7 +128,7 @@ public class WorldPanel extends Group {
       }
       else if (stopover != null){
         synchronized (detailDrawer) {
-          vehicleControlButtons.setCurrentVehicle(null);
+          vehicleButtons.setVehicle(null);
           detailDrawer.setObject(stopover);
           detailDrawer.notify();
           detailDrawer.notify();

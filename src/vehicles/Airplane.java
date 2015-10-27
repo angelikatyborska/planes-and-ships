@@ -19,8 +19,8 @@ public abstract class Airplane extends Vehicle {
     this.fuel = fuelCapacity;
   }
 
-  public double getFuel() {
-    return fuel;
+  public int getFuel() {
+    return (int) (fuel/fuelCapacity * 100);
   }
 
   public int getPersonnel() {
@@ -35,6 +35,13 @@ public abstract class Airplane extends Vehicle {
     if (fuel > distance * fuelBurningRate) {
       fuel -= distance * fuelBurningRate;
     }
+    else {
+      fuel = 0;
+    }
+  }
+
+  public boolean canMove() {
+    return fuel > 0;
   }
 
   public void crashLanding() {
@@ -49,6 +56,10 @@ public abstract class Airplane extends Vehicle {
     }
 
     return null;
+  }
+
+  public void vehicleMovedCallback() {
+    burnFuel(this.fuelBurningRate * this.getVelocity());
   }
 
   @Override

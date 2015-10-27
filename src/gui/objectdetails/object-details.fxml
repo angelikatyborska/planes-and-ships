@@ -1,0 +1,10 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<GridPane fx:controller="gui.objectdetails.ObjectDetails" xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" stylesheets="/gui/objectdetails/object-details.css">
+    <Label fx:id="subtitle" text="" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="minor-detail"/>
+    <Label fx:id="title" text="" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="title"/>
+    <Label fx:id="coordinates" text="" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="detail"/>
+    <Label fx:id="personnel" text="" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="minor-detail"/>
+    <Label fx:id="fuel" text="" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="minor-detail"/>
+    <Label fx:id="nextDestination" text="" GridPane.columnIndex="0" GridPane.rowIndex="5" styleClass="major-detail"/>
+</GridPane>
