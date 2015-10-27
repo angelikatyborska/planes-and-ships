@@ -8,16 +8,16 @@
         <Image url="/images/photo.png"/>
     </ImageView>
     <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="TOP" styleClass="passenger-info">
-        <Label text="First name:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="info-label"/>
+        <Label text="FIRST NAME:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="info-label"/>
         <Label fx:id="firstName" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="info"/>
 
-        <Label text="Last name:" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="info-label"/>
+        <Label text="LAST NAME:" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="info-label"/>
         <Label fx:id="lastName" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="info"/>
 
-        <Label text="Hometown:" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="info-label"/>
+        <Label text="HOMETOWN:" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="info-label"/>
         <Label fx:id="hometown" GridPane.columnIndex="0" GridPane.rowIndex="5" styleClass="info"/>
 
-        <Label text="Age:" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="info-label"/>
+        <Label text="AGE:" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="info-label"/>
         <Label fx:id="age" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="info"/>
 
         <Label text="PESEL:" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="info-label"/>

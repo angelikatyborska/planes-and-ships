@@ -9,7 +9,8 @@
 }
 
 .info-label {
-    -fx-font: 12px "Courier";
+    -fx-font: 11px "Courier";
+    -fx-padding: 0 20 0 0;
 }
 
 .info {
