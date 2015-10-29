@@ -6,6 +6,7 @@
     -fx-min-width: 300px;
     -fx-max-height: 640px;
     -fx-background-image: url('/images/paper.png');
+    -fx-background-repeat: no-repeat;
 }
 
 .details {
@@ -14,11 +15,11 @@
 }
 
 .vehicle-creation-buttons-group {
-    -fx-padding: 10px 20px 0;
+    -fx-padding: 10px 0 0;
 }
 
 .vehicle-control-buttons-group {
-    -fx-padding: 17px 0 0 250px;
+    -fx-padding: 17px 0 0;
 }
 
 .list-view .list-cell {

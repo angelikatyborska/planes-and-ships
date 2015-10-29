@@ -4,9 +4,6 @@ import stopovers.CivilDestination;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PassengerGenerator {
   // TODO: come up with a better way to store (more!) potential names
   private static String[] firstNames = {"Alice", "Bob", "Stephen", "Katherine", "Craig", "Maurice", "Wallace", "Robert", "Rose", "Paul", "John", "Julie", "Gabrielle", "Anabelle", "Judy", "Jennifer", "Patrick"};
