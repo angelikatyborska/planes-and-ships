@@ -31,16 +31,6 @@ public class PassengerGenerator {
     return new Passenger(map, firstName, lastName, age, PESEL, hometown);
   }
 
-  public List<Passenger> randomPassengers(CivilDestination hometown, int n) throws StopoverNotFoundInStopoverNetworkException {
-    ArrayList<Passenger> passengers = new ArrayList<>();
-
-    for (int i = 0; i < n; i++) {
-      passengers.add(randomPassenger(hometown));
-    }
-
-    return passengers;
-  }
-
   private String randomPESEL() {
     String PESEL = "";
 
