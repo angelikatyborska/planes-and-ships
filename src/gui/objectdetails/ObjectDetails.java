@@ -82,6 +82,7 @@ public class ObjectDetails implements Drawer {
   @Override
   public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
     drawAirplane(vehicle);
+    personnel.setText(personnel.getText() + ", weapon: " + vehicle.getWeapon());
   }
 
   @Override
@@ -100,6 +101,7 @@ public class ObjectDetails implements Drawer {
   @Override
   public void drawMilitaryShip(MilitaryShip vehicle) {
     drawShip(vehicle);
+    personnel.setText("weapon: " + vehicle.getWeapon());
   }
 
   @Override

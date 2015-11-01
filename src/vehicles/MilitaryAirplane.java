@@ -17,6 +17,10 @@ public class MilitaryAirplane extends Airplane {
     weapon = new Weapon(weaponType);
   }
 
+  public Weapon getWeapon() {
+    return weapon;
+  }
+
   @Override
   public void draw(Drawer drawer) {
     drawer.drawMilitaryAirplane(this);

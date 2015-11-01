@@ -28,7 +28,6 @@ public class PassengerList extends ListView {
       }
       setOnMouseClicked(e -> {
         openPassengerInfoWindow(passenger);
-        System.err.println("should open passport");
       });
     }
   }
@@ -56,7 +55,6 @@ public class PassengerList extends ListView {
   // TODO: how can I avoid having to manually refresh the ListView?
   // I cannot use the goodies of ObservableList, because the list has to be created in Passenger class
   // and Passenger is not a Java FX Application thread. WARNING! - side effect - no state (no selected item)
-  // TODO: investigate having trouble double clicking list items
   public void refresh() {
     super.refresh();
     setItems(FXCollections.observableArrayList(passengers));

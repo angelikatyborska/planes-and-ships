@@ -45,7 +45,7 @@ public class AirportTest {
   @Test
   public void shouldRefillAirplaneFuelDuringMaintenance() throws InvalidVehicleAtStopoverException, InterruptedException {
     Stopover airport = new StubAirport(new Coordinates(1,1), 5);
-    MilitaryAirplane airplane = new MilitaryAirplane(1, 100, Weapon.WeaponType.BOMB);
+    MilitaryAirplane airplane = new MilitaryAirplane(1, 100, Weapon.WeaponType.INK_BOOMB);
 
     airplane.burnFuel(50);
     airport.prepareAirplaneForTravel(airplane);

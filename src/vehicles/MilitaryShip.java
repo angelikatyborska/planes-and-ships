@@ -10,6 +10,7 @@ import java.util.List;
 
 
 public class MilitaryShip extends Ship {
+  private Weapon weapon;
 
   public MilitaryShip(double velocity, Weapon.WeaponType weaponType) {
     super(velocity);
@@ -19,8 +20,6 @@ public class MilitaryShip extends Ship {
   public Weapon getWeapon() {
     return weapon;
   }
-
-  private Weapon weapon;
 
   @Override
   public void draw(Drawer drawer) {

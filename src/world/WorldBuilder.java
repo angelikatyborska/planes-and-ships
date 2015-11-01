@@ -73,12 +73,12 @@ public class WorldBuilder {
       network.connect(airJunction7, civilAirport5);
       network.connect(airJunction7, civilAirport7);
 
-      MilitaryAirport militaryAirport1 = new MilitaryAirport("TOP SECRET", new Coordinates(760, 40), 1);
-      MilitaryAirport militaryAirport2 = new MilitaryAirport("TOP SECRET", new Coordinates(340, 260), 1);
-      MilitaryAirport militaryAirport3 = new MilitaryAirport("TOP SECRET", new Coordinates(770, 380), 1);
-      MilitaryAirport militaryAirport4 = new MilitaryAirport("TOP SECRET", new Coordinates(600, 610), 1);
-      MilitaryAirport militaryAirport5 = new MilitaryAirport("TOP SECRET", new Coordinates(230, 23), 1);
-      MilitaryAirport militaryAirport6 = new MilitaryAirport("TOP SECRET", new Coordinates(320, 560), 1);
+      MilitaryAirport militaryAirport1 = new MilitaryAirport("Military Base 1", new Coordinates(760, 40), 1);
+      MilitaryAirport militaryAirport2 = new MilitaryAirport("Military Base 2", new Coordinates(340, 260), 1);
+      MilitaryAirport militaryAirport3 = new MilitaryAirport("Military Base 3", new Coordinates(770, 380), 1);
+      MilitaryAirport militaryAirport4 = new MilitaryAirport("Military Base 4", new Coordinates(600, 610), 1);
+      MilitaryAirport militaryAirport5 = new MilitaryAirport("Military Base 5", new Coordinates(230, 23), 1);
+      MilitaryAirport militaryAirport6 = new MilitaryAirport("Military Base 6", new Coordinates(320, 560), 1);
 
       network.add(militaryAirport1);
       network.add(militaryAirport2);

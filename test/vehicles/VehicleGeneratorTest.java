@@ -17,7 +17,7 @@ public class VehicleGeneratorTest {
 
   @Test
   public void shouldGenerateMilitaryAirplane() {
-    MilitaryAirplane militaryAirplane = generator.newMilitaryAirplane(Weapon.WeaponType.BOMB);
+    MilitaryAirplane militaryAirplane = generator.newMilitaryAirplane(Weapon.WeaponType.INK_BOOMB);
 
     assertTrue(militaryAirplane != null);
   }

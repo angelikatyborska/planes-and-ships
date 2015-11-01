@@ -4,16 +4,16 @@ import core.Weapon;
 
 public class VehicleGenerator {
   // TODO: come up with some funny names
-  private static String[] CivilShipsCompanies = {"LaIsla Cruises", "Happy Travel", "Waves", "Polskie Rejsy Morskie", "Good German Ships"};
+  private static String[] CivilShipsCompanies = {"Paper Ships Inc.", "Mr Clippy's Cruises", "Polish State Cruises"};
   private static double minVelocity = 0.3;
   private static double maxVelocity = 2;
 
   public CivilAirplane newCivilAirplane() {
-    return new CivilAirplane(randomVelocity(), 3000, randomPassengerCapacity());
+    return new CivilAirplane(randomVelocity(), 5000, randomPassengerCapacity());
   }
 
   public MilitaryAirplane newMilitaryAirplane(Weapon.WeaponType weaponType) {
-    return new MilitaryAirplane(randomVelocity(), 3000, weaponType);
+    return new MilitaryAirplane(randomVelocity(), 5000, weaponType);
   }
 
   public CivilShip newCivilShip() {
@@ -41,11 +41,11 @@ public class VehicleGenerator {
 
     switch (randomNumber) {
       case 1:
-        return Weapon.WeaponType.MISSILE;
+        return Weapon.WeaponType.SCISSORS;
       case 2:
-        return Weapon.WeaponType.BOMB;
+        return Weapon.WeaponType.INK_BOOMB;
       default:
-        return Weapon.WeaponType.LASER_GUN;
+        return Weapon.WeaponType.ERASER;
     }
   }
 }
