@@ -1,18 +1,16 @@
 package gui.objectdetails;
 
+import gui.canvas.Drawable;
+import gui.canvas.Drawer;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import stopovers.CivilDestination;
-import stopovers.Stopover;
-import vehicles.Airplane;
-import vehicles.CivilShip;
-import vehicles.CivilVehicle;
-import vehicles.Vehicle;
+import stopovers.*;
+import vehicles.*;
 
-public class ObjectDetails {
-  private Object object;
+public class ObjectDetails implements Drawer {
+  private Drawable object;
   @FXML private Label title;
   @FXML private Label subtitle;
   @FXML private Label coordinates;
@@ -32,65 +30,111 @@ public class ObjectDetails {
     setObject(null);
   }
 
-  public void setObject(Object object) {
+  public void setObject(Drawable object) {
     this.object = object;
-    passengers.setPassengerZone(null);
-    passengersHotel.setPassengerZone(null);
-
 
     if (object instanceof CivilVehicle) {
       passengers.setPassengerZone(((CivilVehicle) object).passengerZone());
       passengersHotel.setPassengerZone(null);
     }
-
-    if (object instanceof CivilDestination) {
+    else if (object instanceof CivilDestination) {
       passengers.setPassengerZone(((CivilDestination) object).passengerZone());
       passengersHotel.setPassengerZone(((CivilDestination) object).hotel());
+    }
+    else {
+      passengers.setPassengerZone(null);
+      passengersHotel.setPassengerZone(null);
     }
   }
 
   public void refresh() {
     clear();
 
-    if (object instanceof Vehicle) {
-      printVehicleInfo((Vehicle) object);
-    }
-    else if (object instanceof Stopover) {
-      printStopoverInfo((Stopover) object);
+    if (object != null) {
+      object.draw(this);
     }
 
     passengers.refresh();
     passengersHotel.refresh();
   }
 
-  private void printVehicleInfo(Vehicle vehicle) {
+  @Override
+  public void drawVehicle(Vehicle vehicle) {
     title.setText("#" + Integer.toString(vehicle.getId()).substring(0, 4));
     coordinates.setText(vehicle.getCoordinates().toString());
     destinations.setItems(FXCollections.observableArrayList(vehicle.routeToStrings()));
-
-    if (vehicle instanceof CivilShip) {
-      subtitle.setText("Owned by: " + ((CivilShip) vehicle).getCompany());
-    }
-
-    if (vehicle instanceof Airplane) {
-      personnel.setText("Personnel: " + ((Airplane) vehicle).getPersonnel());
-      fuel.setText("Fuel: " + ((Airplane) vehicle).getFuel() + "%");
-    }
-
-    if (vehicle instanceof CivilVehicle) {
-      nextDestination.setText("-> " + vehicle.getNextCivilStopover().getName());
-      passengersLabel.setText("On board:");
-    }
   }
 
-  private void printStopoverInfo(Stopover stopover) {
+  @Override
+  public void drawAirplane(Airplane vehicle) {
+    drawVehicle(vehicle);
+    personnel.setText("Personnel: " + ((Airplane) vehicle).getPersonnel());
+    fuel.setText("Fuel: " + ((Airplane) vehicle).getFuel() + "%");
+  }
+
+  @Override
+  public void drawCivilAirplane(CivilAirplane vehicle) {
+    drawAirplane(vehicle);
+    nextDestination.setText("-> " + vehicle.getNextCivilStopover().getName());
+    passengersLabel.setText("On board:");
+  }
+
+  @Override
+  public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
+    drawAirplane(vehicle);
+  }
+
+  @Override
+  public void drawShip(Ship vehicle) {
+    drawVehicle(vehicle);
+  }
+
+  @Override
+  public void drawCivilShip(CivilShip vehicle) {
+    drawShip(vehicle);
+    subtitle.setText("Owned by: " + vehicle.getCompany());
+    nextDestination.setText("-> " + vehicle.getNextCivilStopover().getName());
+    passengersLabel.setText("On board:");
+  }
+
+  @Override
+  public void drawMilitaryShip(MilitaryShip vehicle) {
+    drawShip(vehicle);
+  }
+
+  @Override
+  public void drawStopover(Stopover stopover) {
     title.setText(stopover.getName());
     coordinates.setText(stopover.getCoordinates().toString());
+  }
 
-    if (stopover instanceof CivilDestination) {
-      passengersLabel.setText("Waiting for departure:");
-      passengersHotelLabel.setText("At the hotel: ");
-    }
+  @Override
+  public void drawAirport(Airport stopover) {
+    drawStopover(stopover);
+  }
+
+  @Override
+  public void drawCivilAirport(CivilAirport stopover) {
+    drawAirport(stopover);
+    passengersLabel.setText("Waiting for departure:");
+    passengersHotelLabel.setText("At the hotel: ");
+  }
+
+  @Override
+  public void drawMilitaryAirport(MilitaryAirport stopover) {
+    drawAirport(stopover);
+  }
+
+  @Override
+  public void drawPort(Port stopover) {
+    drawStopover(stopover);
+    passengersLabel.setText("Waiting for departure:");
+    passengersHotelLabel.setText("At the hotel: ");
+  }
+
+  @Override
+  public void drawJunction(Junction stopover) {
+    drawStopover(stopover);
   }
 
   private void clear() {
