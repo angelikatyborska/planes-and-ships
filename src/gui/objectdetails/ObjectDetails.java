@@ -68,8 +68,8 @@ public class ObjectDetails implements Drawer {
   @Override
   public void drawAirplane(Airplane vehicle) {
     drawVehicle(vehicle);
-    personnel.setText("Personnel: " + ((Airplane) vehicle).getPersonnel());
-    fuel.setText("Fuel: " + ((Airplane) vehicle).getFuel() + "%");
+    personnel.setText("Personnel: " + vehicle.getPersonnel());
+    fuel.setText("Fuel: " + vehicle.getFuel() + "%");
   }
 
   @Override

@@ -20,8 +20,6 @@ public class WorldDrawer implements Drawer {
   private final double height;
   private final double width;
   private final double offsetFromRoute = 6;
-  private double cursorX;
-  private double cursorY;
   private final String fontFamily = "Courier";
   private final HashMap<String, Image> images;
   private final HashMap<String, Color> colors;
@@ -31,8 +29,6 @@ public class WorldDrawer implements Drawer {
     this.gc = gc;
     this.width = width;
     this.height = height;
-    this.cursorX = 0;
-    this.cursorY = 0;
     this.colors = colors;
     this.images = images;
     gc.setTextAlign(TextAlignment.CENTER);
@@ -45,15 +41,6 @@ public class WorldDrawer implements Drawer {
     drawTerrain();
     drawVehicles();
     drawStopovers();
-    drawCursorCoords();
-  }
-
-  public void setCursorX(double cursorX) {
-    this.cursorX = cursorX;
-  }
-
-  public void setCursorY(double cursorY) {
-    this.cursorY = cursorY;
   }
 
   @Override
@@ -128,21 +115,19 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawMilitaryAirplane(MilitaryAirplane vehicle) {
-    gc.setFill(colors.get("military"));
     drawAirplane(vehicle);
   }
 
   @Override
   public void drawShip(Ship vehicle) {
-    double x = vehicle.getCoordinates().getX();
-    double y = vehicle.getCoordinates().getY();
-    double a = 8;
+    double x = vehicle.getCoordinates().getX() - images.get("ship").getWidth()/2;
+    double y = vehicle.getCoordinates().getY() - images.get("ship").getHeight()/2;
 
     double angle = vehicle.getBearing();
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
 
-    gc.fillOval(x + dx - a / 2, y + dy - a / 2, a, a);
+    gc.drawImage(images.get("ship"), x + dx, y + dy);
   }
 
   @Override
@@ -154,21 +139,14 @@ public class WorldDrawer implements Drawer {
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
 
-    gc.drawImage(images.get("ship"), x + dx, y + dy);
+    drawShip(vehicle);
     gc.setFill(Color.BLACK);
     gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
   }
 
   @Override
   public void drawMilitaryShip(MilitaryShip vehicle) {
-    double x = vehicle.getCoordinates().getX() - images.get("ship").getWidth()/2;
-    double y = vehicle.getCoordinates().getY() - images.get("ship").getHeight()/2;
-
-    double angle = vehicle.getBearing();
-    double dx = offsetFromRoute * Math.cos(angle);
-    double dy = offsetFromRoute * Math.sin(angle);
-
-    gc.drawImage(images.get("ship"), x + dx, y + dy);
+    drawShip(vehicle);
   }
 
   private void drawStopovers() {
@@ -237,13 +215,5 @@ public class WorldDrawer implements Drawer {
 
     int howManyPassengers = stopover.passengerZone().getPassengers().size() + stopover.hotel().getPassengers().size();
     gc.fillText("" + howManyPassengers, x, y);
-  }
-
-  private void drawCursorCoords() {
-    gc.setTextAlign(TextAlignment.RIGHT);
-    gc.setFont(Font.font(fontFamily, 12));
-    gc.setFill(Color.BLACK);
-    gc.fillText((int) cursorX + ", " + (int) cursorY, width - 8, height - 10);
-    gc.setTextAlign(TextAlignment.CENTER);
   }
 }
