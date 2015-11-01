@@ -40,6 +40,7 @@ public class WorldPanel {
 
     FXMLLoader loader1 = new FXMLLoader();
     loader1.setLocation(VehicleCreationButtons.class.getResource("vehicle-creation-buttons.fxml"));
+
     try {
       vehicleCreationButtons.getChildren().add(loader1.load());
     } catch (IOException e) {
@@ -51,6 +52,7 @@ public class WorldPanel {
 
     FXMLLoader loader2 = new FXMLLoader();
     loader2.setLocation(ObjectDetails.class.getResource("object-details.fxml"));
+
     try {
       objectDetails.getChildren().add(loader2.load());
     } catch (IOException e) {
@@ -70,11 +72,9 @@ public class WorldPanel {
     vehicleControlButtonsController = loader3.getController();
     vehicleControlButtonsController.setWorld(world);
     vehicleControlButtonsController.setVehicle(null);
-    vehicleControlButtonsController.setActionBeforeRemovingVehicle(v -> {
-      objectDetailsController.setObject(null);
-    });
+    vehicleControlButtonsController.setActionBeforeRemovingVehicle(v -> objectDetailsController.setObject(null));
 
-    worldCanvas.setOnMouseClicked(e -> worldCanvasClicked(e));
+    worldCanvas.setOnMouseClicked(this::worldCanvasClicked);
   }
 
   public void start() {
@@ -97,14 +97,14 @@ public class WorldPanel {
     Vehicle vehicle = world.findVehicleAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
     Stopover stopover = world.findStopoverAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
 
-    if (vehicle != null) {
+    if (stopover != null){
+      objectDetailsController.setObject(stopover);
+      vehicleControlButtonsController.setVehicle(null);
+    }
+    else if (vehicle != null) {
       objectDetailsController.setObject(vehicle);
       vehicleControlButtonsController.setVehicle(vehicle);
 
-    }
-    else if (stopover != null){
-      objectDetailsController.setObject(stopover);
-      vehicleControlButtonsController.setVehicle(null);
     }
 
     objectDetailsController.refresh();

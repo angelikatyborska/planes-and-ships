@@ -3,7 +3,6 @@ package vehicles;
 import core.Weapon;
 
 public class VehicleGenerator {
-  // TODO: come up with some funny names
   private static String[] CivilShipsCompanies = {"Paper Ships Inc.", "Mr Clippy's Cruises", "Polish State Cruises"};
   private static double minVelocity = 0.3;
   private static double maxVelocity = 2;
