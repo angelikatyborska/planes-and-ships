@@ -40,8 +40,8 @@ public class WorldDrawer implements Drawer {
 
     drawTerrain();
     drawNetwork();
-    drawVehicles();
     drawStopovers();
+    drawVehicles();
   }
 
   @Override

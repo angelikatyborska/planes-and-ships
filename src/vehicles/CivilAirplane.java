@@ -2,10 +2,7 @@ package vehicles;
 
 import core.PassengerZone;
 import gui.canvas.Drawer;
-import stopovers.CivilAirport;
-import stopovers.CivilDestination;
-import stopovers.InvalidVehicleAtStopoverException;
-import stopovers.Stopover;
+import stopovers.*;
 import world.StopoverNotFoundInStopoverNetworkException;
 
 import java.util.List;
@@ -50,8 +47,27 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
 
   @Override
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateCivilAirplane(this)) {}
-    stopover.prepareCivilAirplaneForTravel(this);
-    stopover.releaseVehicle(this);
+    if (stopover.accommodateCivilAirplane(this)) {
+      if (!isShouldCrash() || stopover instanceof Junction) {
+        stopover.prepareCivilAirplaneForTravel(this);
+        stopover.releaseVehicle(this);
+      } else {
+        setCrashed(true);
+      }
+    }
+  }
+
+  @Override
+  public Stopover getNextStopover() {
+    synchronized (route) {
+      if (isShouldCrash()) {
+        try {
+          return worldMap.findClosestMetricallyCivilAirport(route.get(previousStopoverNumber + 1));
+        } catch (StopoverNotFoundInStopoverNetworkException e) {
+          e.printStackTrace();
+        }
+      }
+      return route.get(previousStopoverNumber + 1);
+    }
   }
 }

@@ -97,14 +97,13 @@ public class WorldPanel {
     Vehicle vehicle = world.findVehicleAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
     Stopover stopover = world.findStopoverAtCoordinates(e.getX(), e.getY(), clickErrorMargin);
 
-    if (stopover != null){
-      objectDetailsController.setObject(stopover);
-      vehicleControlButtonsController.setVehicle(null);
-    }
-    else if (vehicle != null) {
+    if (vehicle != null) {
       objectDetailsController.setObject(vehicle);
       vehicleControlButtonsController.setVehicle(vehicle);
-
+    }
+    else if (stopover != null){
+      objectDetailsController.setObject(stopover);
+      vehicleControlButtonsController.setVehicle(null);
     }
 
     objectDetailsController.refresh();

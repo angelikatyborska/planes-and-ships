@@ -66,3 +66,7 @@
 .vehicle-control-buttons {
     -fx-vgap: 5px;
 }
+
+.crash-landing {
+    -fx-background-image: url('/images/alert.png');
+}

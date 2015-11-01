@@ -3,6 +3,7 @@ package vehicles;
 import core.Weapon;
 import gui.canvas.Drawer;
 import stopovers.InvalidVehicleAtStopoverException;
+import stopovers.Junction;
 import stopovers.MilitaryAirport;
 import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
@@ -28,9 +29,14 @@ public class MilitaryAirplane extends Airplane {
 
   @Override
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateMilitaryAirplane(this)) {}
-    stopover.prepareMilitaryAirplaneForTravel(this);
-    stopover.releaseVehicle(this);
+    if (stopover.accommodateMilitaryAirplane(this)) {
+      if (!isShouldCrash() || stopover instanceof Junction) {
+        stopover.prepareMilitaryAirplaneForTravel(this);
+        stopover.releaseVehicle(this);
+      } else {
+        setCrashed(true);
+      }
+    }
   }
 
   @Override
@@ -39,7 +45,21 @@ public class MilitaryAirplane extends Airplane {
       return worldMap.getRouteGenerator().newRoute(route.get(previousStopoverNumber + 1), MilitaryAirport.class, 4);
     } catch (StopoverNotFoundInStopoverNetworkException e) {
       e.printStackTrace();
-    };
+    }
     return null;
+  }
+
+  @Override
+  public Stopover getNextStopover() {
+    synchronized (route) {
+      if (isShouldCrash()) {
+        try {
+          return worldMap.findClosestMetricallyMilitaryAirport(route.get(previousStopoverNumber + 1));
+        } catch (StopoverNotFoundInStopoverNetworkException e) {
+          e.printStackTrace();
+        }
+      }
+      return route.get(previousStopoverNumber + 1);
+    }
   }
 }

@@ -47,9 +47,10 @@ public class CivilShip extends Ship implements CivilVehicle {
 
   @Override
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateCivilShip(this)) {}
-    stopover.prepareCivilShipForTravel(this);
-    stopover.releaseVehicle(this);
+    if (stopover.accommodateCivilShip(this)) {
+      stopover.prepareCivilShipForTravel(this);
+      stopover.releaseVehicle(this);
+    }
   }
 
   @Override

@@ -13,9 +13,14 @@
             <Tooltip text="Randomize route" />
         </tooltip>
     </Button>
-    <Button fx:id="addMilitaryAirplaneButton" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="button, airplane, military" onAction="#addMilitaryAirlane">
+    <Button fx:id="addMilitaryAirplaneButton" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="button, airplane, military" onAction="#addMilitaryAirlane">
         <tooltip>
             <Tooltip text="Add a military airplane" />
+        </tooltip>
+    </Button>
+    <Button fx:id="crashLanding" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="button, crash-landing" onAction="#crashLanding">
+        <tooltip>
+            <Tooltip text="Crash Landing" />
         </tooltip>
     </Button>
 </GridPane>

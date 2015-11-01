@@ -28,9 +28,10 @@ public class MilitaryShip extends Ship {
 
   @Override
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
-    while (!stopover.accommodateMilitaryShip(this)) {}
-    stopover.prepareMilitaryShipForTravel(this);
-    stopover.releaseVehicle(this);
+    if (stopover.accommodateMilitaryShip(this)) {
+      stopover.prepareMilitaryShipForTravel(this);
+      stopover.releaseVehicle(this);
+    }
   }
 
   @Override

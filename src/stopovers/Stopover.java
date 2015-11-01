@@ -122,7 +122,10 @@ public class Stopover implements Drawable {
     boolean accommodatingSuccessful;
     processingVehicleLock.lock();
 
-    if (accommodatedVehicles.size() < vehicleCapacity) {
+    if (isAccommodatingVehicle(vehicle)) {
+      accommodatingSuccessful = true;
+    }
+    else if (accommodatedVehicles.size() < vehicleCapacity) {
       accommodatedVehicles.add(vehicle);
       accommodatingSuccessful = true;
     }

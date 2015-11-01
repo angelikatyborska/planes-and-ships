@@ -6,8 +6,6 @@ import gui.canvas.Drawer;
 import vehicles.CivilAirplane;
 import vehicles.MilitaryAirplane;
 
-import static java.lang.Thread.sleep;
-
 public class CivilAirport extends Airport implements CivilDestination {
   private final PassengerZone passengerZone;
   private final PassengerZone hotel;

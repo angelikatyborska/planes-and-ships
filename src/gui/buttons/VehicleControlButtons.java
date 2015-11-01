@@ -3,6 +3,7 @@ package gui.buttons;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import vehicles.Airplane;
 import vehicles.MilitaryShip;
 import vehicles.Vehicle;
 import world.World;
@@ -16,6 +17,7 @@ public class VehicleControlButtons extends Group {
   @FXML private Button addMilitaryAirplaneButton;
   @FXML private Button removeVehicleButton;
   @FXML private Button randomizeCurrentRouteButton;
+  @FXML private Button crashLanding;
 
   public VehicleControlButtons() {
   }
@@ -25,6 +27,7 @@ public class VehicleControlButtons extends Group {
     removeVehicleButton.setVisible(false);
     addMilitaryAirplaneButton.setVisible(false);
     randomizeCurrentRouteButton.setVisible(false);
+    crashLanding.setVisible(false);
   }
 
   public void setActionBeforeRemovingVehicle(Consumer<Vehicle> action) {
@@ -42,6 +45,7 @@ public class VehicleControlButtons extends Group {
       removeVehicleButton.setVisible(false);
       addMilitaryAirplaneButton.setVisible(false);
       randomizeCurrentRouteButton.setVisible(false);
+      crashLanding.setVisible(false);
     }
     else {
       removeVehicleButton.setVisible(true);
@@ -53,6 +57,13 @@ public class VehicleControlButtons extends Group {
       else {
         addMilitaryAirplaneButton.setVisible(false);
         randomizeCurrentRouteButton.setVisible(true);
+      }
+
+      if (this.vehicle instanceof Airplane) {
+        crashLanding.setVisible(true);
+      }
+      else {
+        crashLanding.setVisible(false);
       }
     }
   }
@@ -78,9 +89,16 @@ public class VehicleControlButtons extends Group {
   }
 
   @FXML
-  private void addMilitaryAirlane() {
+     private void addMilitaryAirlane() {
     if (vehicle instanceof MilitaryShip) {
       world.addMilitaryAirplane((MilitaryShip) vehicle);
+    }
+  }
+
+  @FXML
+  private void crashLanding() {
+    if (vehicle instanceof Airplane) {
+      ((Airplane) vehicle).crashLanding();
     }
   }
 }

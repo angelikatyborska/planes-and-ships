@@ -8,12 +8,15 @@ public abstract class Airplane extends Vehicle {
   private final double fuelBurningRate = 1;
   private double fuel;
   private int personnel;
+  private boolean shouldCrash;
+  private boolean crashed;
 
   public Airplane(double velocity, double fuelCapacity) {
     super(velocity);
     this.personnel = (int) Math.floor(Math.random() * 10 + 3);
     this.fuelCapacity = fuelCapacity;
     this.fuel = fuelCapacity;
+    shouldCrash = false;
   }
 
   public int getFuel() {
@@ -38,11 +41,20 @@ public abstract class Airplane extends Vehicle {
   }
 
   public boolean canMove() {
-    return fuel > 0;
+    return fuel > 0 && !crashed;
   }
 
   public void crashLanding() {
-    // should reroute to next nearest airport and disappear (it's damaged!) (what about passengers?)
+    shouldCrash = true;
+  }
+
+
+  public boolean isCrashed() {
+    return crashed;
+  }
+
+  public void setCrashed(boolean crashed) {
+    this.crashed = crashed;
   }
 
   public Airport getNextAirport() {
@@ -55,12 +67,18 @@ public abstract class Airplane extends Vehicle {
     return null;
   }
 
-  public void vehicleMovedCallback() {
-    burnFuel(this.fuelBurningRate * this.getVelocity());
+  public void vehicleMovedCallback(boolean didVehicleMove) {
+    if (didVehicleMove) {
+      burnFuel(this.fuelBurningRate * this.getVelocity());
+    }
   }
 
   @Override
   public void draw(Drawer drawer) {
     drawer.drawAirplane(this);
+  }
+
+  public boolean isShouldCrash() {
+    return shouldCrash;
   }
 }

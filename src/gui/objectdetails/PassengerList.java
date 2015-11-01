@@ -79,6 +79,7 @@ public class PassengerList extends ListView {
     Scene scene = new Scene(passportPane);
 
     stage.setScene(scene);
+    stage.setResizable(false);
     stage.show();
   }
 }
