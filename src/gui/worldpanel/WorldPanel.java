@@ -113,9 +113,9 @@ public class WorldPanel {
   private HashMap<String, Color> getColors() {
     HashMap<String, Color> colors = new HashMap<>();
 
-    colors.put("civilNavy", Color.web("#0e3a5f"));
-    colors.put("civilGreen", Color.web("#065525"));
-    colors.put("military", Color.DARKOLIVEGREEN);
+    colors.put("civilNavy", Color.web("#00549b"));
+    colors.put("civilGreen", Color.web("#007928"));
+    colors.put("military", Color.web("#5e6f38"));
     colors.put("junctionBeige", Color.BEIGE);
 
     return colors;

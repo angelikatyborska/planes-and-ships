@@ -39,6 +39,7 @@ public class WorldDrawer implements Drawer {
     gc.clearRect(0, 0, width, height);
 
     drawTerrain();
+    drawNetwork();
     drawVehicles();
     drawStopovers();
   }
@@ -149,7 +150,7 @@ public class WorldDrawer implements Drawer {
     drawShip(vehicle);
   }
 
-  private void drawStopovers() {
+  private void drawNetwork() {
     double lineWidth = 1;
     gc.setStroke(Color.WHITE);
     gc.setLineWidth(lineWidth);
@@ -171,7 +172,9 @@ public class WorldDrawer implements Drawer {
       }
       alreadyDrewLinesToNeighbours.add(stopover);
     }
+  }
 
+  private void drawStopovers() {
     for (Stopover stopover : world.getAllStopovers()) {
       stopover.draw(this);
     }

@@ -48,15 +48,15 @@
 }
 
 .civil-airplane {
-    -fx-background-color: #065525;
+    -fx-background-color: #007928;
 }
 
 .civil-ship {
-    -fx-background-color: #0e3a5f;
+    -fx-background-color: #00549b;
 }
 
 .military {
-    -fx-background-color: darkolivegreen;
+    -fx-background-color: #5e6f38;
 }
 
 .vehicle-creation-buttons {

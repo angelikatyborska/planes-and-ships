@@ -17,7 +17,7 @@ public class WorldBuilder {
       CivilAirport civilAirport4 = new CivilAirport("New Folder", new Coordinates(620, 230), 1);
       CivilAirport civilAirport5 = new CivilAirport("Office City", new Coordinates(490, 450), 1);
       CivilAirport civilAirport6 = new CivilAirport("Paperville", new Coordinates(730, 570), 1);
-      CivilAirport civilAirport7 = new CivilAirport("Scribbleton", new Coordinates(230, 600), 1);
+      CivilAirport civilAirport7 = new CivilAirport("Scribbleton", new Coordinates(240, 600), 1);
 
       network.add(civilAirport1);
       network.add(civilAirport2);
@@ -107,12 +107,12 @@ public class WorldBuilder {
 
 
 
-      Port port1 = new Port("Lettergrad", new Coordinates(50, 230), 1);
-      Port port2 = new Port("New Notebook", new Coordinates(230, 280), 1);
-      Port port3 = new Port("Inkton", new Coordinates(430, 350), 1);
-      Port port4 = new Port("Stylos", new Coordinates(390, 490), 1);
-      Port port5 = new Port("Tryckfärg", new Coordinates(230, 530), 1);
-      Port port6 = new Port("Kartkosławów", new Coordinates(125, 575), 1);
+      Port port1 = new Port("Lettergrad", new Coordinates(50, 226), 1);
+      Port port2 = new Port("New Notebook", new Coordinates(230, 284), 1);
+      Port port3 = new Port("Inkton", new Coordinates(432, 347), 1);
+      Port port4 = new Port("Stylos", new Coordinates(387, 490), 1);
+      Port port5 = new Port("Tryckfärg", new Coordinates(230, 538), 1);
+      Port port6 = new Port("Kartkosławów", new Coordinates(128, 585), 1);
 
       network.add(port1);
       network.add(port2);
