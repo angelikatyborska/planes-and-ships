@@ -42,7 +42,7 @@ public class VehicleGenerator {
       case 1:
         return Weapon.WeaponType.SCISSORS;
       case 2:
-        return Weapon.WeaponType.INK_BOOMB;
+        return Weapon.WeaponType.INK_BOMB;
       default:
         return Weapon.WeaponType.ERASER;
     }

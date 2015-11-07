@@ -10,6 +10,12 @@ import world.StopoverNotFoundInStopoverNetworkException;
 
 import java.util.List;
 
+/**
+ * An airplane with weapons
+ * @see Airplane
+ * @see Weapon
+ * @see MilitaryAirport
+ */
 public class MilitaryAirplane extends Airplane {
   private Weapon weapon;
 
@@ -30,7 +36,7 @@ public class MilitaryAirplane extends Airplane {
   @Override
   public void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException {
     if (stopover.accommodateMilitaryAirplane(this)) {
-      if (!isShouldCrash() || stopover instanceof Junction) {
+      if (!shouldCrash() || stopover instanceof Junction) {
         stopover.prepareMilitaryAirplaneForTravel(this);
         stopover.releaseVehicle(this);
       } else {
@@ -52,7 +58,7 @@ public class MilitaryAirplane extends Airplane {
   @Override
   public Stopover getNextStopover() {
     synchronized (route) {
-      if (isShouldCrash()) {
+      if (shouldCrash()) {
         try {
           return worldMap.findClosestMetricallyMilitaryAirport(route.get(previousStopoverNumber + 1));
         } catch (StopoverNotFoundInStopoverNetworkException e) {

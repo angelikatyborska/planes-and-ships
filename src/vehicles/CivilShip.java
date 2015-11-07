@@ -7,6 +7,12 @@ import world.StopoverNotFoundInStopoverNetworkException;
 
 import java.util.List;
 
+/**
+ * A ship that can move passengers around.
+ * @see CivilVehicle
+ * @see Ship
+ * @see Port
+ */
 public class CivilShip extends Ship implements CivilVehicle {
   private final PassengerZone passengerZone;
   private final String company;
@@ -21,7 +27,6 @@ public class CivilShip extends Ship implements CivilVehicle {
     this(velocity, passengerCapacity, "");
   }
 
-  // TODO: show to the teacher - using instanceof
   public CivilDestination getNextCivilDestination() {
     for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
       if (route.get(i) instanceof CivilDestination) {
@@ -31,6 +36,10 @@ public class CivilShip extends Ship implements CivilVehicle {
     return null;
   }
 
+  /**
+   *
+   * @return The name of the company that owns this civil ship
+   */
   public String getCompany() {
     return company;
   }

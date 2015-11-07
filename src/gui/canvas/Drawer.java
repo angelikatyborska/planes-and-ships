@@ -3,7 +3,11 @@ package gui.canvas;
 import stopovers.*;
 import vehicles.*;
 
-// Visitor design pattern
+
+/**
+ * Knows how to draw all the Drawable objects (visitor pattern).
+ * @see Drawable
+ */
 public interface Drawer {
   void drawVehicle(Vehicle vehicle);
   void drawAirplane(Airplane vehicle);

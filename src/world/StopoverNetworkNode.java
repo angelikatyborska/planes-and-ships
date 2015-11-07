@@ -5,6 +5,9 @@ import stopovers.Stopover;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a single stopover in the network and stores information about its neighbors
+ */
 public class StopoverNetworkNode {
   private final Stopover stopover;
 
@@ -27,6 +30,11 @@ public class StopoverNetworkNode {
     return neighbours;
   }
 
+  /**
+   * Checks weather this node stores a stopover of a given type
+   * @param type
+   * @return
+   */
   public boolean hasStopoverOfType(Class<? extends Stopover> type) {
     return type.isInstance(this.stopover);
   }

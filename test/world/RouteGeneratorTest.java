@@ -65,7 +65,7 @@ public class RouteGeneratorTest {
 
   @Test
   public void CivilSeaRouteShouldOnlyContainJunctionsAndPorts() throws StopoverNotFoundInStopoverNetworkException {
-    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort);
+    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort, 4);
 
     for (Stopover stopover : seaRoute) {
       assertTrue(stopover instanceof Port || stopover instanceof Junction);
@@ -74,7 +74,7 @@ public class RouteGeneratorTest {
 
   @Test
   public void CivilSeaRouteShouldStartAndEndWithAPort() throws StopoverNotFoundInStopoverNetworkException {
-    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort);
+    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort, 4);
 
     assertTrue(seaRoute.get(0) instanceof Port);
     assertTrue(seaRoute.get(seaRoute.size() - 1) instanceof Port);
@@ -82,7 +82,7 @@ public class RouteGeneratorTest {
 
   @Test
   public void StopoversInARouteShouldBeConnected() throws StopoverNotFoundInStopoverNetworkException {
-    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort);
+    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort, 4);
 
     for (int i = 0; i < seaRoute.size() - 1; i++) {
       List<Junction> junctionsBetweenNeighbours = map.findJunctionsBetween(seaRoute.get(i), seaRoute.get(i + 1));
@@ -102,7 +102,7 @@ public class RouteGeneratorTest {
 
   @Test
   public void shouldFindTheOnlyCorrectRoute() throws StopoverNotFoundInStopoverNetworkException {
-    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort);
+    List<Stopover> seaRoute = routeGenerator.newCivilSeaRoute(startingPort, 4);
 
     assertEquals(startingPort, seaRoute.get(0));
     assertEquals(junction1, seaRoute.get(1));

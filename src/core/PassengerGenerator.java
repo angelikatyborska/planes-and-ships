@@ -5,7 +5,6 @@ import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 
 public class PassengerGenerator {
-  // TODO: come up with a better way to store (more!) potential names
   private static String[] firstNames = {"Alice", "Bob", "Stephen", "Katherine", "Craig", "Maurice", "Wallace", "Robert", "Rose", "Paul", "John", "Julie", "Gabrielle", "Anabelle", "Judy", "Jennifer", "Patrick"};
   private static String[] lastNames = {"Moss", "Mills", "Evans", "Harper", "Smith", "Goodman", "Pelton", "Garcia", "Foster", "Kowalski", "Nowak", "Rodrigez", "Keys", "Becket", "Ackermann"};
   private WorldMap map;

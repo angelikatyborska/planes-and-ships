@@ -14,21 +14,26 @@ import world.WorldMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+/**
+ * A vehicle can travel between and get accommodated at stopovers.
+ * @see Stopover
+ */
 public abstract class Vehicle extends WorldClockListener implements Drawable {
   private final int id;
   private final double velocity;
   protected WorldMap worldMap;
   protected List<Stopover> route;
   protected int previousStopoverNumber;
-  private ReentrantLock processingRoute;
 
+  /**
+   *
+   * @param velocity Vehicle with which to move the vehicle in pixels per WorldClock tick
+   */
   public Vehicle(double velocity) {
     this.id = this.hashCode();
     this.velocity = velocity;
-    this.processingRoute = new ReentrantLock();
     this.route = new ArrayList<>();
   }
 
@@ -36,6 +41,10 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     return velocity;
   }
 
+  /**
+   *
+   * @param worldMap The map on which the vehicle moves
+   */
   public void setWorldMap(WorldMap worldMap) {
     this.worldMap = worldMap;
   }
@@ -44,6 +53,10 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
       return worldMap.getVehicleCoordinates(this);
   }
 
+  /**
+   *
+   * @return An angle in radians formed by the 0Y axis and the segment formed with vehicle coordinates and vehicle's next destination coordinates
+   */
   public double getBearing() {
     return getCoordinates().getBearing(getNextStopover().getCoordinates());
   }
@@ -52,28 +65,48 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     return id;
   }
 
+  /**
+   *
+   * @return A comma-separated list of all vehicle's stopovers except for junctions
+   */
   public List<String> routeToStrings() {
     synchronized (route) {
       return route.stream().filter(stopover -> !(stopover instanceof Junction)).map(Stopover::getName).collect(Collectors.toList());
     }
   }
 
+  /**
+   *
+   * @return The next stopover at which the vehicle will stop
+   */
   public Stopover getNextStopover() {
     synchronized (route) {
       return route.get(previousStopoverNumber + 1);
     }
   }
 
+  /**
+   *
+   * @return The next stopover implementing CivilDestination at which the vehicle will stop
+   */
   public Stopover getNextCivilStopover() {
     return (Stopover) getNextCivilDestination();
   }
 
+  /**
+   *
+   * @return The previous stopover at which the vehicle stopped
+   */
   public Stopover getPreviousStopover() {
     synchronized (route) {
       return route.get(previousStopoverNumber);
     }
   }
 
+  /**
+   *
+   * @return The next civil destination at which the vehicle will stop
+   */
   public CivilDestination getNextCivilDestination() {
     synchronized (route) {
       for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
@@ -86,6 +119,10 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     }
   }
 
+  /**
+   * Replaces vehicle's route with the given route
+   * @param route
+   */
   public void setRoute(List<Stopover> route) {
     synchronized (route) {
       previousStopoverNumber = 0;
@@ -94,6 +131,9 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     }
   }
 
+  /**
+   * Changes vehicle's next stopover to be vehicle's previous stopover
+   */
   public void updateRoute() {
     synchronized (route) {
       previousStopoverNumber++;
@@ -105,6 +145,9 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
     }
   }
 
+  /**
+   * Randomize vehicle's route in such a manner that previous and next stopover stays the same to avoid inconsistency between vehicle's current coordinates and it's next stopover
+   */
   public void randomizeCurrentRoute() {
       List<Stopover> newRoute = new ArrayList<>();
 
@@ -119,16 +162,35 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
   protected abstract List<Stopover> newSubRoute();
 
+  /**
+   * checks if vehicle's coordinates are identical with the given stopover's coordinates
+   * @param stopover
+   * @return
+   */
   public boolean hasArrivedAtStopover(Stopover stopover) {
     Coordinates vehicleCoord = getCoordinates();
     Coordinates stopoverCoord = stopover.getCoordinates();
     return (vehicleCoord.getX() == stopoverCoord.getX() && vehicleCoord.getY() == stopoverCoord.getY());
   }
 
+  /**
+   * Gets called if the vehicle arrived at its next stopover while trying to move
+   * @param stopover
+   * @throws InvalidVehicleAtStopoverException
+   * @throws InterruptedException
+   */
   public abstract void arrivedAtStopover(Stopover stopover) throws InvalidVehicleAtStopoverException, InterruptedException;
 
+  /**
+   * Gets called if the vehicle changed its coordinates while trying to move
+   * @param didVehicleMove
+   */
   public void vehicleMovedCallback(boolean didVehicleMove) { }
 
+  /**
+   * Determines weather the vehicle will move when the WorldClock ticks
+   * @return
+   */
   public boolean canMove() {
     return true;
   }

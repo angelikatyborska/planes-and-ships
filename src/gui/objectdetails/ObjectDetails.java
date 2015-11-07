@@ -9,6 +9,11 @@ import javafx.scene.control.ListView;
 import stopovers.*;
 import vehicles.*;
 
+/**
+ * A Drawer that can print details about a given Drawable object
+ * @see Drawer
+ * @see Drawable
+ */
 public class ObjectDetails implements Drawer {
   private Drawable object;
   @FXML private Label title;
@@ -30,6 +35,10 @@ public class ObjectDetails implements Drawer {
     setObject(null);
   }
 
+  /**
+   *
+   * @param object The drawable object whose details will be printed when drawer is refreshed
+   */
   public void setObject(Drawable object) {
     this.object = object;
 
@@ -47,6 +56,9 @@ public class ObjectDetails implements Drawer {
     }
   }
 
+  /**
+   * Reprint with fresh information
+   */
   public void refresh() {
     clear();
 
@@ -63,13 +75,15 @@ public class ObjectDetails implements Drawer {
     title.setText("#" + Integer.toString(vehicle.getId()).substring(0, 4));
     coordinates.setText(vehicle.getCoordinates().toString());
     destinations.setItems(FXCollections.observableArrayList(vehicle.routeToStrings()));
+    int worldClockTicksPerSecond = 20;
+    fuel.setText(String.format("%.3g", vehicle.getVelocity() * worldClockTicksPerSecond) + " pixels/s");
   }
 
   @Override
   public void drawAirplane(Airplane vehicle) {
     drawVehicle(vehicle);
     personnel.setText("Personnel: " + vehicle.getPersonnel());
-    fuel.setText("Fuel: " + vehicle.getFuel() + "%");
+    fuel.setText(fuel.getText() + ", Fuel: " + vehicle.getFuel() + "%");
   }
 
   @Override

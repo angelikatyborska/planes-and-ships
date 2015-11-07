@@ -20,6 +20,9 @@ import world.WorldBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Binds together all GUI items needed to print and control the world.
+ */
 public class WorldPanel {
   private World world;
   private WorldDrawer drawer;
@@ -77,6 +80,9 @@ public class WorldPanel {
     worldCanvas.setOnMouseClicked(this::worldCanvasClicked);
   }
 
+  /**
+   * Start animating the world canvas.
+   */
   public void start() {
     new AnimationTimer() {
       public void handle(long currentNanoTime)
@@ -87,11 +93,14 @@ public class WorldPanel {
     }.start();
   }
 
+  /**
+   * Stop all the threads inside the World (passengers and vehicles threads)
+   */
   public void shutDown() {
     world.shutDown();
   }
 
-  public void worldCanvasClicked(MouseEvent e) {
+  private void worldCanvasClicked(MouseEvent e) {
     double clickErrorMargin = 15;
 
     Vehicle vehicle = world.findVehicleAtCoordinates(e.getX(), e.getY(), clickErrorMargin);

@@ -4,9 +4,13 @@ import stopovers.*;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Keeps a list of CivilDestinations that the passenger wants to visit.
+ * @see Passenger
+ * @see CivilDestination
+ */
 public class Trip {
   public enum TripType { HOLIDAY, BUSINESS };
   private TripType type;
@@ -18,12 +22,22 @@ public class Trip {
   private int previousStopover;
   private WorldMap map;
 
+  /**
+   *
+   * @param from Where to start this trip
+   * @param map A world map on which this trip is based
+   * @throws StopoverNotFoundInStopoverNetworkException
+   */
   public Trip(CivilDestination from, WorldMap map) throws StopoverNotFoundInStopoverNetworkException {
     this.from = from;
     this.map = map;
     randomize();
   }
 
+  /**
+   * Chooses new CivilStopovers to stop at and a new trip type, doesn't change the starting point
+   * @throws StopoverNotFoundInStopoverNetworkException
+   */
   public void randomize() throws StopoverNotFoundInStopoverNetworkException {
     do {
       do {

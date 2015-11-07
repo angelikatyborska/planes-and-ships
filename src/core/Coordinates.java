@@ -7,11 +7,20 @@ public class Coordinates {
   private double x;
   private double y;
 
+  /**
+   * Creates new Coordinates with given values
+   * @param x Cartesian coordinate on the 0X axis
+   * @param y Cartesian coordinate on the 0Y axis
+   */
   public Coordinates(double x, double y) {
     this.x = x;
     this.y = y;
   }
 
+  /**
+   * Creates new Coordinates with values copied from given coordinates
+   * @param coordinates Coordinates object whose values will be copied to the new object
+   */
   public Coordinates(Coordinates coordinates) {
     this.x = coordinates.getX();
     this.y = coordinates.getY();

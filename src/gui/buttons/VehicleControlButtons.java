@@ -10,6 +10,9 @@ import world.World;
 
 import java.util.function.Consumer;
 
+/**
+ * A group of buttons for removing and changing parameters of a vehicle.
+ */
 public class VehicleControlButtons extends Group {
   private World world;
   private Vehicle vehicle;
@@ -19,9 +22,7 @@ public class VehicleControlButtons extends Group {
   @FXML private Button randomizeCurrentRouteButton;
   @FXML private Button crashLanding;
 
-  public VehicleControlButtons() {
-  }
-
+  public VehicleControlButtons() {}
 
   public void initialize() {
     removeVehicleButton.setVisible(false);
@@ -34,10 +35,18 @@ public class VehicleControlButtons extends Group {
     actionBeforeRemovingVehicle = action;
   }
 
+  /**
+   *
+   * @param world the World object from which vehicles will be removed.
+   */
   public void setWorld(World world) {
     this.world = world;
   }
 
+  /**
+   *
+   * @param vehicle the vehicle to be controlled by the buttons.
+   */
   public void setVehicle(Vehicle vehicle) {
     this.vehicle = vehicle;
 

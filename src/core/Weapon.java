@@ -1,7 +1,12 @@
 package core;
 
+/**
+ * Represents a weapon that military vehicles can have.
+ * @see vehicles.MilitaryAirplane
+ * @see vehicles.MilitaryShip
+ */
 public class Weapon {
-  public enum WeaponType { SCISSORS, INK_BOOMB, ERASER };
+  public enum WeaponType { SCISSORS, INK_BOMB, ERASER };
   private WeaponType type;
 
   public Weapon(WeaponType type) {
@@ -21,7 +26,7 @@ public class Weapon {
     switch (type) {
       case SCISSORS:
         return "Scissors";
-      case INK_BOOMB:
+      case INK_BOMB:
         return "Ink Bomb";
       case ERASER:
         return "Eraser";

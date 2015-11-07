@@ -77,18 +77,33 @@ public class Passenger implements Runnable {
     arrivedAtPassengerZone = passengerZone;
   }
 
+  /**
+   *
+   * @return an object implementing CivilDestination interface (also of Stopover class) that this passenger wants to stop at next
+   */
   public CivilDestination getNextCivilDestination() {
     return trip.getNextCivilDestination();
   }
 
+  /**
+   *
+   * @return an object implementing CivilDestination interface (also of Stopover class) that this passenger wanted to stop at previously
+   */
   public CivilDestination getPreviousCivilDestination() {
     return trip.getPreviousCivilDestination();
   }
 
+  /**
+   *
+   * @return an object of Stopover class (also implementing CivilDestination) that this passenger wants to stop at next
+   */
   public Stopover getNextCivilStopover() {
     return (Stopover) getNextCivilDestination();
   }
 
+  /**
+   * Runs passenger's journey, passenger waits for a vehicle, keeps track of his journey, sleeps at a hotel at his trip's destination
+   */
   public void run() {
     while(!Thread.currentThread().isInterrupted()) {
       try {

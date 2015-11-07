@@ -8,7 +8,11 @@ import world.StopoverNotFoundInStopoverNetworkException;
 
 import java.util.List;
 
-
+/**
+ * A ship with weapons.
+ * @see Ship
+ * @see Weapon
+ */
 public class MilitaryShip extends Ship {
   private Weapon weapon;
 
@@ -48,7 +52,7 @@ public class MilitaryShip extends Ship {
 
   @Override
   protected List<Stopover> newSubRoute() {
-    // can't change the route of MilitaryShip
+    // can't change the route of MilitaryShip because it moves randomly
     return null;
   }
 

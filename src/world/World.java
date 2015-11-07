@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Keeps track of all the vehicles and passengers that move on its map
+ */
 public class World {
   private WorldClock clock;
   private WorldMap map;
@@ -29,18 +32,34 @@ public class World {
     threads.get(this.clock).start();
   }
 
+  /**
+   *
+   * @return A list of all vehicles that currently inhabit this world.
+   */
   public List<Vehicle> getAllVehicles() {
     return map.getAllVehicles();
   }
 
+  /**
+   *
+   * @return A list of all stopovers that are on this world's map.
+   */
   public List<Stopover> getAllStopovers() {
     return map.getAllStopovers();
   }
 
+  /**
+   *
+   * @param stopover
+   * @return A list of all stopovers that are neighbors of a given stopover on this world's map.
+   */
   public List<Stopover> getNeighbouringStopovers(Stopover stopover) {
     return map.getNeighbouringStopovers(stopover);
   }
 
+  /**
+   * Adds a new random civil airplane and generates passengers in a nearby civil destination.
+   */
   public void addCivilAirplane() {
     try {
       CivilAirplane vehicle = vehicleGenerator.newCivilAirplane();
@@ -56,6 +75,10 @@ public class World {
     }
   }
 
+  /**
+   * Adds a new military plane that starts from the given ship.
+   * @param ship
+   */
   public void addMilitaryAirplane(MilitaryShip ship) {
     try {
       MilitaryAirplane vehicle = vehicleGenerator.newMilitaryAirplane(ship.getWeapon().getType());
@@ -69,6 +92,9 @@ public class World {
     }
   }
 
+  /**
+   * Adds a new random civil ship and generates passengers in a nearby civil destination.
+   */
   public void addCivilShip() {
     try {
       CivilShip vehicle = vehicleGenerator.newCivilShip();
@@ -83,6 +109,9 @@ public class World {
     }
   }
 
+  /**
+   * Adds a new military ship.
+   */
   public void addMilitaryShip() {
     try {
       MilitaryShip vehicle = vehicleGenerator.newMilitaryShip();
@@ -96,14 +125,52 @@ public class World {
     }
   }
 
+  /**
+   * Removes the given vehicle from this world and terminates its thread.
+   * @param vehicle
+   * @throws InterruptedException
+   */
   public void removeVehicle(Vehicle vehicle) throws InterruptedException {
-    // TODO: show to the teacher - using instanceof
     if (vehicle instanceof CivilVehicle) {
       removePassengersThread((CivilVehicle) vehicle);
     }
 
     removeVehicleThread(vehicle);
     map.removeVehicle(vehicle);
+  }
+
+  /**
+   * Terminates threads of all vehicles and passengers inhabiting this world.
+   */
+  public void shutDown() {
+    threads.forEach((runnable, thread) -> thread.interrupt());
+  }
+
+  public Stopover findStopoverAtCoordinates(double x, double y, double errorMargin) {
+    Coordinates clickedCoordinates = new Coordinates(x, y);
+    for (Stopover stopover : getAllStopovers()) {
+      if (stopover.getCoordinates().distanceTo(clickedCoordinates) < errorMargin) {
+        return stopover;
+      }
+    }
+    return null;
+  }
+
+  /**
+   *
+   * @param x
+   * @param y
+   * @param errorMargin How much vehicle's coordinates can differ from given coordinates
+   * @return A vehicle whose coordinates are equal to the given coordinates plus/minus error margin
+   */
+  public Vehicle findVehicleAtCoordinates(double x, double y, double errorMargin) {
+    Coordinates clickedCoordinates = new Coordinates(x, y);
+    for (Vehicle vehicle : getAllVehicles()) {
+      if (vehicle.getCoordinates().distanceTo(clickedCoordinates) <  errorMargin) {
+        return vehicle;
+      }
+    }
+    return null;
   }
 
   private void removeVehicleThread(Vehicle vehicle) throws InterruptedException {
@@ -141,7 +208,6 @@ public class World {
         passengers.add(newPassenger);
       }
 
-      // TODO:  honestly, assuming that every new passenger started waiting at this point is just being optimistic, and not a good coder...
       for (Passenger passenger : passengers) {
         synchronized (passenger) {
           passenger.setArrivedAtPassengerZone(hometown.passengerZone());
@@ -155,29 +221,5 @@ public class World {
       map.getAllStopovers().forEach(System.err::println);
       e.printStackTrace();
     }
-  }
-
-  public void shutDown() {
-    threads.forEach((runnable, thread) -> thread.interrupt());
-  }
-
-  public Stopover findStopoverAtCoordinates(double x, double y, double errorMargin) {
-    Coordinates clickedCoordinates = new Coordinates(x, y);
-    for (Stopover stopover : getAllStopovers()) {
-      if (stopover.getCoordinates().distanceTo(clickedCoordinates) < errorMargin) {
-        return stopover;
-      }
-    }
-    return null;
-  }
-
-  public Vehicle findVehicleAtCoordinates(double x, double y, double errorMargin) {
-    Coordinates clickedCoordinates = new Coordinates(x, y);
-    for (Vehicle vehicle : getAllVehicles()) {
-      if (vehicle.getCoordinates().distanceTo(clickedCoordinates) <  errorMargin) {
-        return vehicle;
-      }
-    }
-    return null;
   }
 }

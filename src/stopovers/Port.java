@@ -5,8 +5,6 @@ import core.PassengerZone;
 import gui.canvas.Drawer;
 import vehicles.*;
 
-import static java.lang.Thread.sleep;
-
 public class Port extends Stopover implements CivilDestination {
   private final PassengerZone passengerZone;
   private final PassengerZone hotel;

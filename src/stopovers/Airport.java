@@ -4,6 +4,11 @@ import core.Coordinates;
 import gui.canvas.Drawer;
 import vehicles.*;
 
+/**
+ * A Stopover that can accommodate Airplanes.
+ * @see Stopover
+ * @see Airplane
+ */
 public abstract class Airport extends Stopover {
   public Airport(Coordinates coordinates, int vehicleCapacity) {
     this("", coordinates, vehicleCapacity);

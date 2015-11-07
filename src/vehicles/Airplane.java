@@ -3,6 +3,11 @@ package vehicles;
 import gui.canvas.Drawer;
 import stopovers.Airport;
 
+/**
+ * A vehicle that can fly and get accommodated at airports
+ * @see Vehicle
+ * @see Airport
+ */
 public abstract class Airplane extends Vehicle {
   private final double fuelCapacity;
   private final double fuelBurningRate = 1;
@@ -11,6 +16,10 @@ public abstract class Airplane extends Vehicle {
   private boolean shouldCrash;
   private boolean crashed;
 
+  /**
+   * @param velocity Vehicle with which to move the vehicle in pixels per WorldClock tick
+   * @param fuelCapacity how much fuel can the airplane hold
+   */
   public Airplane(double velocity, double fuelCapacity) {
     super(velocity);
     this.personnel = (int) Math.floor(Math.random() * 10 + 3);
@@ -44,6 +53,9 @@ public abstract class Airplane extends Vehicle {
     return fuel > 0 && !crashed;
   }
 
+  /**
+   * Immediately fly to the nearest airport and stay there
+   */
   public void crashLanding() {
     shouldCrash = true;
   }
@@ -55,6 +67,10 @@ public abstract class Airplane extends Vehicle {
 
   public void setCrashed(boolean crashed) {
     this.crashed = crashed;
+  }
+
+  public boolean shouldCrash() {
+    return shouldCrash;
   }
 
   public Airport getNextAirport() {
@@ -76,9 +92,5 @@ public abstract class Airplane extends Vehicle {
   @Override
   public void draw(Drawer drawer) {
     drawer.drawAirplane(this);
-  }
-
-  public boolean isShouldCrash() {
-    return shouldCrash;
   }
 }
