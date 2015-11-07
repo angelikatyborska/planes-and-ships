@@ -163,7 +163,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   protected abstract List<Stopover> newSubRoute();
 
   /**
-   * checks if vehicle's coordinates are identical with the given stopover's coordinates
+   * checks if vehicle's coordinates identical with the given stopover's coordinates
    * @param stopover
    * @return
    */

@@ -1,11 +1,13 @@
 package core;
 
+import java.io.Serializable;
+
 /**
  * Represents a weapon that military vehicles can have.
  * @see vehicles.MilitaryAirplane
  * @see vehicles.MilitaryShip
  */
-public class Weapon {
+public class Weapon implements Serializable {
   public enum WeaponType { SCISSORS, INK_BOMB, ERASER };
   private WeaponType type;
 

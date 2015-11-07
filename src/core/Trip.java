@@ -4,6 +4,7 @@ import stopovers.*;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @see Passenger
  * @see CivilDestination
  */
-public class Trip {
+public class Trip implements Serializable {
   public enum TripType { HOLIDAY, BUSINESS };
   private TripType type;
   private CivilDestination to;

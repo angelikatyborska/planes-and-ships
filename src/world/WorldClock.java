@@ -1,5 +1,6 @@
 package world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
@@ -7,7 +8,7 @@ import static java.lang.Thread.sleep;
 /**
  * A clock to which WorldClockListeners can subscribe.
  */
-public class WorldClock implements Runnable {
+public class WorldClock implements Runnable, Serializable {
   private ArrayList<WorldClockListener> listeners;
   private int timeInterval;
   private boolean bounded;

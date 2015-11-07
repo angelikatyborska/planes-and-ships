@@ -8,6 +8,6 @@
     <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="detail-panel">
         <VBox fx:id="vehicleControlButtons" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="vehicle-control-buttons-group" />
         <VBox fx:id="objectDetails" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="details" />
-        <VBox fx:id="vehicleCreationButtons" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="vehicle-creation-buttons-group" />
+        <VBox fx:id="worldControlButtons" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="vehicle-creation-buttons-group" />
     </GridPane>
 </GridPane>

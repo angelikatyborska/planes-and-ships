@@ -2,13 +2,14 @@ package world;
 
 import stopovers.Stopover;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents a single stopover in the network and stores information about its neighbors
  */
-public class StopoverNetworkNode {
+public class StopoverNetworkNode implements Serializable {
   private final Stopover stopover;
 
   private final ArrayList<StopoverNetworkNode> neighbours;

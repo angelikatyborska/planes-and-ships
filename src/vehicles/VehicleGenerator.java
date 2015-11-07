@@ -2,7 +2,9 @@ package vehicles;
 
 import core.Weapon;
 
-public class VehicleGenerator {
+import java.io.Serializable;
+
+public class VehicleGenerator implements Serializable {
   private static String[] CivilShipsCompanies = {"Paper Ships Inc.", "Mr Clippy's Cruises", "Polish State Cruises"};
   private static double minVelocity = 0.3;
   private static double maxVelocity = 2;

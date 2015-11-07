@@ -5,6 +5,7 @@ import gui.canvas.Drawable;
 import gui.canvas.Drawer;
 import vehicles.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -12,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Stopover represents a place where a vehicle can stop (get accommodated at).
  * @see Vehicle
  */
-public class Stopover implements Drawable {
+public class Stopover implements Drawable, Serializable {
   private final Coordinates coordinates;
   private final int vehicleCapacity;
   private final ReentrantLock processingVehicleLock;

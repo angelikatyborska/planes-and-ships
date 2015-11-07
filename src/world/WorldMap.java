@@ -4,10 +4,11 @@ import core.Coordinates;
 import stopovers.*;
 import vehicles.Vehicle;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class WorldMap {
+public class WorldMap implements Serializable {
   private final StopoverNetwork stopoverNetwork;
   private final Map<Vehicle, Coordinates> vehicleCoordinates;
   private final ReentrantLock processingVehicle;

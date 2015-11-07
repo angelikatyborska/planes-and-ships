@@ -2,13 +2,14 @@ package world;
 
 import stopovers.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Generates random routes of various types based on a map.
  */
-public class RouteGenerator {
+public class RouteGenerator implements Serializable {
   private WorldMap map;
 
   /**

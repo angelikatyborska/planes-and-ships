@@ -31,11 +31,9 @@ public class GUIApplication extends Application {
     Scene scene = new Scene(worldPanelPane);
 
     primaryStage.setScene(scene);
-    primaryStage.setResizable(false);
+    //primaryStage.setResizable(false);
 
     primaryStage.setOnCloseRequest(we -> ((WorldPanel) loader.getController()).shutDown());
     primaryStage.show();
-
-    // TODO: change reentrant locks to synchronized blocks in the whole project?
   }
 }

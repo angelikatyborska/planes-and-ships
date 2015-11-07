@@ -6,20 +6,20 @@ import core.PassengerGenerator;
 import stopovers.*;
 import vehicles.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Keeps track of all the vehicles and passengers that move on its map
  */
-public class World {
+public class World implements Serializable {
   private WorldClock clock;
   private WorldMap map;
   private PassengerGenerator passengerGenerator;
   private VehicleGenerator vehicleGenerator;
-  private HashMap<Runnable, Thread> threads;
+  private transient HashMap<Runnable, Thread> threads;
+  private List<Runnable> runnables;
 
   public World(WorldClock clock, WorldMap map) {
     threads = new HashMap<>();
@@ -30,6 +30,25 @@ public class World {
     vehicleGenerator = new VehicleGenerator();
 
     threads.get(this.clock).start();
+  }
+
+  private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+    runnables = new ArrayList<>();
+
+    for (Runnable runnable : threads.keySet()) {
+      runnables.add(runnable);
+    }
+
+    out.defaultWriteObject();
+  }
+
+  private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+    in.defaultReadObject();
+    threads = new HashMap<>();
+    for (Runnable runnable : runnables) {
+      threads.put(runnable, new Thread(runnable));
+      threads.get(runnable).start();
+    }
   }
 
   /**

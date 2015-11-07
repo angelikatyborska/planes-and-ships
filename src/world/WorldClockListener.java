@@ -1,9 +1,11 @@
 package world;
 
+import java.io.Serializable;
+
 /**
  * Subscribes to the WorldClock.
  */
-public abstract class WorldClockListener implements Runnable {
+public abstract class WorldClockListener implements Runnable, Serializable {
   /**
    * Gets called every time the clock ticks.
    * @throws InterruptedException

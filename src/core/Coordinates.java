@@ -1,9 +1,11 @@
 package core;
 
+import java.io.Serializable;
+
 /**
  * Represents a set of coordinates in the Cartesian coordinate system
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
   private double x;
   private double y;
 

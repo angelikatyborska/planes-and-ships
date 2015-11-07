@@ -3,10 +3,11 @@ package world;
 import com.google.common.collect.Lists;
 import stopovers.*;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class StopoverNetwork {
+public class StopoverNetwork implements Serializable {
   private List<StopoverNetworkNode> nodes;
 
   public StopoverNetwork() {

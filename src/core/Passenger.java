@@ -5,12 +5,14 @@ import stopovers.Stopover;
 import world.StopoverNotFoundInStopoverNetworkException;
 import world.WorldMap;
 
+import java.io.Serializable;
+
 import static java.lang.Thread.sleep;
 
 /**
  * Represents a single being that can be kept by CivilVehicle and CivilDestination via PassengerZone
  */
-public class Passenger implements Runnable {
+public class Passenger implements Runnable, Serializable {
   private final String firstName;
   private final String lastName;
   private final int age;

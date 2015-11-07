@@ -2,7 +2,7 @@ package gui.worldpanel;
 
 import gui.canvas.WorldDrawer;
 import gui.buttons.VehicleControlButtons;
-import gui.buttons.VehicleCreationButtons;
+import gui.buttons.WorldControlButtons;
 import gui.objectdetails.ObjectDetails;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -28,35 +28,43 @@ public class WorldPanel {
   private WorldDrawer drawer;
   private ObjectDetails objectDetailsController;
   private VehicleControlButtons vehicleControlButtonsController;
+  private WorldControlButtons worldControlButtonsController;
   @FXML private Canvas worldCanvas;
-  @FXML VBox objectDetails;
-  @FXML VBox vehicleCreationButtons;
-  @FXML VBox vehicleControlButtons;
+  @FXML private VBox objectDetails;
+  @FXML private VBox worldControlButtons;
+  @FXML private VBox vehicleControlButtons;
 
   public WorldPanel() {
   }
 
   public void initialize() {
-    world = WorldBuilder.build();
+    initializeAll(WorldBuilder.build());
+  }
+
+  public void initializeAll(World world) {
+    this.world = world;
+
     drawer = new WorldDrawer(world, worldCanvas.getGraphicsContext2D(), getImages(), getColors(), 800, 640);
     start();
 
     FXMLLoader loader1 = new FXMLLoader();
-    loader1.setLocation(VehicleCreationButtons.class.getResource("vehicle-creation-buttons.fxml"));
+    loader1.setLocation(WorldControlButtons.class.getResource("world-control-buttons.fxml"));
 
     try {
-      vehicleCreationButtons.getChildren().add(loader1.load());
+      worldControlButtons.getChildren().clear();
+      worldControlButtons.getChildren().add(loader1.load());
     } catch (IOException e) {
       e.printStackTrace();
     }
-    VehicleCreationButtons vehicleCreationButtonsController = loader1.getController();
-    vehicleCreationButtonsController.setWorld(world);
+    worldControlButtonsController = loader1.getController();
+    worldControlButtonsController.setWorld(world);
 
 
     FXMLLoader loader2 = new FXMLLoader();
     loader2.setLocation(ObjectDetails.class.getResource("object-details.fxml"));
 
     try {
+      objectDetails.getChildren().clear();
       objectDetails.getChildren().add(loader2.load());
     } catch (IOException e) {
       e.printStackTrace();
@@ -68,6 +76,7 @@ public class WorldPanel {
     FXMLLoader loader3 = new FXMLLoader();
     loader3.setLocation(VehicleControlButtons.class.getResource("vehicle-control-buttons.fxml"));
     try {
+      vehicleControlButtons.getChildren().clear();
       vehicleControlButtons.getChildren().add(loader3.load());
     } catch (IOException e) {
       e.printStackTrace();
@@ -78,6 +87,10 @@ public class WorldPanel {
     vehicleControlButtonsController.setActionBeforeRemovingVehicle(v -> objectDetailsController.setObject(null));
 
     worldCanvas.setOnMouseClicked(this::worldCanvasClicked);
+    worldControlButtonsController.setActionAfterLoadingWorld(newWorld -> {
+      world.shutDown();
+      initializeAll(newWorld);
+    });
   }
 
   /**
