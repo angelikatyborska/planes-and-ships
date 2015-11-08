@@ -56,16 +56,7 @@ public class MilitaryAirplane extends Airplane {
   }
 
   @Override
-  public Stopover getNextStopover() {
-    synchronized (route) {
-      if (shouldCrash()) {
-        try {
-          return worldMap.findClosestMetricallyMilitaryAirport(route.get(previousStopoverNumber + 1));
-        } catch (StopoverNotFoundInStopoverNetworkException e) {
-          e.printStackTrace();
-        }
-      }
-      return route.get(previousStopoverNumber + 1);
-    }
+  public Stopover closestAirport() {
+    return worldMap.findClosestMetricallyMilitaryAirport(getCoordinates());
   }
 }

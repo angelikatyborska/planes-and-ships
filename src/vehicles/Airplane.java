@@ -2,6 +2,7 @@ package vehicles;
 
 import gui.canvas.Drawer;
 import stopovers.Airport;
+import stopovers.Stopover;
 
 /**
  * A vehicle that can fly and get accommodated at airports
@@ -15,6 +16,7 @@ public abstract class Airplane extends Vehicle {
   private int personnel;
   private boolean shouldCrash;
   private boolean crashed;
+  private Stopover crashAt;
 
   /**
    * @param velocity Vehicle with which to move the vehicle in pixels per WorldClock tick
@@ -59,8 +61,8 @@ public abstract class Airplane extends Vehicle {
    */
   public void crashLanding() {
     shouldCrash = true;
+    crashAt = closestAirport();
   }
-
 
   public boolean isCrashed() {
     return crashed;
@@ -81,7 +83,21 @@ public abstract class Airplane extends Vehicle {
   }
 
   @Override
+  public Stopover getNextStopover() {
+    synchronized (route) {
+      if (shouldCrash()) {
+        return crashAt;
+      }
+      return route.get(previousStopoverNumber + 1);
+    }
+  }
+
+  @Override
   public void draw(Drawer drawer) {
     drawer.drawAirplane(this);
+  }
+
+  public Stopover closestAirport() {
+    return worldMap.findClosestMetricallyAirport(getCoordinates());
   }
 }

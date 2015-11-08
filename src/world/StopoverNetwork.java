@@ -1,12 +1,16 @@
 package world;
 
 import com.google.common.collect.Lists;
+import core.Coordinates;
 import stopovers.*;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Unweighted undirected graph for representing connections between stopovers
+ */
 public class StopoverNetwork implements Serializable {
   private List<StopoverNetworkNode> nodes;
 
@@ -18,6 +22,11 @@ public class StopoverNetwork implements Serializable {
     return getAllOfType(Stopover.class);
   }
 
+  /**
+   *
+   * @param stopover
+   * @return A list of all stopovers that are direct neighbors of the given stopover
+   */
   public List<Stopover> getAllNeighbouringStopovers(Stopover stopover) {
     List<Stopover> neighbours = new ArrayList<>();
 
@@ -33,6 +42,11 @@ public class StopoverNetwork implements Serializable {
     return neighbours;
   }
 
+  /**
+   *
+   * @param type
+   * @return A list of all stopovers that are of the given type
+   */
   public List<Stopover> getAllOfType(Class<? extends Stopover> type) {
     List<Stopover> foundStopovers = new ArrayList<>();
     List<StopoverNetworkNode> foundNodes = nodes.stream().filter(node -> node.hasStopoverOfType(type)).collect(Collectors.toList());
@@ -42,20 +56,20 @@ public class StopoverNetwork implements Serializable {
     return foundStopovers;
   }
 
-  public StopoverNetworkNode getNode(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
-    Optional<StopoverNetworkNode> foundNode = nodes.stream().filter(node -> node.getStopover() == stopover).findFirst();
-
-    if (!foundNode.isPresent()) {
-      throw new StopoverNotFoundInStopoverNetworkException(this, stopover);
-    }
-
-    return foundNode.get();
-  }
-
+  /**
+   * Add a new stopover to the network
+   * @param stopover
+   */
   public void add(Stopover stopover) {
     nodes.add(new StopoverNetworkNode(stopover));
   }
 
+  /**
+   * Connect two stopovers that are currently in the network
+   * @param stopover1
+   * @param stopover2
+   * @throws StopoverNotFoundInStopoverNetworkException
+   */
   public void connect(Stopover stopover1, Stopover stopover2) throws StopoverNotFoundInStopoverNetworkException {
     StopoverNetworkNode node1 = getNode(stopover1);
     StopoverNetworkNode node2 = getNode(stopover2);
@@ -64,6 +78,47 @@ public class StopoverNetwork implements Serializable {
     node2.addNeighbour(node1);
   }
 
+  /**
+   *
+   * @param from
+   * @param type
+   * @return A stopover of the given type whose coordinates are closest to the given coordinates or null if there is no such stopover
+   */
+  public Stopover findClosestMetricallyOfType(Coordinates from, Class<? extends Stopover> type){
+    Stopover result = null;
+      List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(nodes);
+
+      Optional<StopoverNetworkNode> matchingNode
+        = nodesToSearch.stream().filter(node -> node.hasStopoverOfType(type)).findFirst();
+
+      if (matchingNode.isPresent()) {
+        StopoverNetworkNode firstMatchingNode = matchingNode.get();
+        double minDistance = distanceBetweenCoordinatesAndNode(from, firstMatchingNode);
+        Stopover closestStopover = firstMatchingNode.getStopover();
+
+        for (StopoverNetworkNode nodeToSearch : nodesToSearch) {
+          if (nodeToSearch.hasStopoverOfType(type)) {
+            double distance = distanceBetweenCoordinatesAndNode(from, nodeToSearch);
+
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestStopover = nodeToSearch.getStopover();
+            }
+          }
+        }
+
+        result = closestStopover;
+      }
+
+    return result;
+  }
+
+  /**
+   *
+   * @param from
+   * @param type
+   * @return A stopover of the given type (other than the given stopover) whose coordinates are closest to the given stopover's coordinates or null if there is no such stopover
+   */
   public Stopover findClosestMetricallyOfType(Stopover from, Class<? extends Stopover> type){
     Stopover result = null;
     try {
@@ -104,6 +159,12 @@ public class StopoverNetwork implements Serializable {
     return result;
   }
 
+  /**
+   *
+   * @param from
+   * @param type
+   * @return A stopover of the given type (other than the given stopover) that is closest to the given stopover in term of how many edges are needed to connect them, or null if there is no such stopover
+   */
   public Stopover findClosestConnectedOfType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
     StopoverNetworkNode startingNode = getNode(from);
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>(startingNode.getNeighbours());
@@ -137,6 +198,13 @@ public class StopoverNetwork implements Serializable {
     return null;
   }
 
+  /**
+   *
+   * @param from
+   * @param to
+   * @return A list of junctions through which given stopovers are connected
+   * @throws StopoverNotFoundInStopoverNetworkException
+   */
   public List<Junction> findJunctionsBetween(Stopover from, Stopover to) throws StopoverNotFoundInStopoverNetworkException {
     List<Junction> junctions = new ArrayList<>();
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>();
@@ -187,6 +255,13 @@ public class StopoverNetwork implements Serializable {
     return null;
   }
 
+  /**
+   *
+   * @param from
+   * @param to
+   * @return A list of civil destinations through which given civil destinations are connected (not including)
+   * @throws StopoverNotFoundInStopoverNetworkException
+   */
   public List<CivilDestination> findCivilRouteBetween(CivilDestination from, CivilDestination to) throws StopoverNotFoundInStopoverNetworkException {
     List<Stopover> stopovers = new ArrayList<>();
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>();
@@ -243,7 +318,22 @@ public class StopoverNetwork implements Serializable {
     return null;
   }
 
+
+  protected StopoverNetworkNode getNode(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
+    Optional<StopoverNetworkNode> foundNode = nodes.stream().filter(node -> node.getStopover() == stopover).findFirst();
+
+    if (!foundNode.isPresent()) {
+      throw new StopoverNotFoundInStopoverNetworkException(this, stopover);
+    }
+
+    return foundNode.get();
+  }
+
   private double distanceBetweenNodes(StopoverNetworkNode node1, StopoverNetworkNode node2) {
     return node1.getStopover().getCoordinates().distanceTo(node2.getStopover().getCoordinates());
+  }
+
+  private double distanceBetweenCoordinatesAndNode(Coordinates coordinates, StopoverNetworkNode node) {
+    return coordinates.distanceTo(node.getStopover().getCoordinates());
   }
 }

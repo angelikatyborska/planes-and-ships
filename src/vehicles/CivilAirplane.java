@@ -67,16 +67,7 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
   }
 
   @Override
-  public Stopover getNextStopover() {
-    synchronized (route) {
-      if (shouldCrash()) {
-        try {
-          return worldMap.findClosestMetricallyCivilAirport(route.get(previousStopoverNumber + 1));
-        } catch (StopoverNotFoundInStopoverNetworkException e) {
-          e.printStackTrace();
-        }
-      }
-      return route.get(previousStopoverNumber + 1);
-    }
+  public Stopover closestAirport() {
+    return worldMap.findClosestMetricallyCivilAirport(getCoordinates());
   }
 }

@@ -59,19 +59,7 @@ public class WorldMap implements Serializable {
     return (Port) getRandomStopoverOfType(Port.class);
   }
 
-  public CivilAirport findClosestCivilAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
-    return (CivilAirport) findClosestStopoverOfType(from, CivilAirport.class);
-  }
-
-  public MilitaryAirport findClosestMilitaryAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
-    return (MilitaryAirport) findClosestStopoverOfType(from, MilitaryAirport.class);
-  }
-
-  public Port findClosestPort(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
-    return (Port) findClosestStopoverOfType(from, Port.class);
-  }
-
-  public CivilAirport findClosestMetricallyCivilAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+  public CivilAirport findClosestMetricallyCivilAirport(Coordinates from) {
     return (CivilAirport) findClosestMetricallyOfType(from, CivilAirport.class);
   }
 
@@ -79,8 +67,12 @@ public class WorldMap implements Serializable {
     return (MilitaryAirport) findClosestMetricallyOfType(from, MilitaryAirport.class);
   }
 
-  public Port findClosestMetricallyPort(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
-    return (Port) findClosestMetricallyOfType(from, Port.class);
+  public MilitaryAirport findClosestMetricallyMilitaryAirport(Coordinates from) {
+    return (MilitaryAirport) findClosestMetricallyOfType(from, MilitaryAirport.class);
+  }
+
+  public Airport findClosestMetricallyAirport(Coordinates from) {
+    return (Airport) findClosestMetricallyOfType(from, Airport.class);
   }
 
   public List<Junction> findJunctionsBetween(Stopover stopover1, Stopover stopover2) throws StopoverNotFoundInStopoverNetworkException {
@@ -156,6 +148,10 @@ public class WorldMap implements Serializable {
   }
 
   protected Stopover findClosestMetricallyOfType(Stopover from, Class<? extends Stopover> type) throws StopoverNotFoundInStopoverNetworkException {
+    return stopoverNetwork.findClosestMetricallyOfType(from, type);
+  }
+
+  protected Stopover findClosestMetricallyOfType(Coordinates from, Class<? extends Stopover> type) {
     return stopoverNetwork.findClosestMetricallyOfType(from, type);
   }
 
