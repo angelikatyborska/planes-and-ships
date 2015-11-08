@@ -69,7 +69,8 @@ public class VehicleControlButtons extends Group {
       }
 
       if (this.vehicle instanceof Airplane) {
-        crashLanding.setVisible(true);
+        crashLanding.setVisible(!((Airplane) this.vehicle).shouldCrash());
+        randomizeCurrentRouteButton.setVisible(!((Airplane) this.vehicle).shouldCrash());
       }
       else {
         crashLanding.setVisible(false);
@@ -109,5 +110,8 @@ public class VehicleControlButtons extends Group {
     if (vehicle instanceof Airplane) {
       ((Airplane) vehicle).crashLanding();
     }
+
+    crashLanding.setVisible(false);
+    randomizeCurrentRouteButton.setVisible(false);
   }
 }

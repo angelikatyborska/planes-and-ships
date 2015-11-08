@@ -67,6 +67,10 @@ public class WorldMap implements Serializable {
     return (MilitaryAirport) findClosestMetricallyOfType(from, MilitaryAirport.class);
   }
 
+  public MilitaryAirport findClosestMilitaryAirport(Stopover from) throws StopoverNotFoundInStopoverNetworkException {
+    return (MilitaryAirport) stopoverNetwork.findClosestConnectedOfType(from, MilitaryAirport.class);
+  }
+
   public MilitaryAirport findClosestMetricallyMilitaryAirport(Coordinates from) {
     return (MilitaryAirport) findClosestMetricallyOfType(from, MilitaryAirport.class);
   }

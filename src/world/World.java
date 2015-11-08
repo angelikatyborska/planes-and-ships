@@ -126,8 +126,11 @@ public class World implements Serializable {
   public void addMilitaryAirplane(MilitaryShip ship) {
     try {
       MilitaryAirplane vehicle = vehicleGenerator.newMilitaryAirplane(ship.getWeapon().getType());
-      MilitaryAirport startingPoint = map.findClosestMetricallyMilitaryAirport(ship.getPreviousStopover());
-      vehicle.setRoute(map.getRouteGenerator().newMilitaryAirRoute(startingPoint, 4));
+      MilitaryAirport startingPoint = map.findClosestMetricallyMilitaryAirport(ship.getCoordinates());
+      List<Stopover> route = new ArrayList<>();
+      route.add(map.getAdjacentJunction(startingPoint));
+      route.addAll(map.getRouteGenerator().newMilitaryAirRoute(startingPoint, 4));
+      vehicle.setRoute(route);
       prepareVehicle(vehicle, ship.getCoordinates());
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {

@@ -125,6 +125,7 @@ public class WorldPanel {
       drawer.setVehicle(vehicle);
     }
     else if (stopover != null){
+      drawer.setVehicle(null);
       objectDetailsController.setObject(stopover);
       vehicleControlButtonsController.setVehicle(null);
     }
