@@ -51,6 +51,8 @@ public class WorldControlButtons extends Group {
 
   @FXML
   private void saveWorld() throws IOException {
+    world.pause();
+
     Stage stage = new Stage();
     File file = fileChooser.showSaveDialog(stage);
 
@@ -61,10 +63,14 @@ public class WorldControlButtons extends Group {
       out.close();
       fileOut.close();
     }
+
+    world.resume();
   }
 
   @FXML
   private void loadWorld() {
+    world.pause();
+
     try {
       Stage stage = new Stage();
       File file = fileChooser.showOpenDialog(stage);
@@ -84,5 +90,12 @@ public class WorldControlButtons extends Group {
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
+
+    world.resume();
+  }
+
+  @FXML
+  private void pause() {
+    world.togglePause();
   }
 }

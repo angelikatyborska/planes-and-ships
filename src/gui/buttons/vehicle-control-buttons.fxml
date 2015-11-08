@@ -5,17 +5,17 @@
           styleClass="vehicle-control-buttons">
     <Button fx:id="removeVehicleButton" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="button, remove" onAction="#removeVehicle">
         <tooltip>
-            <Tooltip text="Remove vehicle" />
+            <Tooltip text="Remove Vehicle" />
         </tooltip>
     </Button>
     <Button fx:id="randomizeCurrentRouteButton" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="button, randomize" onAction="#randomizeCurrentRoute">
         <tooltip>
-            <Tooltip text="Randomize route" />
+            <Tooltip text="Randomize Route" />
         </tooltip>
     </Button>
     <Button fx:id="addMilitaryAirplaneButton" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="button, airplane, military" onAction="#addMilitaryAirlane">
         <tooltip>
-            <Tooltip text="Add a military airplane" />
+            <Tooltip text="Add a Military Airplane" />
         </tooltip>
     </Button>
     <Button fx:id="crashLanding" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="button, crash-landing" onAction="#crashLanding">

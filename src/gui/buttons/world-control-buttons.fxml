@@ -3,29 +3,34 @@
 <?import javafx.scene.control.Tooltip?>
 <GridPane fx:controller="gui.buttons.WorldControlButtons" xmlns:fx="http://javafx.com/fxml" alignment="BOTTOM_RIGHT" stylesheets="/gui/buttons/buttons.css"
           styleClass="vehicle-creation-buttons">
-    <Button GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="button" onAction="#loadWorld">
+    <Button GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="button, load" onAction="#loadWorld">
         <tooltip>
-            <Tooltip text="Load saved world" />
+            <Tooltip text="Load" />
         </tooltip>
     </Button>
-    <Button GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="button" onAction="#saveWorld">
+    <Button GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="button, save" onAction="#saveWorld">
         <tooltip>
-            <Tooltip text="Save current world" />
+            <Tooltip text="Save" />
         </tooltip>
     </Button>
     <Button GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="button, airplane, civil-airplane" onAction="#addCivilAirplane">
         <tooltip>
-            <Tooltip text="Add a civil airplane" />
+            <Tooltip text="Add a Civil Airplane" />
         </tooltip>
     </Button>
     <Button GridPane.columnIndex="3" GridPane.rowIndex="0" styleClass="button, ship, civil-ship" onAction="#addCivilShip">
         <tooltip>
-            <Tooltip text="Add a civil ship" />
+            <Tooltip text="Add a Civil Ship" />
         </tooltip>
     </Button>
     <Button GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="button, ship, military" onAction="#addMilitaryShip">
         <tooltip>
-            <Tooltip text="Add a military ship" />
+            <Tooltip text="Add a Military Ship" />
+        </tooltip>
+    </Button>
+    <Button GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="button, pause" onAction="#pause">
+        <tooltip>
+            <Tooltip text="Pause Vehicles" />
         </tooltip>
     </Button>
 </GridPane>

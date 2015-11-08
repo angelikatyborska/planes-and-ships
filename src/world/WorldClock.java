@@ -13,6 +13,7 @@ public class WorldClock implements Runnable, Serializable {
   private int timeInterval;
   private boolean bounded;
   private int repetitions;
+  private boolean paused;
 
   /**
    *
@@ -36,6 +37,9 @@ public class WorldClock implements Runnable, Serializable {
     this.repetitions = repetitions;
   }
 
+  public void pause() {
+    paused = !paused;
+  }
   public void addListener(WorldClockListener listener) {
     synchronized (listeners) {
       listeners.add(listener);
@@ -48,7 +52,8 @@ public class WorldClock implements Runnable, Serializable {
       for (int i = 0; i < repetitions; i++) {
         tick();
       }
-    } else {
+    }
+    else {
       while (!Thread.currentThread().isInterrupted()) {
         tick();
       }
@@ -58,10 +63,12 @@ public class WorldClock implements Runnable, Serializable {
   private void tick() {
     try {
       sleep(timeInterval);
-      synchronized (listeners) {
-        for (WorldClockListener listener : listeners) {
-          synchronized (listener) {
-            listener.notify();
+      if (!paused) {
+        synchronized (listeners) {
+          for (WorldClockListener listener : listeners) {
+            synchronized (listener) {
+              listener.notify();
+            }
           }
         }
       }
@@ -69,5 +76,9 @@ public class WorldClock implements Runnable, Serializable {
     catch(InterruptedException e){
       Thread.currentThread().interrupt();
     }
+  }
+
+  public boolean isPaused() {
+    return paused;
   }
 }

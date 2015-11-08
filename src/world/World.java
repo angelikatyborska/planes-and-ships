@@ -52,6 +52,31 @@ public class World implements Serializable {
   }
 
   /**
+   * Toggle world clock on/off
+   */
+  public void togglePause() {
+    clock.pause();
+  }
+
+  /**
+   * Pause world clock
+   */
+  public void pause() {
+    if (!clock.isPaused()) {
+      clock.pause();
+    }
+  }
+
+  /**
+   * Resume world clock
+   */
+  public void resume() {
+    if (clock.isPaused()) {
+      clock.pause();
+    }
+  }
+
+  /**
    *
    * @return A list of all vehicles that currently inhabit this world.
    */
