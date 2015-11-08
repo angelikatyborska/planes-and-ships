@@ -98,7 +98,7 @@ public class VehicleControlButtons extends Group {
   }
 
   @FXML
-     private void addMilitaryAirlane() {
+  private void addMilitaryAirplane() {
     if (vehicle instanceof MilitaryShip) {
       world.addMilitaryAirplane((MilitaryShip) vehicle);
     }

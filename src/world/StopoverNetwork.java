@@ -224,7 +224,7 @@ public class StopoverNetwork implements Serializable {
       if (currentNode.getStopover() == to) {
         // recreate the path from the last to the first junction
         while (childToParent.get(currentNode).getStopover() != from) {
-          stopovers.add((Stopover) childToParent.get(currentNode).getStopover());
+          stopovers.add(childToParent.get(currentNode).getStopover());
           currentNode = childToParent.get(currentNode);
         }
 

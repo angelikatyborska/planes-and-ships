@@ -60,7 +60,7 @@ public class MilitaryShip extends Ship {
     synchronized (route) {
       Stopover previousStopover = route.get(route.size() - 1);
       try {
-        Stopover nextStopover = worldMap.getAdjecentJunction(previousStopover);
+        Stopover nextStopover = worldMap.getAdjacentJunction(previousStopover);
         route.clear();
         route.add(previousStopover);
         route.add(nextStopover);

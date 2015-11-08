@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import core.Coordinates;
 import org.junit.Test;
 import vehicles.CivilAirplane;
-import vehicles.Airplane;
 import vehicles.CivilShip;
 import vehicles.MilitaryAirplane;
 

@@ -8,15 +8,11 @@ import java.io.Serializable;
  * @see vehicles.MilitaryShip
  */
 public class Weapon implements Serializable {
-  public enum WeaponType { SCISSORS, INK_BOMB, ERASER };
+  public enum WeaponType { SCISSORS, INK_BOMB, ERASER }
   private WeaponType type;
 
   public Weapon(WeaponType type) {
     this.type = type;
-  }
-
-  public String fire() {
-    return "PewPewPew";
   }
 
   public WeaponType getType() {

@@ -26,6 +26,7 @@ public abstract class Airplane extends Vehicle {
     this.fuelCapacity = fuelCapacity;
     this.fuel = fuelCapacity;
     shouldCrash = false;
+    crashed = false;
   }
 
   public int getFuel() {
@@ -71,16 +72,6 @@ public abstract class Airplane extends Vehicle {
 
   public boolean shouldCrash() {
     return shouldCrash;
-  }
-
-  public Airport getNextAirport() {
-    for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
-      if (route.get(i) instanceof Airport) {
-        return (Airport) route.get(i);
-      }
-    }
-
-    return null;
   }
 
   public void vehicleMovedCallback(boolean didVehicleMove) {

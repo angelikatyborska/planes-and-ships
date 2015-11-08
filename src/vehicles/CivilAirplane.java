@@ -22,22 +22,26 @@ public class CivilAirplane extends Airplane implements CivilVehicle {
   }
 
   public CivilDestination getNextCivilDestination() {
-    for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
-      if (route.get(i) instanceof CivilDestination) {
-        return (CivilDestination) route.get(i);
+    synchronized (route) {
+      for (int i = previousStopoverNumber + 1; i < route.size(); i++) {
+        if (route.get(i) instanceof CivilDestination) {
+          return (CivilDestination) route.get(i);
+        }
       }
+      return null;
     }
-    return null;
   }
 
   @Override
   public List<Stopover> newSubRoute() {
-    try {
-      return worldMap.getRouteGenerator().newRoute(route.get(previousStopoverNumber + 1), CivilAirport.class, 4);
-    } catch (StopoverNotFoundInStopoverNetworkException e) {
-      e.printStackTrace();
-    };
-    return null;
+    synchronized (route) {
+      try {
+        return worldMap.getRouteGenerator().newRoute(route.get(previousStopoverNumber + 1), CivilAirport.class, 4);
+      } catch (StopoverNotFoundInStopoverNetworkException e) {
+        e.printStackTrace();
+      }
+      return null;
+    }
   }
 
   @Override

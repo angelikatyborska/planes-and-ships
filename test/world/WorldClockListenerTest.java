@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class WorldClockListenerTest {
   private class StubWorldClockListener extends WorldClockListener {

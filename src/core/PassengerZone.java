@@ -1,9 +1,6 @@
 package core;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import stopovers.CivilDestination;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +118,7 @@ public class PassengerZone implements Serializable {
   /**
    * Tries to accommodate all passengers that are travelling to certain destination at target PassengerZone
    * @param target a PassengerZone to which passengers will be moved
-   * @param destination a CiviDestination which will have to match passenger's next destination if he is to be moved to target PassengerZone
+   * @param destination a CivilDestination which will have to match passenger's next destination if he is to be moved to target PassengerZone
    */
   public void moveAllWithMatchingDestinationTo(PassengerZone target, CivilDestination destination) {
     processingPassengers.lock();

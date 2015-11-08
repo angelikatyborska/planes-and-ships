@@ -28,7 +28,7 @@
             <Tooltip text="Add a Military Ship" />
         </tooltip>
     </Button>
-    <Button GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="button, pause" onAction="#pause">
+    <Button fx:id="pauseButton" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="button, pause" onAction="#pause">
         <tooltip>
             <Tooltip text="Pause Vehicles" />
         </tooltip>

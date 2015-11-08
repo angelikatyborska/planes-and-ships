@@ -116,7 +116,7 @@ public class Stopover implements Drawable, Serializable {
   /**
    *
    * @param vehicle
-   * @return true if vehicle is currently accommodated at this stopver
+   * @return true if vehicle is currently accommodated at this stopover
    */
   public boolean isAccommodatingVehicle(Vehicle vehicle) {
     return accommodatedVehicles.contains(vehicle);

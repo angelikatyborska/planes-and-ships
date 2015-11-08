@@ -24,7 +24,7 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
   private final int id;
   private final double velocity;
   protected WorldMap worldMap;
-  protected List<Stopover> route;
+  protected final List<Stopover> route;
   protected int previousStopoverNumber;
 
   /**
@@ -81,7 +81,16 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
    */
   public Stopover getNextStopover() {
     synchronized (route) {
-      return route.get(previousStopoverNumber + 1);
+      try {
+        return route.get(previousStopoverNumber + 1);
+      }
+      catch (IndexOutOfBoundsException e){
+        e.printStackTrace();
+        System.err.println("previousStopoverNumber = " + previousStopoverNumber);
+        route.forEach(stopover -> System.err.println(stopover.getName()));
+      }
+
+      return null;
     }
   }
 
@@ -121,13 +130,13 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
   /**
    * Replaces vehicle's route with the given route
-   * @param route
+   * @param newRoute
    */
-  public void setRoute(List<Stopover> route) {
+  public void setRoute(List<Stopover> newRoute) {
     synchronized (route) {
       previousStopoverNumber = 0;
       this.route.clear();
-      this.route.addAll(route);
+      this.route.addAll(newRoute);
     }
   }
 
@@ -139,7 +148,14 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
       previousStopoverNumber++;
 
       if (previousStopoverNumber == route.size() - 1) {
-        route = Lists.reverse(route);
+        List<Stopover> reversedRoute = new ArrayList<>();
+
+        for (int i = route.size() - 1; i >= 0; i--) {
+          reversedRoute.add(route.get(i));
+        }
+
+        route.clear();
+        route.addAll(reversedRoute);
         previousStopoverNumber = 0;
       }
     }
@@ -197,23 +213,25 @@ public abstract class Vehicle extends WorldClockListener implements Drawable {
 
   @Override
   public void tick() throws InterruptedException {
-    try {
-      if (canMove()) {
-        boolean didVehicleMove = worldMap.moveVehicleTowardsTargetStopover(this, this.velocity);
-        vehicleMovedCallback(didVehicleMove);
+    synchronized (this) {
+      try {
+        if (canMove()) {
+          boolean didVehicleMove = worldMap.moveVehicleTowardsTargetStopover(this, this.velocity);
+          vehicleMovedCallback(didVehicleMove);
 
-        if (hasArrivedAtStopover(getNextStopover())) {
-          Stopover stopover = getNextStopover();
-          arrivedAtStopover(stopover);
+          if (hasArrivedAtStopover(getNextStopover())) {
+            Stopover stopover = getNextStopover();
+            arrivedAtStopover(stopover);
+          }
         }
-      }
 
-    } catch (StopoverNotFoundInStopoverNetworkException e) {
-      System.err.println("Vehicle " + this + " tried to move to " + getNextStopover() + ", but it doesn't exist on the WorldMap");
-      e.printStackTrace();
-    } catch (InvalidVehicleAtStopoverException e) {
-      System.err.println("Vehicle " + this + " tried to get accommodate at " + getNextStopover());
-      e.printStackTrace();
+      } catch (StopoverNotFoundInStopoverNetworkException e) {
+        System.err.println("Vehicle " + this + " tried to move to " + getNextStopover() + ", but it doesn't exist on the WorldMap");
+        e.printStackTrace();
+      } catch (InvalidVehicleAtStopoverException e) {
+        System.err.println("Vehicle " + this + " tried to get accommodate at " + getNextStopover());
+        e.printStackTrace();
+      }
     }
   }
 

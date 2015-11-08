@@ -2,6 +2,7 @@ package gui.buttons;
 
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import world.World;
@@ -16,6 +17,7 @@ public class WorldControlButtons extends Group {
   private World world;
   private Consumer<World> loadWorldCallback;
   private final FileChooser fileChooser = new FileChooser();
+  @FXML private Button pauseButton;
 
 
   public WorldControlButtons() {
@@ -97,5 +99,11 @@ public class WorldControlButtons extends Group {
   @FXML
   private void pause() {
     world.togglePause();
+    if (pauseButton.getStyleClass().contains("paused")) {
+      pauseButton.getStyleClass().remove("paused");
+    }
+    else {
+      pauseButton.getStyleClass().add("paused");
+    }
   }
 }

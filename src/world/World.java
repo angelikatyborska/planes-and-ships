@@ -159,8 +159,8 @@ public class World implements Serializable {
   public void addMilitaryShip() {
     try {
       MilitaryShip vehicle = vehicleGenerator.newMilitaryShip();
-      Junction startingPoint = map.getAdjecentJunction(map.getRandomPort());
-      vehicle.setRoute(Arrays.asList(startingPoint, map.getAdjecentJunction(startingPoint)));
+      Junction startingPoint = map.getAdjacentJunction(map.getRandomPort());
+      vehicle.setRoute(Arrays.asList(startingPoint, map.getAdjacentJunction(startingPoint)));
       prepareVehicle(vehicle, startingPoint.getCoordinates());
     }
     catch (StopoverNotFoundInStopoverNetworkException e) {

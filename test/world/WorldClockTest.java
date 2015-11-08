@@ -3,7 +3,6 @@ package world;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class WorldClockTest {
   private class StubWorldClockListener extends WorldClockListener {

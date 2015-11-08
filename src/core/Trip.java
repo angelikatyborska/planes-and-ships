@@ -13,7 +13,7 @@ import java.util.List;
  * @see CivilDestination
  */
 public class Trip implements Serializable {
-  public enum TripType { HOLIDAY, BUSINESS };
+  public enum TripType { HOLIDAY, BUSINESS }
   private TripType type;
   private CivilDestination to;
   private CivilDestination from;

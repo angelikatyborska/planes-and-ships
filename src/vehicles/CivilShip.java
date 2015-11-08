@@ -68,7 +68,7 @@ public class CivilShip extends Ship implements CivilVehicle {
       return worldMap.getRouteGenerator().newRoute(route.get(previousStopoverNumber + 1), Port.class, 4);
     } catch (StopoverNotFoundInStopoverNetworkException e) {
       e.printStackTrace();
-    };
+    }
     return null;
   }
 

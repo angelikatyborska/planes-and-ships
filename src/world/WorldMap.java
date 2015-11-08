@@ -21,7 +21,7 @@ public class WorldMap implements Serializable {
     this.vehicleCoordinates = new HashMap<>();
     processingVehicle = new ReentrantLock();
     routeGenerator = new RouteGenerator(this);
-    safetyRadius = 12;
+    safetyRadius = 20;
   }
 
   public List<Vehicle> getAllVehicles() {
@@ -100,20 +100,20 @@ public class WorldMap implements Serializable {
     processingVehicle.unlock();
   }
 
-  public Junction getAdjecentJunction(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
-    Junction randomAdjecentJunction;
+  public Junction getAdjacentJunction(Stopover stopover) throws StopoverNotFoundInStopoverNetworkException {
+    Junction randomAdjacentJunction;
 
-    List<Junction> adjecentJunctions = new ArrayList<>();
+    List<Junction> AdjacentJunctions = new ArrayList<>();
 
     for (Stopover neighbour : stopoverNetwork.getAllNeighbouringStopovers(stopover)) {
       if (neighbour instanceof Junction) {
-        adjecentJunctions.add((Junction) neighbour);
+        AdjacentJunctions.add((Junction) neighbour);
       }
     }
 
-    randomAdjecentJunction = adjecentJunctions.get((int) Math.floor(Math.random() * adjecentJunctions.size()));
+    randomAdjacentJunction = AdjacentJunctions.get((int) Math.floor(Math.random() * AdjacentJunctions.size()));
 
-    return randomAdjecentJunction;
+    return randomAdjacentJunction;
   }
 
   /**
@@ -176,10 +176,6 @@ public class WorldMap implements Serializable {
   }
 
   private boolean isVehicleBehindOtherVehicle(Vehicle vehicleMoving, Vehicle otherVehicle) {
-    Coordinates a = vehicleMoving.getCoordinates();
-    Stopover c = vehicleMoving.getNextStopover();
-    Coordinates d = c.getCoordinates();
-    double b = a.distanceTo(d);
     return vehicleMoving.getCoordinates().distanceTo(vehicleMoving.getNextStopover().getCoordinates())
       > otherVehicle.getCoordinates().distanceTo(otherVehicle.getNextStopover().getCoordinates());
   }

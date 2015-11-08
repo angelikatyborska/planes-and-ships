@@ -7,7 +7,7 @@
     <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="TOP">
         <Image url="/images/photo.png"/>
     </ImageView>
-    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="TOP" styleClass="passenger-info">
+    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="TOP">
         <Label text="FIRST NAME:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="info-label"/>
         <Label fx:id="firstName" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="info"/>
 
