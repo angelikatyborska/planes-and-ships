@@ -60,7 +60,7 @@ public class WorldControlButtons extends Group {
       out.writeObject(world);
       out.close();
       fileOut.close();
-gi    }
+    }
   }
 
   @FXML
