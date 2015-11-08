@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,6 +30,8 @@ public class GUIApplication extends Application {
       e.printStackTrace();
     }
     Scene scene = new Scene(worldPanelPane);
+
+    Font.loadFont(getClass().getResource("CourierPrime.ttf").toExternalForm(), 14);
 
     primaryStage.setScene(scene);
     primaryStage.setResizable(false);

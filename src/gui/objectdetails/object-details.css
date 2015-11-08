@@ -1,31 +1,3 @@
-@font-face {
-    font-family: Courier;
-    font-weight: 400;
-    font-style: normal;
-    src: url('../font/Courier_Prime.ttf');
-}
-
-@font-face {
-    font-family: Courier;
-    font-weight: 700;
-    font-style: normal;
-    src: url('../font/Courier_Prime_Bold.ttf');
-}
-
-@font-face {
-    font-family: Courier;
-    font-weight: 400;
-    font-style: italic;
-    src: url('../font/Courier_Prime_Italic.ttf');
-}
-
-@font-face {
-    font-family: Courier;
-    font-weight: 700;
-    font-style: italic;
-    src: url('../font/Courier_Prime_Bold_Italic.ttf');
-}
-
 .object-details-pane {
     -fx-max-width: 248px;
     -fx-min-height: 590px;
@@ -36,7 +8,7 @@
     -fx-background-color: transparent;
     -fx-text-fill: black;
     -fx-cell-size: 18px;
-    -fx-font: 12px Courier;
+    -fx-font: 12px 'CourierPrime';
 }
 
 .list-view {
@@ -66,26 +38,26 @@
 }
 
 .title {
-    -fx-font: 22px Courier;
+    -fx-font: 22px 'CourierPrime';
 }
 
 .subtitle {
-    -fx-font: 12px Courier;
+    -fx-font: 12px 'CourierPrime';
     -fx-min-height: 13px;
 }
 
 .minor-detail {
-    -fx-font: 12px Courier;
+    -fx-font: 12px 'CourierPrime';
     -fx-min-height: 18px;
     -fx-alignment: center-left;
 }
 
 .detail {
-    -fx-font: 14px Courier;
+    -fx-font: 14px 'CourierPrime';
 }
 
 .major-detail {
-    -fx-font: 18px Courier;
+    -fx-font: 18px 'CourierPrime';
 }
 
 .destinations {

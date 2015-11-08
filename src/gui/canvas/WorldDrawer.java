@@ -20,7 +20,7 @@ public class WorldDrawer implements Drawer {
   private final double height;
   private final double width;
   private final double offsetFromRoute = 6;
-  private final String fontFamily = "Courier";
+  private final String fontFamily = "CourierPrime";
   private final HashMap<String, Image> images;
   private final HashMap<String, Color> colors;
   private Vehicle selectedVehicle;
@@ -217,7 +217,7 @@ public class WorldDrawer implements Drawer {
     gc.fillRect(x - width/2, y + topOffset, width, height);
     gc.setFill(Color.BLACK);
     gc.setFont(Font.font(fontFamily, 11));
-    gc.fillText(stopover.getName(), x, y + topOffset + height/2);
+    gc.fillText(stopover.getName(), x, y + topOffset + height/2 + 1.5);
   }
   private void drawVehicles() {
     for (Vehicle vehicle : world.getAllVehicles()) {
@@ -242,6 +242,6 @@ public class WorldDrawer implements Drawer {
     gc.setFont(Font.font(fontFamily, 13));
 
     int howManyPassengers = stopover.passengerZone().getPassengers().size() + stopover.hotel().getPassengers().size();
-    gc.fillText("" + howManyPassengers, x, y);
+    gc.fillText("" + howManyPassengers, x, y + 1.5);
   }
 }

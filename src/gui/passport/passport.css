@@ -1,6 +1,6 @@
 .passport {
     -fx-padding: 10px;
-    -fx-font: 12px Courier;
+    -fx-font: 12px 'CourierPrime';
     -fx-spacing: 10px;
     -fx-hgap: 10px;
     -fx-background-image: url('/images/passport.png');
@@ -10,11 +10,11 @@
 }
 
 .info-label {
-    -fx-font: 11px Courier;
+    -fx-font: 11px 'CourierPrime';
     -fx-padding: 0 20 0 0;
 }
 
 .info {
-    -fx-font: 14px Courier;
+    -fx-font: 14px 'CourierPrime';
     -fx-padding: 0 20 10 0;
 }
