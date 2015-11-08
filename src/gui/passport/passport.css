@@ -5,6 +5,7 @@
     -fx-hgap: 10px;
     -fx-background-image: url('/images/passport.png');
     -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
     -fx-alignment: top-left;
 }
 

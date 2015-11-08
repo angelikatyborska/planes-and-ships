@@ -94,8 +94,6 @@ public class Trip implements Serializable {
    }
   }
 
-  // TODO: show to the teacher - using instanceof
-
   public CivilDestination getNextCivilDestination() {
     if (goingBack) {
       return throughBack.get(previousStopover + 1);

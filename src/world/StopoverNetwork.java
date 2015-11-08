@@ -187,7 +187,6 @@ public class StopoverNetwork implements Serializable {
     return null;
   }
 
-  // TODO: this is almost an exact copy of findJunctionsBetween, DRY this maybe?
   public List<CivilDestination> findCivilRouteBetween(CivilDestination from, CivilDestination to) throws StopoverNotFoundInStopoverNetworkException {
     List<Stopover> stopovers = new ArrayList<>();
     List<StopoverNetworkNode> nodesToSearch = new ArrayList<>();

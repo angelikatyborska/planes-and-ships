@@ -52,7 +52,6 @@ public class PassengerList extends ListView {
     }
   }
 
-  // TODO: how can I avoid having to manually refresh the ListView?
   // I cannot use the goodies of ObservableList, because the list has to be created in Passenger class
   // and Passenger is not a Java FX Application thread. WARNING! - side effect - no state (no selected item)
   public void refresh() {
@@ -61,25 +60,27 @@ public class PassengerList extends ListView {
   }
 
   private static void openPassengerInfoWindow(Passenger passenger) {
-    Stage stage = new Stage();
-    stage.setTitle(passenger.getFirstName() + " " + passenger.getLastName());
+    synchronized (passenger) {
+      Stage stage = new Stage();
+      stage.setTitle(passenger.getFirstName() + " " + passenger.getLastName());
 
-    GridPane passportPane = new GridPane();
+      GridPane passportPane = new GridPane();
 
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(Passport.class.getResource("passport.fxml"));
-    try {
-      passportPane = loader.load();
-    } catch (IOException e) {
-      e.printStackTrace();
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(Passport.class.getResource("passport.fxml"));
+      try {
+        passportPane = loader.load();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      Passport passport = loader.getController();
+      passport.setPassenger(passenger);
+
+      Scene scene = new Scene(passportPane);
+
+      stage.setScene(scene);
+      stage.setResizable(false);
+      stage.show();
     }
-    Passport passport = loader.getController();
-    passport.setPassenger(passenger);
-
-    Scene scene = new Scene(passportPane);
-
-    stage.setScene(scene);
-    stage.setResizable(false);
-    stage.show();
   }
 }
