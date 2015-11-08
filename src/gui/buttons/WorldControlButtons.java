@@ -2,6 +2,8 @@ package gui.buttons;
 
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import world.World;
 
 import java.io.*;
@@ -13,8 +15,12 @@ import java.util.function.Consumer;
 public class WorldControlButtons extends Group {
   private World world;
   private Consumer<World> loadWorldCallback;
+  private final FileChooser fileChooser = new FileChooser();
 
-  public WorldControlButtons() {}
+
+  public WorldControlButtons() {
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Java Serialized Object (.ser)", "*.ser"));
+  }
 
   /**
    *
@@ -45,28 +51,34 @@ public class WorldControlButtons extends Group {
 
   @FXML
   private void saveWorld() throws IOException {
-    FileOutputStream fileOut =
-      new FileOutputStream("/tmp/world.ser");
-    ObjectOutputStream out = new ObjectOutputStream(fileOut);
-    out.writeObject(world);
-    out.close();
-    fileOut.close();
-    System.out.printf("Serialized data is saved in /tmp/world.ser");
+    Stage stage = new Stage();
+    File file = fileChooser.showSaveDialog(stage);
+
+    if (file != null) {
+      FileOutputStream fileOut = new FileOutputStream(file);
+      ObjectOutputStream out = new ObjectOutputStream(fileOut);
+      out.writeObject(world);
+      out.close();
+      fileOut.close();
+gi    }
   }
 
   @FXML
   private void loadWorld() {
     try {
-      FileInputStream fileIn = new FileInputStream("/tmp/world.ser");
-      ObjectInputStream in = new ObjectInputStream(fileIn);
-      world = (World) in.readObject();
+      Stage stage = new Stage();
+      File file = fileChooser.showOpenDialog(stage);
 
-      loadWorldCallback.accept(world);
+      if (file != null) {
+        FileInputStream fileIn = new FileInputStream(file);
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        world = (World) in.readObject();
 
-      System.out.printf("Serialized data loaded form in /tmp/world.ser");
+        loadWorldCallback.accept(world);
 
-      in.close();
-      fileIn.close();
+        in.close();
+        fileIn.close();
+      }
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ClassNotFoundException e) {
