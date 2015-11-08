@@ -1,6 +1,5 @@
 package vehicles;
 
-import com.google.common.collect.Lists;
 import core.Coordinates;
 import gui.canvas.Drawable;
 import gui.canvas.Drawer;
