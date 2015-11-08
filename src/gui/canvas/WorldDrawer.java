@@ -23,6 +23,7 @@ public class WorldDrawer implements Drawer {
   private final String fontFamily = "Courier";
   private final HashMap<String, Image> images;
   private final HashMap<String, Color> colors;
+  private Vehicle selectedVehicle;
 
   public WorldDrawer(World world, GraphicsContext gc, HashMap<String, Image> images, HashMap<String, Color> colors, double width, double height) {
     this.world = world;
@@ -42,6 +43,11 @@ public class WorldDrawer implements Drawer {
     drawNetwork();
     drawStopovers();
     drawVehicles();
+  }
+
+
+  public void setVehicle(Vehicle vehicle) {
+    selectedVehicle = vehicle;
   }
 
   @Override
@@ -86,7 +92,19 @@ public class WorldDrawer implements Drawer {
 
   @Override
   public void drawVehicle(Vehicle vehicle) {
+    if (vehicle == selectedVehicle) {
+      int radius = 16;
+      double x = vehicle.getCoordinates().getX() - radius;
+      double y = vehicle.getCoordinates().getY() - radius;
 
+      double angle = vehicle.getBearing();
+      double dx = offsetFromRoute * Math.cos(angle);
+      double dy = offsetFromRoute * Math.sin(angle);
+
+      gc.setStroke(Color.WHITE);
+      gc.setLineDashes();
+      gc.strokeOval(x + dx, y + dy, 2 * radius, 2 * radius);
+    }
   }
 
   @Override
@@ -97,6 +115,9 @@ public class WorldDrawer implements Drawer {
     double angle = vehicle.getBearing();
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
+
+    drawVehicle(vehicle);
+
     gc.drawImage(images.get("airplane"), x + dx, y + dy);
   }
 
@@ -108,7 +129,8 @@ public class WorldDrawer implements Drawer {
     double angle = vehicle.getBearing();
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
-    gc.drawImage(images.get("airplane"), x + dx, y + dy);
+
+    drawAirplane(vehicle);
 
     gc.setFill(Color.BLACK);
     gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
@@ -128,6 +150,8 @@ public class WorldDrawer implements Drawer {
     double dx = offsetFromRoute * Math.cos(angle);
     double dy = offsetFromRoute * Math.sin(angle);
 
+    drawVehicle(vehicle);
+
     gc.drawImage(images.get("ship"), x + dx, y + dy);
   }
 
@@ -141,6 +165,7 @@ public class WorldDrawer implements Drawer {
     double dy = offsetFromRoute * Math.sin(angle);
 
     drawShip(vehicle);
+
     gc.setFill(Color.BLACK);
     gc.fillText("" + vehicle.passengerZone().getPassengers().size() + "/" + vehicle.passengerZone().getCapacity(),  x + dx, y + dy);
   }
